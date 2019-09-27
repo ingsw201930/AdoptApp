@@ -3,4 +3,9 @@
     <string name="botonIngresar">Ingresar</string>
     <string name="botonRegistrarse">Registrarse</string>
     <string name="descripcionLogo">Logo de AdoptApp</string>
+    <string name="hintEmail">Correo electrónico</string>
+    <string name="hintContrasena">Contraseña</string>
+    <string name="botonFacebook">Ingresar con Facebook</string>
+    <string name="botonTwitter">Ingresar con Twitter</string>
+    <string name="botonGoogle">Ingresar con Google</string>
 </resources>
