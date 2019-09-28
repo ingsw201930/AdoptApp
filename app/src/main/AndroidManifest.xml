@@ -13,7 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ActivityBuscarAnimales" android:screenOrientation="portrait"/>
+        <activity android:name=".ActivityMenuKeeper" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ActivityBuscarAnimales"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ActivityMenuAdoptante"
             android:screenOrientation="portrait" />

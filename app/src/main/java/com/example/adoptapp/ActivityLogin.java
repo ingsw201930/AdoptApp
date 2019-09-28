@@ -31,9 +31,10 @@ public class ActivityLogin extends AppCompatActivity {
                     Intent intent = new Intent(view.getContext(), ActivityInicioPersona.class);
                     startActivity(intent);
                 }
-                /*if( editTextEmail.getText().toString().equals("institucion") ){
-
-                }*/
+                if( editTextEmail.getText().toString().equals("institucion") ){
+                    Intent intent = new Intent(view.getContext(), ActivityMenuKeeper.class);
+                    startActivity(intent);
+                }
 
             }
         });
