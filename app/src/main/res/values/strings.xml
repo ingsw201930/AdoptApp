@@ -2,10 +2,14 @@
     <string name="app_name">AdoptApp</string>
     <string name="botonIngresar">Ingresar</string>
     <string name="botonRegistrarse">Registrarse</string>
-    <string name="descripcionLogo">Logo de AdoptApp</string>
+    <string name="descripcionImagenLogo">Logo de AdoptApp</string>
     <string name="hintEmail">Correo electrónico</string>
     <string name="hintContrasena">Contraseña</string>
     <string name="botonFacebook">Ingresar con Facebook</string>
     <string name="botonTwitter">Ingresar con Twitter</string>
     <string name="botonGoogle">Ingresar con Google</string>
+    <string name="descripcionImagenAdoptante">Adoptante</string>
+    <string name="descripcionImagenHogarPaso">Hogar de paso</string>
+    <string name="entrarComoAdoptante">Ingresar como adoptante/patrocinador/donante/voluntario</string>
+    <string name="entrarComoHogarPaso">Ingresar como hogar de paso</string>
 </resources>

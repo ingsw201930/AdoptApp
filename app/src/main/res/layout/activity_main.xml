@@ -17,7 +17,7 @@
         android:id="@+id/imageViewLogo"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:contentDescription="@string/descripcionLogo"
+        android:contentDescription="@string/descripcionImagenLogo"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/buttonIngresar"
         app:layout_constraintLeft_toLeftOf="parent"
