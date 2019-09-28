@@ -26,4 +26,8 @@
     <string name="descripcionImagenEditarPerfil">Editar perfil</string>
     <string name="botonCerrarSesion">Cerrar sesión</string>
     <string name="descripcionImagenCerrarSesion">Cerrar sesión</string>
+    <string name="descripcionImagenAnimal">Animal</string>
+    <string name="nombreAnimal">Nombre</string>
+    <string name="detallesAnimal">Mediano\n4 años\nBogotá, Bogotá</string>
+    <string name="descripcionImagenFiltro">Filtro</string>
 </resources>
