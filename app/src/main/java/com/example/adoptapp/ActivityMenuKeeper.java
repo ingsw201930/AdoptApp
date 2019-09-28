@@ -16,6 +16,8 @@ public class ActivityMenuKeeper extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_keeper);
 
+        constraintLayoutRegistrarAnimal = findViewById(R.id.ConstraintLayoutRegistrarAnimal);
+
         constraintLayoutRegistrarAnimal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
