@@ -27,4 +27,28 @@
     <string name="botonVerMisAnimales">Ver mis animales</string>
     <string name="botonVerPeticiones">Ver peticiones</string>
     <string name="botonEventos">Eventos</string>
+    <string name="hintEdad">Edad</string>
+    <string-array name="TipoAnimal">
+        <item>Tipo de animal</item>
+        <item>Perro</item>
+        <item>Gato</item>
+        <item>Ave doméstica</item>
+        <item>Conejo</item>
+        <item>Hámster</item>
+        <item>Caballo</item>
+    </string-array>
+    <string name="hintPeso">Peso</string>
+    <string-array name="TamanoAnimal">
+        <item>Tamaño de animal</item>
+        <item>Pequeño</item>
+        <item>Mediano</item>
+        <item>Grande</item>
+        <item>Muy grande</item>
+    </string-array>
+    <string-array name="SexoAnimal">
+        <item>Sexo de animal</item>
+        <item>Hembra</item>
+        <item>Macho</item>
+    </string-array>
+    <string name="botonContinuar">Continuar</string>
 </resources>
