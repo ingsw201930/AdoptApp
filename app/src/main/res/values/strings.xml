@@ -12,4 +12,18 @@
     <string name="descripcionImagenHogarPaso">Hogar de paso</string>
     <string name="entrarComoAdoptante">Ingresar como adoptante/patrocinador/donante/voluntario</string>
     <string name="entrarComoHogarPaso">Ingresar como hogar de paso</string>
+    <string name="botonReporteRapido">Realizar reporte rápido</string>
+    <string name="descripcionImagenReporteRapido">Reporte rápido</string>
+    <string name="botonBuscarAnimales">Buscar animales</string>
+    <string name="descripcionImagenBuscarAnimales">Buscar animales</string>
+    <string name="botonVerEventos">Ver eventos</string>
+    <string name="descripcionImagenVerEventos">Ver eventos</string>
+    <string name="botonBuscarInstituciones">Buscar fundaciones/refugios</string>
+    <string name="descripcionImagenBuscarInstituciones">Buscar fundaciones/refugios</string>
+    <string name="botonVerHistoriasFelices">Ver historias felices</string>
+    <string name="descripcionImagenVerHistoriasFelices">Ver historias felices</string>
+    <string name="botonEditarPerfil">Editar perfil</string>
+    <string name="descripcionImagenEditarPerfil">Editar perfil</string>
+    <string name="botonCerrarSesion">Cerrar sesión</string>
+    <string name="descripcionImagenCerrarSesion">Cerrar sesión</string>
 </resources>

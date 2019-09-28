@@ -28,7 +28,7 @@ public class ActivityLogin extends AppCompatActivity {
             public void onClick(View view) {
 
                 if( editTextEmail.getText().toString().equals("persona") ){
-                    Intent intent = new Intent(view.getContext(), ActivityInicioAdoptante.class);
+                    Intent intent = new Intent(view.getContext(), ActivityInicioPersona.class);
                     startActivity(intent);
                 }
                 /*if( editTextEmail.getText().toString().equals("institucion") ){

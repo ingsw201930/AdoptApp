@@ -13,7 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ActivityInicioAdoptante" android:screenOrientation="portrait"/>
+        <activity android:name=".ActivityMenuAdoptante" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ActivityInicioPersona"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ActivityLogin"
             android:screenOrientation="portrait" />

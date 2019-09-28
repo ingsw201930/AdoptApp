@@ -11,7 +11,7 @@
     android:paddingEnd="10dp"
     android:paddingRight="10dp"
     android:paddingBottom="10dp"
-    tools:context=".ActivityInicioAdoptante">
+    tools:context=".ActivityInicioPersona">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ConstraintLayoutAdoptante"
@@ -28,7 +28,7 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:contentDescription="@string/descripcionImagenAdoptante"
-            android:scaleType="center"
+            android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -72,7 +72,7 @@
 
         <TextView
             android:id="@+id/textViewHogarPaso"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/entrarComoHogarPaso"
