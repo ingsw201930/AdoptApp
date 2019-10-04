@@ -60,12 +60,14 @@ public class CustomAdapter implements ListAdapter {
         if(convertView==null) {
             LayoutInflater layoutInflater = LayoutInflater.from(context);
             convertView=layoutInflater.inflate(R.layout.layout_item_animal, null);
+
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(view.getContext(), animal.getNombre(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(view.getContext(), animal.getId(), Toast.LENGTH_SHORT).show();
                 }
             });
+
             TextView textViewNombre =convertView.findViewById(R.id.textViewItemNombreAnimal);
             textViewNombre.setText(animal.getNombre());
             String datos = animal.getTamano()+"\n"+animal.getEdad()+"\n"+animal.getCiudad();

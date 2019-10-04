@@ -2,12 +2,21 @@ package com.example.adoptapp;
 
 class Animal {
 
+    private String id;
     private String nombre;
     private String tamano;
     private int edad;
     private String ciudad;
 
     Animal() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     String getNombre() {
