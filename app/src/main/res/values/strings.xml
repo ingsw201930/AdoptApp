@@ -21,7 +21,7 @@
     <string name="botonCerrarSesion">Cerrar sesión</string>
     <string name="descripcionImagenAnimal">Animal</string>
     <string name="nombreAnimal">Nombre</string>
-    <string name="detallesAnimal">Mediano\n4 años\nBogotá, Bogotá</string>
+    <string name="detallesAnimal">Tamano\nEdad\nCiudad, departamento</string>
     <string name="descripcionImagenFiltro">Filtro</string>
     <string name="botonRegistrarAnimal">Registrar animal</string>
     <string name="botonVerMisAnimales">Ver mis animales</string>

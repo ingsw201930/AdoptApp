@@ -3,6 +3,10 @@
     xmlns:dist="http://schemas.android.com/apk/distribution"
     package="com.example.adoptapp">
 
+    <uses-permission android:name = "android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    
     <dist:module dist:instant="true" />
 
     <application
