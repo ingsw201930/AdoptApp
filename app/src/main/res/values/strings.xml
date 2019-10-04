@@ -1,3 +1,54 @@
 <resources>
     <string name="app_name">AdoptApp</string>
+    <string name="botonIngresar">Ingresar</string>
+    <string name="botonRegistrarse">Registrarse</string>
+    <string name="descripcionImagenLogo">Logo de AdoptApp</string>
+    <string name="hintEmail">Correo electrónico</string>
+    <string name="hintContrasena">Contraseña</string>
+    <string name="botonFacebook">Ingresar con Facebook</string>
+    <string name="botonTwitter">Ingresar con Twitter</string>
+    <string name="botonGoogle">Ingresar con Google</string>
+    <string name="descripcionImagenAdoptante">Adoptante</string>
+    <string name="descripcionImagenHogarPaso">Hogar de paso</string>
+    <string name="entrarComoAdoptante">Ingresar como adoptante/patrocinador/donante/voluntario</string>
+    <string name="entrarComoHogarPaso">Ingresar como hogar de paso</string>
+    <string name="botonReporteRapido">Realizar reporte rápido</string>
+    <string name="botonBuscarAnimales">Buscar animales</string>
+    <string name="botonVerEventos">Ver eventos</string>
+    <string name="botonBuscarInstituciones">Buscar fundaciones/refugios</string>
+    <string name="botonVerHistoriasFelices">Ver historias felices</string>
+    <string name="botonEditarPerfil">Editar perfil</string>
+    <string name="botonCerrarSesion">Cerrar sesión</string>
+    <string name="descripcionImagenAnimal">Animal</string>
+    <string name="nombreAnimal">Nombre</string>
+    <string name="detallesAnimal">Mediano\n4 años\nBogotá, Bogotá</string>
+    <string name="descripcionImagenFiltro">Filtro</string>
+    <string name="botonRegistrarAnimal">Registrar animal</string>
+    <string name="botonVerMisAnimales">Ver mis animales</string>
+    <string name="botonVerPeticiones">Ver peticiones</string>
+    <string name="botonEventos">Eventos</string>
+    <string name="hintEdad">Edad</string>
+    <string-array name="TipoAnimal">
+        <item>Tipo de animal</item>
+        <item>Perro</item>
+        <item>Gato</item>
+        <item>Ave doméstica</item>
+        <item>Conejo</item>
+        <item>Hámster</item>
+        <item>Caballo</item>
+    </string-array>
+    <string name="hintPeso">Peso</string>
+    <string-array name="TamanoAnimal">
+        <item>Tamaño de animal</item>
+        <item>Pequeño</item>
+        <item>Mediano</item>
+        <item>Grande</item>
+        <item>Muy grande</item>
+    </string-array>
+    <string-array name="SexoAnimal">
+        <item>Sexo de animal</item>
+        <item>Hembra</item>
+        <item>Macho</item>
+    </string-array>
+    <string name="botonContinuar">Continuar</string>
 </resources>
