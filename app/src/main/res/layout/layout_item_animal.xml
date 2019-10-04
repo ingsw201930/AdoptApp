@@ -38,7 +38,7 @@
 
             <TextView
                 android:id="@+id/textViewItemNombreAnimal"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/nombreAnimal"
                 android:textSize="24sp"
@@ -50,7 +50,7 @@
 
             <TextView
                 android:id="@+id/textViewItemDetallesAnimal"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/detallesAnimal"
                 app:layout_constraintBottom_toBottomOf="parent"
