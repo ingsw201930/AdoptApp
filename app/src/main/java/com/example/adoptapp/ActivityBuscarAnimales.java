@@ -39,8 +39,15 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     private static final String TAG = "Buscar animales";
     ArrayList<Animal> arrayListAnimales;
     ImageButton imageButtonFiltrar;
+    CustomAdapter customAdapter;
 
     static final int FILTRO_REQUEST = 1;
+
+    String filtroTipo;
+    String filtroTamano;
+    int filtroEdad;
+    int filtroDistancia;
+    int numeroFiltrosAplicados;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +91,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         animal.setTamano("Grande");
         animal.setCiudad("Bogota");
         animal.setUrlFotoPrincipal("");
-        arrayListAnimales.add(animal);
+        //arrayListAnimales.add(animal);
 
         animal = new Animal();
         animal.setId("");
@@ -93,26 +100,24 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         animal.setTamano("Pequeño");
         animal.setCiudad("Bogota");
         animal.setUrlFotoPrincipal("");
-        arrayListAnimales.add(animal);
+        //arrayListAnimales.add(animal);
 
-        leerListaAnimales();
+        leerListaAnimalesSinFiltro();
 
         /*for (int i = 0; i < arrayListAnimales.size(); i++) {
             Log.i(TAG, "Esto es :"+arrayListAnimales.get(i).getNombre());
         }*/
 
-        //conseguirFotosAnimales();
-
     }
 
     public void mostrarListaAnimales() {
         if (arrayListAnimales.size() > 0){
-            CustomAdapter customAdapter = new CustomAdapter(this, arrayListAnimales);
+            customAdapter = new CustomAdapter(this, arrayListAnimales);
             listViewAnimales.setAdapter(customAdapter);
         }
     }
 
-    public void leerListaAnimales(){
+    public void leerListaAnimalesSinFiltro(){
 
         db.collection("animales")
                 .get()
@@ -178,10 +183,17 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         if (requestCode == FILTRO_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                String result=data.getStringExtra("result");
-                if (result != null) {
-                    Log.i(TAG, result);
-                }
+
+                arrayListAnimales.clear();
+                listViewAnimales.setAdapter(null);
+
+                filtroTipo = data.getStringExtra("Tipo");
+                filtroTamano = data.getStringExtra("Tamano");
+                filtroEdad = data.getIntExtra("Edad", -1);
+                filtroDistancia = data.getIntExtra("Distancia", -1);
+                numeroFiltrosAplicados = data.getIntExtra("numeroFiltrosAplicados", 0);
+                aplicarFiltro();
+                //Log.i(TAG, "Parámetros de filtro: "+result);
             }
         }
     }
@@ -199,6 +211,105 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                         Log.e(TAG, "signInAnonymously:FAILURE", exception);
                     }
                 });
+    }
+
+    public void aplicarFiltro(){
+
+        if (numeroFiltrosAplicados > 0) {
+
+            if (!filtroTipo.equals("")) {
+                if (numeroFiltrosAplicados == 1){ //único filtro aplicado
+                    aplicarFiltroSencillo("Tipo", filtroTipo);
+                }else{ //al menos otro filtro aplicado
+
+                }
+            }
+            if (!filtroTamano.equals("")) {
+                if (numeroFiltrosAplicados == 1){ //único filtro aplicado
+                    aplicarFiltroSencillo("Tamano", filtroTamano);
+                }else{ //al menos otro filtro aplicado
+
+                }
+            }
+            if (filtroEdad != -1) {
+                if (numeroFiltrosAplicados == 1){ //único filtro aplicado
+                    aplicarFiltroSencillo("Edad", filtroEdad);
+                }else{ //al menos otro filtro aplicado
+
+                }
+            }
+            if (filtroDistancia != -1) {
+                if (numeroFiltrosAplicados == 1){ //único filtro aplicado
+                    //aplicarFiltroSencillo("Distancia", filtroDistancia);
+                }else{ //al menos otro filtro aplicado
+
+                }
+            }
+
+        }
+
+    }
+
+    public void aplicarFiltroSencillo(String campoFiltro, String valorCampo){
+
+        db.collection("animales")
+                .whereEqualTo(campoFiltro, valorCampo)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                Animal animal = new Animal();
+                                animal.setId(document.getId());
+                                animal.setNombre( (document.getString("Nombre") ));
+                                animal.setEdad( Integer.parseInt(document.get("Edad").toString()) );
+                                animal.setTamano( document.getString("Tamano") );
+                                animal.setCiudad( document.getString("Ciudad") );
+                                animal.setUrlFotoPrincipal( document.getString("FotoPrincipal") );
+                                arrayListAnimales.add(animal);
+
+                                Log.d(TAG, document.getId() + " => " + animal.getNombre());
+                            }
+                            mostrarListaAnimales();
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+    }
+
+    public void aplicarFiltroSencillo(String campoFiltro, int valorCampo){
+
+        db.collection("animales")
+                .whereEqualTo(campoFiltro, valorCampo)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                Animal animal = new Animal();
+                                animal.setId(document.getId());
+                                animal.setNombre( (document.getString("Nombre") ));
+                                animal.setEdad( Integer.parseInt(document.get("Edad").toString()) );
+                                animal.setTamano( document.getString("Tamano") );
+                                animal.setCiudad( document.getString("Ciudad") );
+                                animal.setUrlFotoPrincipal( document.getString("FotoPrincipal") );
+                                arrayListAnimales.add(animal);
+
+                                Log.d(TAG, document.getId() + " => " + animal.getNombre());
+                            }
+                            mostrarListaAnimales();
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
     }
 
 }

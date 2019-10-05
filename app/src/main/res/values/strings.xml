@@ -52,4 +52,5 @@
     </string-array>
     <string name="botonContinuar">Continuar</string>
     <string name="botonAplicarFiltro">Aplicar filtro</string>
+    <string name="distanciaFiltro">Distancia en km máxima</string>
 </resources>

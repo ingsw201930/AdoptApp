@@ -43,8 +43,21 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/spinnerFiltroTamano"
-        app:layout_constraintBottom_toTopOf="@id/buttonAplicarFiltro"
+        app:layout_constraintBottom_toTopOf="@+id/editTextFiltroDistancia"
         tools:ignore="Autofill" />
+
+    <EditText
+        android:id="@+id/editTextFiltroDistancia"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/distanciaFiltro"
+        android:inputType="number"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextFiltroEdad"
+        app:layout_constraintBottom_toTopOf="@id/buttonAplicarFiltro"
+        tools:ignore="Autofill"/>
 
     <Button
         android:id="@+id/buttonAplicarFiltro"
