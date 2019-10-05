@@ -70,17 +70,21 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         animal.setCiudad("Bogota");
         arrayListAnimales.add(animal);
 
-        //traerListaAnimales();
+        leerListaAnimales();
 
         for (int i = 0; i < arrayListAnimales.size(); i++) {
-            Log.i(TAG, "Esto es el nombre:"+arrayListAnimales.get(i).getNombre());
+            Log.i(TAG, "Esto es :"+arrayListAnimales.get(i).getNombre());
         }
 
+
+    }
+
+    public void mostrarListaAnimales(){
         CustomAdapter customAdapter = new CustomAdapter(this, arrayListAnimales);
         listViewAnimales.setAdapter(customAdapter);
     }
 
-    public void traerListaAnimales(){
+    public void leerListaAnimales(){
 
         db.collection("animales")
                 .get()
@@ -98,8 +102,9 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                                 animal.setCiudad( (String)document.get("Ciudad") );
                                 arrayListAnimales.add(animal);
 
-                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Log.d(TAG, document.getId() + " => " + animal.getNombre());
                             }
+                            mostrarListaAnimales();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
@@ -121,4 +126,6 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             }
         }
     }
+
 }
+
