@@ -21,7 +21,7 @@
     <string name="botonCerrarSesion">Cerrar sesión</string>
     <string name="descripcionImagenAnimal">Animal</string>
     <string name="nombreAnimal">Nombre</string>
-    <string name="detallesAnimal">Mediano\n4 años\nBogotá, Bogotá</string>
+    <string name="detallesAnimal">Tamano\nEdad\nCiudad, departamento</string>
     <string name="descripcionImagenFiltro">Filtro</string>
     <string name="botonRegistrarAnimal">Registrar animal</string>
     <string name="botonVerMisAnimales">Ver mis animales</string>
@@ -51,4 +51,6 @@
         <item>Macho</item>
     </string-array>
     <string name="botonContinuar">Continuar</string>
+    <string name="botonAplicarFiltro">Aplicar filtro</string>
+    <string name="distanciaFiltro">Distancia en km máxima</string>
 </resources>

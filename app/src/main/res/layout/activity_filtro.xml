@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:paddingStart="10dp"
+    android:paddingLeft="10dp"
+    android:paddingTop="10dp"
+    android:paddingEnd="10dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="10dp"
+    tools:context=".ActivityFiltro">
+
+    <Spinner
+        android:id="@+id/spinnerFiltroTipo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:entries="@array/TipoAnimal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/spinnerFiltroTamano"/>
+
+    <Spinner
+        android:id="@+id/spinnerFiltroTamano"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:entries="@array/TamanoAnimal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinnerFiltroTipo"
+        app:layout_constraintBottom_toTopOf="@id/editTextFiltroEdad"/>
+
+    <EditText
+        android:id="@+id/editTextFiltroEdad"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/hintEdad"
+        android:inputType="number"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinnerFiltroTamano"
+        app:layout_constraintBottom_toTopOf="@+id/editTextFiltroDistancia"
+        tools:ignore="Autofill" />
+
+    <EditText
+        android:id="@+id/editTextFiltroDistancia"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/distanciaFiltro"
+        android:inputType="number"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextFiltroEdad"
+        app:layout_constraintBottom_toTopOf="@id/buttonAplicarFiltro"
+        tools:ignore="Autofill"/>
+
+    <Button
+        android:id="@+id/buttonAplicarFiltro"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/botonAplicarFiltro"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
