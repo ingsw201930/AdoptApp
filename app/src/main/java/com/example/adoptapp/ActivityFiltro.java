@@ -51,14 +51,14 @@ public class ActivityFiltro extends AppCompatActivity {
                 }
 
                 if(!editTextFiltroEdad.getText().toString().equals("")){
-                    returnIntent.putExtra("Edad", editTextFiltroEdad.getText().toString());
+                    returnIntent.putExtra("Edad", Integer.parseInt(editTextFiltroEdad.getText().toString()) );
                     numeroFiltrosAplicados = numeroFiltrosAplicados+1;
                 }else{
                     returnIntent.putExtra("Edad", -1);
                 }
 
                 if(!editTextFiltroDistancia.getText().toString().equals("")){
-                    returnIntent.putExtra("Distancia", editTextFiltroDistancia.getText().toString());
+                    returnIntent.putExtra("Distancia", Integer.parseInt(editTextFiltroDistancia.getText().toString()) );
                     numeroFiltrosAplicados = numeroFiltrosAplicados+1;
                 }else{
                     returnIntent.putExtra("Distancia", -1);
