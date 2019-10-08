@@ -8,8 +8,17 @@ class Animal {
     private int edad;
     private String ciudad;
     private String urlFotoPrincipal;
+    private String tipo;
 
     Animal() {
+    }
+
+    String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     String getUrlFotoPrincipal() {

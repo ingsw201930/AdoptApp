@@ -219,38 +219,38 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
             if (!filtroTipo.equals("")) {
                 if (numeroFiltrosAplicados == 1){ //único filtro aplicado
-                    aplicarFiltroSencillo("Tipo", filtroTipo);
+                    aplicarFiltroSencillo("Tipo", filtroTipo, false);
                 }else{ //al menos otro filtro aplicado
-
+                    aplicarFiltroSencillo("Tipo", filtroTipo, true);
                 }
             }
             if (!filtroTamano.equals("")) {
                 if (numeroFiltrosAplicados == 1){ //único filtro aplicado
-                    aplicarFiltroSencillo("Tamano", filtroTamano);
+                    aplicarFiltroSencillo("Tamano", filtroTamano, false);
                 }else{ //al menos otro filtro aplicado
-
+                    aplicarFiltroSencillo("Tamano", filtroTamano, true);
                 }
             }
             if (filtroEdad != -1) {
                 if (numeroFiltrosAplicados == 1){ //único filtro aplicado
-                    aplicarFiltroSencillo("Edad", filtroEdad);
+                    aplicarFiltroSencillo("Edad", filtroEdad, false);
                 }else{ //al menos otro filtro aplicado
-
+                    aplicarFiltroSencillo("Edad", filtroEdad, true);
                 }
             }
             if (filtroDistancia != -1) {
-                if (numeroFiltrosAplicados == 1){ //único filtro aplicado
-                    //aplicarFiltroSencillo("Distancia", filtroDistancia);
+                /*if (numeroFiltrosAplicados == 1){ //único filtro aplicado
+                    //aplicarFiltroSencillo("Distancia", filtroDistancia, false);
                 }else{ //al menos otro filtro aplicado
-
-                }
+                    //aplicarFiltroSencillo("Distancia", filtroDistancia, true);
+                }*/
             }
 
         }
 
     }
 
-    public void aplicarFiltroSencillo(String campoFiltro, String valorCampo){
+    public void aplicarFiltroSencillo(String campoFiltro, String valorCampo, final boolean requiereFiltroSecundario){
 
         db.collection("animales")
                 .whereEqualTo(campoFiltro, valorCampo)
@@ -272,7 +272,11 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
                                 Log.d(TAG, document.getId() + " => " + animal.getNombre());
                             }
-                            mostrarListaAnimales();
+                            if (requiereFiltroSecundario) {
+                                agregarFiltrosSecundarios();
+                            } else {
+                                mostrarListaAnimales();
+                            }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
@@ -281,7 +285,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
     }
 
-    public void aplicarFiltroSencillo(String campoFiltro, int valorCampo){
+    public void aplicarFiltroSencillo(String campoFiltro, int valorCampo, final boolean requiereFiltroSecundario){
 
         db.collection("animales")
                 .whereEqualTo(campoFiltro, valorCampo)
@@ -303,13 +307,70 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
                                 Log.d(TAG, document.getId() + " => " + animal.getNombre());
                             }
-                            mostrarListaAnimales();
+                            if (requiereFiltroSecundario) {
+                                agregarFiltrosSecundarios();
+                            } else {
+                                mostrarListaAnimales();
+                            }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
 
+    }
+
+    public void agregarFiltrosSecundarios(){
+
+        ArrayList<Animal> arrayAuxiliar;
+        arrayAuxiliar = new ArrayList<>();
+
+        if (!filtroTipo.equals("")) {
+            for (int i = 0; i < arrayListAnimales.size(); i++) {
+                if (arrayListAnimales.get(i).getTipo().equals(filtroTipo)) {
+                    arrayAuxiliar.add(arrayListAnimales.get(i));
+                }
+            }
+            arrayListAnimales.clear();
+            arrayListAnimales = new ArrayList<>(arrayAuxiliar); //copiar los del auxiliar en el original
+            arrayAuxiliar.clear();
+        }
+
+        if (!filtroTamano.equals("")) {
+            for (int i = 0; i < arrayListAnimales.size(); i++) {
+                if (arrayListAnimales.get(i).getTamano().equals(filtroTamano)){
+                    arrayAuxiliar.add(arrayListAnimales.get(i));
+                }
+            }
+            arrayListAnimales.clear();
+            arrayListAnimales = new ArrayList<>(arrayAuxiliar); //copiar los del auxiliar en el original
+            arrayAuxiliar.clear();
+        }
+        if (filtroEdad != -1) {
+            for (int i = 0; i < arrayListAnimales.size(); i++) {
+                if (arrayListAnimales.get(i).getEdad() == filtroEdad){
+                    arrayAuxiliar.add(arrayListAnimales.get(i));
+                }
+            }
+            arrayListAnimales.clear();
+            arrayListAnimales = new ArrayList<>(arrayAuxiliar); //copiar los del auxiliar en el original
+            arrayAuxiliar.clear();
+        }
+
+        /*if (filtroDistancia != -1) {
+            /*for (int i = 0; i < arrayListAnimales.size(); i++) {
+                if (arrayListAnimales.get(i).getDistancia == filtroDistancia){
+                    arrayAuxiliar.add(arrayListAnimales.get(i));
+                }
+            }
+            arrayListAnimales.clear();
+            arrayListAnimales = new ArrayList<>(arrayAuxiliar); //copiar los del auxiliar en el original
+            arrayAuxiliar.clear();
+        }*/
+
+        arrayAuxiliar.clear();
+
+        mostrarListaAnimales();
     }
 
 }
