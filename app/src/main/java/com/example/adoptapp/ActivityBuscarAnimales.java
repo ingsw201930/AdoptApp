@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,9 +38,12 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     ListView listViewAnimales;
+    ProgressBar progressBarCargarLista;
+    TextView textViewCargando;
+    ImageButton imageButtonFiltrar;
+
     private static final String TAG = "Buscar animales";
     ArrayList<Animal> arrayListAnimales;
-    ImageButton imageButtonFiltrar;
     CustomAdapter customAdapter;
 
     static final int FILTRO_REQUEST = 1;
@@ -59,6 +64,9 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
         listViewAnimales = findViewById(R.id.listViewAnimales);
         imageButtonFiltrar = findViewById(R.id.imageButtonFiltrar);
+        progressBarCargarLista = findViewById(R.id.progressBarListaAnimales);
+        textViewCargando = findViewById(R.id.textViewCargaListaAnimales);
+        imageButtonFiltrar.setEnabled(false);
 
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
@@ -114,7 +122,15 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         if (arrayListAnimales.size() > 0){
             customAdapter = new CustomAdapter(this, arrayListAnimales);
             listViewAnimales.setAdapter(customAdapter);
+            //progressBarCargarLista.setVisibility(View.GONE);
+            textViewCargando.setText("");
+        }else{
+            textViewCargando.setText(R.string.resultadosNoEncontrados);
+            Toast.makeText(ActivityBuscarAnimales.this, "La búsqueda no " +
+                    "ha encontrado resultados", Toast.LENGTH_SHORT).show();
         }
+        progressBarCargarLista.setVisibility(View.GONE);
+        imageButtonFiltrar.setEnabled(true);
     }
 
     public void leerListaAnimalesSinFiltro(){
@@ -129,14 +145,15 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
                                 Animal animal = new Animal();
                                 animal.setId(document.getId());
-                                animal.setNombre( (document.getString("Nombre") ));
+                                animal.setNombre( document.getString("Nombre") );
+                                animal.setTipo( document.getString("Tipo") );
                                 animal.setEdad( Integer.parseInt(document.get("Edad").toString()) );
                                 animal.setTamano( document.getString("Tamano") );
                                 animal.setCiudad( document.getString("Ciudad") );
                                 animal.setUrlFotoPrincipal( document.getString("FotoPrincipal") );
                                 arrayListAnimales.add(animal);
 
-                                Log.d(TAG, document.getId() + " => " + animal.getNombre());
+                                //Log.d(TAG, document.getId() + " => " + animal.getNombre());
                             }
                             mostrarListaAnimales();
                         } else {
@@ -186,6 +203,10 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
                 arrayListAnimales.clear();
                 listViewAnimales.setAdapter(null);
+
+                textViewCargando.setText(R.string.mostrarCargando);
+                progressBarCargarLista.setVisibility(View.VISIBLE);
+                imageButtonFiltrar.setEnabled(false);
 
                 filtroTipo = data.getStringExtra("Tipo");
                 filtroTamano = data.getStringExtra("Tamano");
@@ -263,14 +284,15 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
                                 Animal animal = new Animal();
                                 animal.setId(document.getId());
-                                animal.setNombre( (document.getString("Nombre") ));
+                                animal.setNombre( document.getString("Nombre") );
+                                animal.setTipo( document.getString("Tipo") );
                                 animal.setEdad( Integer.parseInt(document.get("Edad").toString()) );
                                 animal.setTamano( document.getString("Tamano") );
                                 animal.setCiudad( document.getString("Ciudad") );
                                 animal.setUrlFotoPrincipal( document.getString("FotoPrincipal") );
                                 arrayListAnimales.add(animal);
 
-                                Log.d(TAG, document.getId() + " => " + animal.getNombre());
+                                //Log.d(TAG, document.getId() + " => " + animal.getNombre());
                             }
                             if (requiereFiltroSecundario) {
                                 agregarFiltrosSecundarios();
@@ -298,14 +320,15 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
                                 Animal animal = new Animal();
                                 animal.setId(document.getId());
-                                animal.setNombre( (document.getString("Nombre") ));
+                                animal.setNombre( document.getString("Nombre") );
+                                animal.setTipo( document.getString("Tipo") );
                                 animal.setEdad( Integer.parseInt(document.get("Edad").toString()) );
                                 animal.setTamano( document.getString("Tamano") );
                                 animal.setCiudad( document.getString("Ciudad") );
                                 animal.setUrlFotoPrincipal( document.getString("FotoPrincipal") );
                                 arrayListAnimales.add(animal);
 
-                                Log.d(TAG, document.getId() + " => " + animal.getNombre());
+                                //Log.d(TAG, document.getId() + " => " + animal.getNombre());
                             }
                             if (requiereFiltroSecundario) {
                                 agregarFiltrosSecundarios();

@@ -53,4 +53,6 @@
     <string name="botonContinuar">Continuar</string>
     <string name="botonAplicarFiltro">Aplicar filtro</string>
     <string name="distanciaFiltro">Distancia máxima desde mi ubicación (en km)</string>
+    <string name="mostrarCargando">Cargando resultados</string>
+    <string name="resultadosNoEncontrados">No hay resultados</string>
 </resources>
