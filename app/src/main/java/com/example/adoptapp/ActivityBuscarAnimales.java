@@ -42,6 +42,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -132,33 +133,6 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
         arrayListAnimales = new ArrayList<>();
 
-        /*Animal animal = new Animal();
-        animal.setId("");
-        animal.setNombre("Lulu");
-        animal.setEdad(4);
-        animal.setTamano("Mediano");
-        animal.setCiudad("Bogota");
-        animal.setUrlFotoPrincipal("");*/
-        //arrayListAnimales.add(animal);
-
-        /*animal = new Animal();
-        animal.setId("");
-        animal.setNombre("Pepe");
-        animal.setEdad(5);
-        animal.setTamano("Grande");
-        animal.setCiudad("Bogota");
-        animal.setUrlFotoPrincipal("");*/
-        //arrayListAnimales.add(animal);
-
-        /*animal = new Animal();
-        animal.setId("");
-        animal.setNombre("Marlon");
-        animal.setEdad(8);
-        animal.setTamano("Pequeño");
-        animal.setCiudad("Bogota");
-        animal.setUrlFotoPrincipal("");*/
-        //arrayListAnimales.add(animal);
-
         //leerListaAnimalesSinFiltro();
 
         /*for (int i = 0; i < arrayListAnimales.size(); i++) {
@@ -193,6 +167,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     public void leerListaAnimalesSinFiltro(){
 
         db.collection("animales")
+                .orderBy("FechaPublicacion", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -213,6 +188,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                                 GeoPoint ubicacion = document.getGeoPoint("Ubicacion");
                                 animal.setDistancia( calcularDistancia(latitudActual, longitudActual,
                                         ubicacion.getLatitude(),ubicacion.getLongitude()) );
+                                animal.setFechaPublicacion( document.getDate("FechaPublicacion") );
                                 arrayListAnimales.add(animal);
 
                                 //Log.d(TAG, document.getId() + " => " + animal.getNombre());
