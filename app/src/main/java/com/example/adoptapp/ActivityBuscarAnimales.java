@@ -41,6 +41,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -75,6 +76,9 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 0;
     private static final int REQUEST_CHECK_SETTINGS = 1;
 
+    private double latitudActual;
+    private double longitudActual;
+
     String[] PERMISSIONS = {
             android.Manifest.permission.ACCESS_FINE_LOCATION
     };
@@ -107,7 +111,8 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
-
+                            latitudActual = location.getLatitude();
+                            longitudActual = location.getLongitude();
                         }
                     }
                 });
@@ -127,34 +132,34 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
         arrayListAnimales = new ArrayList<>();
 
-        Animal animal = new Animal();
+        /*Animal animal = new Animal();
         animal.setId("");
         animal.setNombre("Lulu");
         animal.setEdad(4);
         animal.setTamano("Mediano");
         animal.setCiudad("Bogota");
-        animal.setUrlFotoPrincipal("");
+        animal.setUrlFotoPrincipal("");*/
         //arrayListAnimales.add(animal);
 
-        animal = new Animal();
+        /*animal = new Animal();
         animal.setId("");
         animal.setNombre("Pepe");
         animal.setEdad(5);
         animal.setTamano("Grande");
         animal.setCiudad("Bogota");
-        animal.setUrlFotoPrincipal("");
+        animal.setUrlFotoPrincipal("");*/
         //arrayListAnimales.add(animal);
 
-        animal = new Animal();
+        /*animal = new Animal();
         animal.setId("");
         animal.setNombre("Marlon");
         animal.setEdad(8);
         animal.setTamano("Pequeño");
         animal.setCiudad("Bogota");
-        animal.setUrlFotoPrincipal("");
+        animal.setUrlFotoPrincipal("");*/
         //arrayListAnimales.add(animal);
 
-        leerListaAnimalesSinFiltro();
+        //leerListaAnimalesSinFiltro();
 
         /*for (int i = 0; i < arrayListAnimales.size(); i++) {
             Log.i(TAG, "Esto es :"+arrayListAnimales.get(i).getNombre());
@@ -166,7 +171,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             revisarActivacionGPS();
         }else{
             requestPermission(ActivityBuscarAnimales.this, PERMISSIONS[0], "Acceso " +
-                            "a localización necesario para listar animales", MY_PERMISSIONS_REQUEST_LOCATION);
+                    "a localización necesario para listar animales", MY_PERMISSIONS_REQUEST_LOCATION);
         }
     }
 
@@ -203,6 +208,11 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                                 animal.setTamano( document.getString("Tamano") );
                                 animal.setCiudad( document.getString("Ciudad") );
                                 animal.setUrlFotoPrincipal( document.getString("FotoPrincipal") );
+                                animal.setCiudad( document.getString("MunicipioResponsable") );
+                                animal.setNombreResponsable( document.getString("NombreResponsable") );
+                                GeoPoint ubicacion = document.getGeoPoint("Ubicacion");
+                                animal.setDistancia( calcularDistancia(latitudActual, longitudActual,
+                                        ubicacion.getLatitude(),ubicacion.getLongitude()) );
                                 arrayListAnimales.add(animal);
 
                                 //Log.d(TAG, document.getId() + " => " + animal.getNombre());
@@ -249,29 +259,42 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Check which request we're responding to
-        if (requestCode == FILTRO_REQUEST) {
+        if (requestCode == FILTRO_REQUEST) { //se realizó solicitud de filtro
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
 
-                arrayListAnimales.clear();
-                listViewAnimales.setAdapter(null);
+                if (ContextCompat.checkSelfPermission(ActivityBuscarAnimales.this,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
 
-                textViewCargando.setText(R.string.mostrarCargando);
-                progressBarCargarLista.setVisibility(View.VISIBLE);
-                imageButtonFiltrar.setEnabled(false);
+                    arrayListAnimales.clear();
+                    listViewAnimales.setAdapter(null);
 
-                filtroTipo = data.getStringExtra("Tipo");
-                filtroTamano = data.getStringExtra("Tamano");
-                filtroEdad = data.getIntExtra("Edad", -1);
-                filtroDistancia = data.getIntExtra("Distancia", -1);
-                numeroFiltrosAplicados = data.getIntExtra("numeroFiltrosAplicados", 0);
-                aplicarFiltro();
-                //Log.i(TAG, "Parámetros de filtro: "+result);
+                    textViewCargando.setText(R.string.mostrarCargando);
+                    progressBarCargarLista.setVisibility(View.VISIBLE);
+                    imageButtonFiltrar.setEnabled(false);
+
+                    filtroTipo = data.getStringExtra("Tipo");
+                    filtroTamano = data.getStringExtra("Tamano");
+                    filtroEdad = data.getIntExtra("Edad", -1);
+                    filtroDistancia = data.getIntExtra("Distancia", -1);
+                    numeroFiltrosAplicados = data.getIntExtra("numeroFiltrosAplicados", 0);
+                    aplicarFiltro();
+                    //Log.i(TAG, "Parámetros de filtro: "+result);
+
+                }else{
+                    Toast.makeText(this,
+                            "Sin acceso a localización, el filtrado no pudo realizarse!",
+                            Toast.LENGTH_LONG).show();
+                    requestPermission(ActivityBuscarAnimales.this, PERMISSIONS[0], "Acceso " +
+                            "a localización necesario para listar animales", MY_PERMISSIONS_REQUEST_LOCATION);
+                }
             }
         }
-        if (requestCode == REQUEST_CHECK_SETTINGS) {
+        if (requestCode == REQUEST_CHECK_SETTINGS) { //se obtuvo acceso a hardware para localización
             if (resultCode == RESULT_OK) {
                 mFusedLocationClient.getLastLocation();
+                leerListaAnimalesSinFiltro();
             } else {
                 Toast.makeText(this,
                         "Sin acceso a localización, hardware deshabilitado!",
@@ -486,6 +509,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                 @Override
                 public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                     mFusedLocationClient.getLastLocation(); //Todas las condiciones para recibir localizaciones
+                    leerListaAnimalesSinFiltro();
                 }
             });
 
@@ -545,7 +569,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
     }
 
-    public double distance(double lat1, double long1, double lat2, double long2) {
+    public double calcularDistancia(double lat1, double long1, double lat2, double long2) {
         double latDistance = Math.toRadians(lat1 - lat2);
         double lngDistance = Math.toRadians(long1 - long2);
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
