@@ -2,8 +2,15 @@ package com.example.adoptapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -15,6 +22,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -54,6 +72,19 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     int filtroDistancia;
     int numeroFiltrosAplicados;
 
+    private static final int MY_PERMISSIONS_REQUEST_LOCATION = 0;
+    private static final int REQUEST_CHECK_SETTINGS = 1;
+
+    String[] PERMISSIONS = {
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+    };
+
+    private FusedLocationProviderClient mFusedLocationClient;
+    private LocationRequest mLocationRequest;
+    private LocationCallback mLocationCallback;
+
+    final int RADIUS_OF_EARTH_KM = 6371; //en km
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +98,19 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         progressBarCargarLista = findViewById(R.id.progressBarListaAnimales);
         textViewCargando = findViewById(R.id.textViewCargaListaAnimales);
         imageButtonFiltrar.setEnabled(false);
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+
+                        }
+                    }
+                });
 
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
@@ -116,6 +160,14 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             Log.i(TAG, "Esto es :"+arrayListAnimales.get(i).getNombre());
         }*/
 
+        if (ContextCompat.checkSelfPermission(ActivityBuscarAnimales.this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            revisarActivacionGPS();
+        }else{
+            requestPermission(ActivityBuscarAnimales.this, PERMISSIONS[0], "Acceso " +
+                            "a localización necesario para listar animales", MY_PERMISSIONS_REQUEST_LOCATION);
+        }
     }
 
     public void mostrarListaAnimales() {
@@ -215,6 +267,18 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                 numeroFiltrosAplicados = data.getIntExtra("numeroFiltrosAplicados", 0);
                 aplicarFiltro();
                 //Log.i(TAG, "Parámetros de filtro: "+result);
+            }
+        }
+        if (requestCode == REQUEST_CHECK_SETTINGS) {
+            if (resultCode == RESULT_OK) {
+                mFusedLocationClient.getLastLocation();
+            } else {
+                Toast.makeText(this,
+                        "Sin acceso a localización, hardware deshabilitado!",
+                        Toast.LENGTH_LONG).show();
+                textViewCargando.setText("");
+                progressBarCargarLista.setVisibility(View.GONE);
+                imageButtonFiltrar.setEnabled(false);
             }
         }
     }
@@ -394,6 +458,102 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         arrayAuxiliar.clear();
 
         mostrarListaAnimales();
+    }
+
+    private void requestPermission(Activity context, String permiso, String justificacion, int idCode){
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(context, permiso) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            if (ActivityCompat.shouldShowRequestPermissionRationale(context, permiso)) {
+                Toast toast = Toast.makeText(context, justificacion, Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            //Request the permission
+            ActivityCompat.requestPermissions(context, new String[]{permiso}, idCode);
+        }
+    }
+
+    private void revisarActivacionGPS() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            LocationSettingsRequest.Builder builder = new
+                    LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest);
+            SettingsClient client = LocationServices.getSettingsClient(this);
+            Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
+
+            task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
+                @Override
+                public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                    mFusedLocationClient.getLastLocation(); //Todas las condiciones para recibir localizaciones
+                }
+            });
+
+            task.addOnFailureListener(this, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    int statusCode = ((ApiException) e).getStatusCode();
+                    switch (statusCode) {
+                        case CommonStatusCodes.RESOLUTION_REQUIRED:
+                            // Location settings are not satisfied, but this can be fixed by showing the user a dialog.
+                            try {// Show the dialog by calling startResolutionForResult(),
+                                // and check the result in onActivityResult().
+                                ResolvableApiException resolvable = (ResolvableApiException) e;
+                                resolvable.startResolutionForResult(ActivityBuscarAnimales.this,
+                                        REQUEST_CHECK_SETTINGS);
+                            } catch (IntentSender.SendIntentException sendEx) {
+                                // Ignore the error.
+                            }
+                            break;
+                        case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                            // Location settings are not satisfied. No way to fix the settings so we won't show the dialog.
+                            break;
+                    }
+                }
+            });
+
+        } else {
+            Toast.makeText(this,
+                    "Sin acceso a localización, permiso denegado!",
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        switch (requestCode) {
+
+            case MY_PERMISSIONS_REQUEST_LOCATION:
+            {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, continue with task related to permission
+                    revisarActivacionGPS();
+                }else{
+                    Toast.makeText(this,
+                            "Sin acceso a localización, permiso denegado!",
+                            Toast.LENGTH_LONG).show();
+                    textViewCargando.setText("");
+                    progressBarCargarLista.setVisibility(View.GONE);
+                    imageButtonFiltrar.setEnabled(false);
+                }
+            }
+            break;
+
+        }
+
+    }
+
+    public double distance(double lat1, double long1, double lat2, double long2) {
+        double latDistance = Math.toRadians(lat1 - lat2);
+        double lngDistance = Math.toRadians(long1 - long2);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lngDistance / 2) * Math.sin(lngDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double result = RADIUS_OF_EARTH_KM * c;
+        return Math.round(result*100.0)/100.0;
     }
 
 }

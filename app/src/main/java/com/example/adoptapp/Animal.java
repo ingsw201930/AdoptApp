@@ -9,15 +9,42 @@ class Animal {
     private String ciudad;
     private String urlFotoPrincipal;
     private String tipo;
+    private String nombreResponsable;
+    private String municipioResponsable;
+    private double distancia;
 
     Animal() {
+    }
+
+    public String getNombreResponsable() {
+        return nombreResponsable;
+    }
+
+    public void setNombreResponsable(String nombreResponsable) {
+        this.nombreResponsable = nombreResponsable;
+    }
+
+    public String getMunicipioResponsable() {
+        return municipioResponsable;
+    }
+
+    public void setMunicipioResponsable(String municipioResponsable) {
+        this.municipioResponsable = municipioResponsable;
+    }
+
+    public double getDistancia() {
+        return distancia;
+    }
+
+    public void setDistancia(double distancia) {
+        this.distancia = distancia;
     }
 
     String getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    void setTipo(String tipo) {
         this.tipo = tipo;
     }
 
