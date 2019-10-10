@@ -18,10 +18,20 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        app:layout_constraintBottom_toTopOf="@id/listViewAnimales"
+        app:layout_constraintBottom_toTopOf="@id/progressBarListaAnimales"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textViewCargaListaAnimales"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mostrarCargando"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/imageButtonFiltrar"
@@ -34,7 +44,18 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/icono_filtro" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBarListaAnimales"
+        style="@android:style/Widget.Holo.Light.ProgressBar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/listViewAnimales"
+        app:layout_constraintTop_toBottomOf="@id/ConstraintLayoutFiltro"/>
 
     <ListView
         android:id="@+id/listViewAnimales"
@@ -43,6 +64,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ConstraintLayoutFiltro"/>
+        app:layout_constraintTop_toBottomOf="@id/progressBarListaAnimales">
+
+    </ListView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

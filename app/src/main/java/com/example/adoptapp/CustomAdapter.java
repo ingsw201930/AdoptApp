@@ -79,7 +79,9 @@ public class CustomAdapter implements ListAdapter {
 
             TextView textViewNombre =convertView.findViewById(R.id.textViewItemNombreAnimal);
             textViewNombre.setText(animal.getNombre());
-            String datos = animal.getTamano()+"\n"+animal.getEdad()+"\n"+animal.getCiudad();
+            String datos = animal.getTamano()+"\n"+animal.getEdad()+"\nEn "+animal.getCiudad()
+                    +"\nA "+animal.getDistancia()+" km de tu ubicación actual"
+                    +"\nResponsable: "+animal.getNombreResponsable();
             TextView textViewDatos =convertView.findViewById(R.id.textViewItemDetallesAnimal);
             textViewDatos.setText(datos);
             ImageView imageViewFoto = convertView.findViewById(R.id.imageViewItemAnimal);
