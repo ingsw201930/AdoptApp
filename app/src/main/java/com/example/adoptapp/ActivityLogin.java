@@ -23,8 +23,8 @@ public class ActivityLogin extends AppCompatActivity {
     Button botonIngresar;
     EditText editTextEmail;
     EditText editTextContrasena;
-    private FirebaseAuth mAuth;
-    FirebaseUser currentUser;
+    //private FirebaseAuth mAuth;
+    //FirebaseUser currentUser;
 
     private static final String TAG = "Login";
 
@@ -37,12 +37,12 @@ public class ActivityLogin extends AppCompatActivity {
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextContrasena = findViewById(R.id.editTextContrasena);
 
-        mAuth = FirebaseAuth.getInstance();
+        /*mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
         if(currentUser!=null) {
             //entra de una
-        }
+        }*/
 
         botonIngresar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,11 +59,11 @@ public class ActivityLogin extends AppCompatActivity {
                         signInUser(email, password);
                     }*/
 
-                    if( editTextEmail.getText().toString().equals("persona") ){
+                    if( editTextEmail.getText().toString().equals("persona@adoptapp.com") ){
                         Intent intent = new Intent(view.getContext(), ActivityInicioPersona.class);
                         startActivity(intent);
                     }
-                    if( editTextEmail.getText().toString().equals("institucion") ){
+                    if( editTextEmail.getText().toString().equals("institucion@adoptapp.com") ){
                         Intent intent = new Intent(view.getContext(), ActivityMenuKeeper.class);
                         startActivity(intent);
                     }
@@ -82,7 +82,7 @@ public class ActivityLogin extends AppCompatActivity {
         String email = editTextEmail.getText().toString();
 
         if (TextUtils.isEmpty(email)) {
-            editTextEmail.setError("Required");
+            editTextEmail.setError("Requerido");
             valid = false;
         } else {
             editTextEmail.setError(null);
@@ -94,7 +94,7 @@ public class ActivityLogin extends AppCompatActivity {
 
         String password = editTextContrasena.getText().toString();
         if (TextUtils.isEmpty(password)) {
-            editTextContrasena.setError("Required");
+            editTextContrasena.setError("Requerido");
             valid = false;
         } else {
             editTextContrasena.setError(null);
@@ -105,12 +105,14 @@ public class ActivityLogin extends AppCompatActivity {
     private boolean isEmailValid(String email) {
         if (!email.contains("@") ||
                 !email.contains(".") ||
-                email.length() < 5)
+                email.length() < 5) {
+            editTextEmail.setError("Correo electrónico incorrecto");
             return false;
+        }
         return true;
     }
 
-    private void signInUser(String email, String password) {
+    /*private void signInUser(String email, String password) {
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -131,7 +133,7 @@ public class ActivityLogin extends AppCompatActivity {
                     }
                 });
 
-    }
+    }*/
 
     private void updateUI(FirebaseUser usuarioActual){
 

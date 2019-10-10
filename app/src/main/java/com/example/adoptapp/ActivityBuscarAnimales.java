@@ -94,6 +94,11 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buscar_animales);
 
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            signInAnonymously();
+        }
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -116,11 +121,6 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                         }
                     }
                 });
-
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user == null) {
-            signInAnonymously();
-        }
 
         imageButtonFiltrar.setOnClickListener(new View.OnClickListener() {
             @Override
