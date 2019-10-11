@@ -91,7 +91,7 @@ public class CustomAdapter implements ListAdapter {
             textViewDatos.setText(datos);
             ImageView imageViewFoto = convertView.findViewById(R.id.imageViewItemAnimal);
 
-            if(!animal.getUrlFotoPrincipal().equals("") ) {
+            /*if(!animal.getUrlFotoPrincipal().equals("") ) {
                 try {
                     //String imageUrl = "https://firebasestorage.googleapis.com/v0/b/adoptapp-77514.appspot.com/o/animales%2Fexx9WvDpQZM11MI3Cubi%2Flulu1.jpg?alt=media&token=9715c5a1-fed5-42de-98c4-7d42fe771cce";
                     String imageUrl = animal.getUrlFotoPrincipal();
@@ -101,7 +101,7 @@ public class CustomAdapter implements ListAdapter {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
 
         }
         return convertView;

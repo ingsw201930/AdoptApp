@@ -149,9 +149,9 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         }
     }
 
-    public void mostrarListaAnimales() {
-        if (arrayListAnimales.size() > 0){
-            customAdapter = new CustomAdapter(this, arrayListAnimales);
+    public void mostrarListaAnimales(ArrayList<Animal> arrayAnimales) {
+        if (arrayAnimales.size() > 0){
+            customAdapter = new CustomAdapter(this, arrayAnimales);
             listViewAnimales.setAdapter(customAdapter);
             //progressBarCargarLista.setVisibility(View.GONE);
             textViewCargando.setText("");
@@ -167,6 +167,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     public void leerListaAnimalesSinFiltro(){
 
         db.collection("animales")
+                .whereEqualTo("Estado", "Espera")
                 .orderBy("FechaPublicacion", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -193,7 +194,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
                                 //Log.d(TAG, document.getId() + " => " + animal.getNombre());
                             }
-                            mostrarListaAnimales();
+                            mostrarListaAnimales(arrayListAnimales);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
@@ -243,7 +244,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                         Manifest.permission.ACCESS_FINE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
 
-                    arrayListAnimales.clear();
+                    //arrayListAnimales.clear();
                     listViewAnimales.setAdapter(null);
 
                     textViewCargando.setText(R.string.mostrarCargando);
@@ -255,7 +256,8 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                     filtroEdad = data.getIntExtra("Edad", -1);
                     filtroDistancia = data.getIntExtra("Distancia", -1);
                     numeroFiltrosAplicados = data.getIntExtra("numeroFiltrosAplicados", 0);
-                    aplicarFiltro();
+                    //aplicarFiltro();
+                    aplicarFiltros();
                     //Log.i(TAG, "Parámetros de filtro: "+result);
 
                 }else{
@@ -270,7 +272,9 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         if (requestCode == REQUEST_CHECK_SETTINGS) { //se obtuvo acceso a hardware para localización
             if (resultCode == RESULT_OK) {
                 mFusedLocationClient.getLastLocation();
-                leerListaAnimalesSinFiltro();
+                if (arrayListAnimales.size() == 0) {
+                    leerListaAnimalesSinFiltro();
+                }
             } else {
                 Toast.makeText(this,
                         "Sin acceso a localización, hardware deshabilitado!",
@@ -297,7 +301,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                 });
     }
 
-    public void aplicarFiltro(){
+    /*public void aplicarFiltro(){
 
         if (numeroFiltrosAplicados > 0) {
 
@@ -327,14 +331,14 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                     //aplicarFiltroSencillo("Distancia", filtroDistancia, false);
                 }else{ //al menos otro filtro aplicado
                     //aplicarFiltroSencillo("Distancia", filtroDistancia, true);
-                }*/
+                }
             }
 
         }
 
-    }
+    }*/
 
-    public void aplicarFiltroSencillo(String campoFiltro, String valorCampo, final boolean requiereFiltroSecundario){
+    /*public void aplicarFiltroSencillo(String campoFiltro, String valorCampo, final boolean requiereFiltroSecundario){
 
         db.collection("animales")
                 .whereEqualTo(campoFiltro, valorCampo)
@@ -404,59 +408,65 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                     }
                 });
 
-    }
+    }*/
 
-    public void agregarFiltrosSecundarios(){
+    public void aplicarFiltros(){
 
-        ArrayList<Animal> arrayAuxiliar;
-        arrayAuxiliar = new ArrayList<>();
+        ArrayList<Animal> arrayAuxiliar1, arrayAuxiliar2;
+        arrayAuxiliar1 = new ArrayList<>(arrayListAnimales);
+        arrayAuxiliar2 = new ArrayList<>();
 
+        Log.i(TAG, "Filtro tipo es:"+ filtroTipo);
         if (!filtroTipo.equals("")) {
-            for (int i = 0; i < arrayListAnimales.size(); i++) {
-                if (arrayListAnimales.get(i).getTipo().equals(filtroTipo)) {
-                    arrayAuxiliar.add(arrayListAnimales.get(i));
+            for (int i = 0; i < arrayAuxiliar1.size(); i++) {
+                Log.i(TAG, "Tipo actual es:"+ arrayAuxiliar1.get(i).getTipo());
+                if (arrayAuxiliar1.get(i).getTipo().equals(filtroTipo)) {
+                    arrayAuxiliar2.add(arrayAuxiliar1.get(i));
                 }
             }
-            arrayListAnimales.clear();
-            arrayListAnimales = new ArrayList<>(arrayAuxiliar); //copiar los del auxiliar en el original
-            arrayAuxiliar.clear();
+            arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
+            arrayAuxiliar2.clear();
+            Log.i(TAG, "Luego de filtro tipo :");
+            for (int i = 0; i < arrayAuxiliar2.size(); i++) {
+                Log.i(TAG, "Esto es :"+arrayAuxiliar2.get(i).getNombre());
+            }
         }
 
         if (!filtroTamano.equals("")) {
-            for (int i = 0; i < arrayListAnimales.size(); i++) {
-                if (arrayListAnimales.get(i).getTamano().equals(filtroTamano)){
-                    arrayAuxiliar.add(arrayListAnimales.get(i));
+            for (int i = 0; i < arrayAuxiliar1.size(); i++) {
+                if (arrayAuxiliar1.get(i).getTamano().equals(filtroTamano)){
+                    arrayAuxiliar2.add(arrayAuxiliar1.get(i));
                 }
             }
-            arrayListAnimales.clear();
-            arrayListAnimales = new ArrayList<>(arrayAuxiliar); //copiar los del auxiliar en el original
-            arrayAuxiliar.clear();
+            arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
+            arrayAuxiliar2.clear();
         }
         if (filtroEdad != -1) {
-            for (int i = 0; i < arrayListAnimales.size(); i++) {
-                if (arrayListAnimales.get(i).getEdad() == filtroEdad){
-                    arrayAuxiliar.add(arrayListAnimales.get(i));
+            for (int i = 0; i < arrayAuxiliar1.size(); i++) {
+                if (arrayAuxiliar1.get(i).getEdad() == filtroEdad){
+                    arrayAuxiliar2.add(arrayAuxiliar1.get(i));
                 }
             }
-            arrayListAnimales.clear();
-            arrayListAnimales = new ArrayList<>(arrayAuxiliar); //copiar los del auxiliar en el original
-            arrayAuxiliar.clear();
+            arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
+            arrayAuxiliar2.clear();
         }
 
         /*if (filtroDistancia != -1) {
-            /*for (int i = 0; i < arrayListAnimales.size(); i++) {
-                if (arrayListAnimales.get(i).getDistancia == filtroDistancia){
-                    arrayAuxiliar.add(arrayListAnimales.get(i));
+            /*for (int i = 0; i < arrayAuxiliar.size(); i++) {
+                if (arrayAuxiliar.get(i).getDistancia == filtroDistancia){
+                    arrayAuxiliar.add(arrayAuxiliar.get(i));
                 }
             }
-            arrayListAnimales.clear();
-            arrayListAnimales = new ArrayList<>(arrayAuxiliar); //copiar los del auxiliar en el original
-            arrayAuxiliar.clear();
+
         }*/
 
-        arrayAuxiliar.clear();
+        //arrayAuxiliar.clear();
 
-        mostrarListaAnimales();
+        /*for (int i = 0; i < arrayAuxiliar.size(); i++) {
+            Log.i(TAG, "Esto es :"+arrayAuxiliar.get(i).getNombre());
+        }*/
+
+        mostrarListaAnimales(arrayAuxiliar1);
     }
 
     private void requestPermission(Activity context, String permiso, String justificacion, int idCode){
@@ -485,7 +495,9 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                 @Override
                 public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                     mFusedLocationClient.getLastLocation(); //Todas las condiciones para recibir localizaciones
-                    leerListaAnimalesSinFiltro();
+                    if (arrayListAnimales.size() == 0) {
+                        leerListaAnimalesSinFiltro();
+                    }
                 }
             });
 
