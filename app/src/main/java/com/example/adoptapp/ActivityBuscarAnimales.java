@@ -110,15 +110,18 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         imageButtonFiltrar.setEnabled(false);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mLocationRequest = createLocationRequest();
 
         mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
+                        Log.i("LOCATION", "onSuccess location");
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
                             latitudActual = location.getLatitude();
                             longitudActual = location.getLongitude();
+                            Log.i(TAG, String.valueOf(latitudActual)+" "+String.valueOf(longitudActual));
                         }
                     }
                 });
@@ -473,6 +476,12 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             //Request the permission
             ActivityCompat.requestPermissions(context, new String[]{permiso}, idCode);
         }
+    }
+
+    protected LocationRequest createLocationRequest() {
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        return mLocationRequest;
     }
 
     private void revisarActivacionGPS() {
