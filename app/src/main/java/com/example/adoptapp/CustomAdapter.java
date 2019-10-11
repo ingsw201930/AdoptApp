@@ -1,6 +1,7 @@
 package com.example.adoptapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -67,7 +68,10 @@ public class CustomAdapter implements ListAdapter {
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(view.getContext(), animal.getId(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(view.getContext(), animal.getNombre(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(view.getContext(), ActivityPerfilAnimal.class);
+                    intent.putExtra("Perfil", animal.getNombre());
+                    view.getContext().startActivity(intent);
                 }
             });
 
