@@ -66,12 +66,12 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     ArrayList<Animal> arrayListAnimales;
     CustomAdapter customAdapter;
 
-    static final int FILTRO_REQUEST = 1;
+    static final int FILTRO_REQUEST = 2;
 
     String filtroTipo;
     String filtroTamano;
     int filtroEdad;
-    int filtroDistancia;
+    double filtroDistancia;
     int numeroFiltrosAplicados;
 
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 0;
@@ -254,7 +254,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                     filtroTipo = data.getStringExtra("Tipo");
                     filtroTamano = data.getStringExtra("Tamano");
                     filtroEdad = data.getIntExtra("Edad", -1);
-                    filtroDistancia = data.getIntExtra("Distancia", -1);
+                    filtroDistancia = data.getDoubleExtra("Distancia", -1);
                     numeroFiltrosAplicados = data.getIntExtra("numeroFiltrosAplicados", 0);
                     //aplicarFiltro();
                     aplicarFiltros();
@@ -416,20 +416,14 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         arrayAuxiliar1 = new ArrayList<>(arrayListAnimales);
         arrayAuxiliar2 = new ArrayList<>();
 
-        Log.i(TAG, "Filtro tipo es:"+ filtroTipo);
         if (!filtroTipo.equals("")) {
             for (int i = 0; i < arrayAuxiliar1.size(); i++) {
-                Log.i(TAG, "Tipo actual es:"+ arrayAuxiliar1.get(i).getTipo());
                 if (arrayAuxiliar1.get(i).getTipo().equals(filtroTipo)) {
                     arrayAuxiliar2.add(arrayAuxiliar1.get(i));
                 }
             }
             arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
             arrayAuxiliar2.clear();
-            Log.i(TAG, "Luego de filtro tipo :");
-            for (int i = 0; i < arrayAuxiliar2.size(); i++) {
-                Log.i(TAG, "Esto es :"+arrayAuxiliar2.get(i).getNombre());
-            }
         }
 
         if (!filtroTamano.equals("")) {
@@ -451,16 +445,15 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             arrayAuxiliar2.clear();
         }
 
-        /*if (filtroDistancia != -1) {
-            /*for (int i = 0; i < arrayAuxiliar.size(); i++) {
-                if (arrayAuxiliar.get(i).getDistancia == filtroDistancia){
-                    arrayAuxiliar.add(arrayAuxiliar.get(i));
+        if (filtroDistancia != -1) {
+            for (int i = 0; i < arrayAuxiliar1.size(); i++) {
+                if (arrayAuxiliar1.get(i).getDistancia() <= filtroDistancia ){
+                    arrayAuxiliar2.add(arrayAuxiliar1.get(i));
                 }
             }
-
-        }*/
-
-        //arrayAuxiliar.clear();
+            arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
+            arrayAuxiliar2.clear();
+        }
 
         /*for (int i = 0; i < arrayAuxiliar.size(); i++) {
             Log.i(TAG, "Esto es :"+arrayAuxiliar.get(i).getNombre());

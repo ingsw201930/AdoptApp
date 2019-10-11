@@ -58,7 +58,7 @@ public class ActivityFiltro extends AppCompatActivity {
                 }
 
                 if(!editTextFiltroDistancia.getText().toString().equals("")){
-                    returnIntent.putExtra("Distancia", Integer.parseInt(editTextFiltroDistancia.getText().toString()) );
+                    returnIntent.putExtra("Distancia", Double.parseDouble(editTextFiltroDistancia.getText().toString()) );
                     numeroFiltrosAplicados = numeroFiltrosAplicados+1;
                 }else{
                     returnIntent.putExtra("Distancia", -1);
