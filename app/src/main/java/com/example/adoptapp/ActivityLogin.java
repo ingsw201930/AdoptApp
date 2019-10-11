@@ -59,11 +59,11 @@ public class ActivityLogin extends AppCompatActivity {
                         signInUser(email, password);
                     }*/
 
-                    if( editTextEmail.getText().toString().equals("persona@adoptapp.com") ){
+                    if( editTextEmail.getText().toString().equals("persona@adoptapp.co") ){
                         Intent intent = new Intent(view.getContext(), ActivityInicioPersona.class);
                         startActivity(intent);
                     }
-                    if( editTextEmail.getText().toString().equals("institucion@adoptapp.com") ){
+                    if( editTextEmail.getText().toString().equals("institucion@adoptapp.co") ){
                         Intent intent = new Intent(view.getContext(), ActivityMenuKeeper.class);
                         startActivity(intent);
                     }

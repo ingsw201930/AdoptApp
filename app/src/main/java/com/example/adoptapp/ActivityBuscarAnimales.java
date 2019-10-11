@@ -28,6 +28,7 @@ import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
@@ -42,6 +43,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -65,12 +67,12 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     ArrayList<Animal> arrayListAnimales;
     CustomAdapter customAdapter;
 
-    static final int FILTRO_REQUEST = 1;
+    static final int FILTRO_REQUEST = 2;
 
     String filtroTipo;
     String filtroTamano;
     int filtroEdad;
-    int filtroDistancia;
+    double filtroDistancia;
     int numeroFiltrosAplicados;
 
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 0;
@@ -109,18 +111,41 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         imageButtonFiltrar.setEnabled(false);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mLocationRequest = createLocationRequest();
 
-        mFusedLocationClient.getLastLocation()
+        mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                Location location = locationResult.getLastLocation();
+                Log.i("LOCATION", "Location update in the callback: " + location);
+                if (location != null) {
+                    latitudActual = location.getLatitude();
+                    longitudActual = location.getLongitude();
+                    if (arrayListAnimales.size() == 0) {
+                        leerListaAnimalesSinFiltro();
+                    }
+                    stopLocationUpdates();
+                    Log.i(TAG, String.valueOf(latitudActual)+" "+String.valueOf(longitudActual));
+                }
+            }
+        };
+
+        latitudActual = 200; //inicializar con latitud que no existe
+        longitudActual = 200; //inicializar con longitud que no existe
+
+        /*mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
+                        Log.i("LOCATION", "onSuccess location");
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
                             latitudActual = location.getLatitude();
                             longitudActual = location.getLongitude();
+                            Log.i(TAG, String.valueOf(latitudActual)+" "+String.valueOf(longitudActual));
                         }
                     }
-                });
+                });*/
 
         imageButtonFiltrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,33 +156,6 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         });
 
         arrayListAnimales = new ArrayList<>();
-
-        /*Animal animal = new Animal();
-        animal.setId("");
-        animal.setNombre("Lulu");
-        animal.setEdad(4);
-        animal.setTamano("Mediano");
-        animal.setCiudad("Bogota");
-        animal.setUrlFotoPrincipal("");*/
-        //arrayListAnimales.add(animal);
-
-        /*animal = new Animal();
-        animal.setId("");
-        animal.setNombre("Pepe");
-        animal.setEdad(5);
-        animal.setTamano("Grande");
-        animal.setCiudad("Bogota");
-        animal.setUrlFotoPrincipal("");*/
-        //arrayListAnimales.add(animal);
-
-        /*animal = new Animal();
-        animal.setId("");
-        animal.setNombre("Marlon");
-        animal.setEdad(8);
-        animal.setTamano("Pequeño");
-        animal.setCiudad("Bogota");
-        animal.setUrlFotoPrincipal("");*/
-        //arrayListAnimales.add(animal);
 
         //leerListaAnimalesSinFiltro();
 
@@ -175,9 +173,9 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         }
     }
 
-    public void mostrarListaAnimales() {
-        if (arrayListAnimales.size() > 0){
-            customAdapter = new CustomAdapter(this, arrayListAnimales);
+    public void mostrarListaAnimales(ArrayList<Animal> arrayAnimales) {
+        if (arrayAnimales.size() > 0){
+            customAdapter = new CustomAdapter(this, arrayAnimales);
             listViewAnimales.setAdapter(customAdapter);
             //progressBarCargarLista.setVisibility(View.GONE);
             textViewCargando.setText("");
@@ -193,6 +191,8 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     public void leerListaAnimalesSinFiltro(){
 
         db.collection("animales")
+                .whereEqualTo("Estado", "Espera")
+                .orderBy("FechaPublicacion", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -213,11 +213,12 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                                 GeoPoint ubicacion = document.getGeoPoint("Ubicacion");
                                 animal.setDistancia( calcularDistancia(latitudActual, longitudActual,
                                         ubicacion.getLatitude(),ubicacion.getLongitude()) );
+                                animal.setFechaPublicacion( document.getDate("FechaPublicacion") );
                                 arrayListAnimales.add(animal);
 
                                 //Log.d(TAG, document.getId() + " => " + animal.getNombre());
                             }
-                            mostrarListaAnimales();
+                            mostrarListaAnimales(arrayListAnimales);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
@@ -267,7 +268,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                         Manifest.permission.ACCESS_FINE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
 
-                    arrayListAnimales.clear();
+                    //arrayListAnimales.clear();
                     listViewAnimales.setAdapter(null);
 
                     textViewCargando.setText(R.string.mostrarCargando);
@@ -277,9 +278,10 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                     filtroTipo = data.getStringExtra("Tipo");
                     filtroTamano = data.getStringExtra("Tamano");
                     filtroEdad = data.getIntExtra("Edad", -1);
-                    filtroDistancia = data.getIntExtra("Distancia", -1);
+                    filtroDistancia = data.getDoubleExtra("Distancia", -1);
                     numeroFiltrosAplicados = data.getIntExtra("numeroFiltrosAplicados", 0);
-                    aplicarFiltro();
+                    //aplicarFiltro();
+                    aplicarFiltros();
                     //Log.i(TAG, "Parámetros de filtro: "+result);
 
                 }else{
@@ -293,8 +295,8 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         }
         if (requestCode == REQUEST_CHECK_SETTINGS) { //se obtuvo acceso a hardware para localización
             if (resultCode == RESULT_OK) {
-                mFusedLocationClient.getLastLocation();
-                leerListaAnimalesSinFiltro();
+                //mFusedLocationClient.getLastLocation();
+                startLocationUpdates();
             } else {
                 Toast.makeText(this,
                         "Sin acceso a localización, hardware deshabilitado!",
@@ -321,7 +323,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                 });
     }
 
-    public void aplicarFiltro(){
+    /*public void aplicarFiltro(){
 
         if (numeroFiltrosAplicados > 0) {
 
@@ -351,14 +353,14 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                     //aplicarFiltroSencillo("Distancia", filtroDistancia, false);
                 }else{ //al menos otro filtro aplicado
                     //aplicarFiltroSencillo("Distancia", filtroDistancia, true);
-                }*/
+                }
             }
 
         }
 
-    }
+    }*/
 
-    public void aplicarFiltroSencillo(String campoFiltro, String valorCampo, final boolean requiereFiltroSecundario){
+    /*public void aplicarFiltroSencillo(String campoFiltro, String valorCampo, final boolean requiereFiltroSecundario){
 
         db.collection("animales")
                 .whereEqualTo(campoFiltro, valorCampo)
@@ -428,59 +430,58 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                     }
                 });
 
-    }
+    }*/
 
-    public void agregarFiltrosSecundarios(){
+    public void aplicarFiltros(){
 
-        ArrayList<Animal> arrayAuxiliar;
-        arrayAuxiliar = new ArrayList<>();
+        ArrayList<Animal> arrayAuxiliar1, arrayAuxiliar2;
+        arrayAuxiliar1 = new ArrayList<>(arrayListAnimales);
+        arrayAuxiliar2 = new ArrayList<>();
 
         if (!filtroTipo.equals("")) {
-            for (int i = 0; i < arrayListAnimales.size(); i++) {
-                if (arrayListAnimales.get(i).getTipo().equals(filtroTipo)) {
-                    arrayAuxiliar.add(arrayListAnimales.get(i));
+            for (int i = 0; i < arrayAuxiliar1.size(); i++) {
+                if (arrayAuxiliar1.get(i).getTipo().equals(filtroTipo)) {
+                    arrayAuxiliar2.add(arrayAuxiliar1.get(i));
                 }
             }
-            arrayListAnimales.clear();
-            arrayListAnimales = new ArrayList<>(arrayAuxiliar); //copiar los del auxiliar en el original
-            arrayAuxiliar.clear();
+            arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
+            arrayAuxiliar2.clear();
         }
 
         if (!filtroTamano.equals("")) {
-            for (int i = 0; i < arrayListAnimales.size(); i++) {
-                if (arrayListAnimales.get(i).getTamano().equals(filtroTamano)){
-                    arrayAuxiliar.add(arrayListAnimales.get(i));
+            for (int i = 0; i < arrayAuxiliar1.size(); i++) {
+                if (arrayAuxiliar1.get(i).getTamano().equals(filtroTamano)){
+                    arrayAuxiliar2.add(arrayAuxiliar1.get(i));
                 }
             }
-            arrayListAnimales.clear();
-            arrayListAnimales = new ArrayList<>(arrayAuxiliar); //copiar los del auxiliar en el original
-            arrayAuxiliar.clear();
+            arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
+            arrayAuxiliar2.clear();
         }
         if (filtroEdad != -1) {
-            for (int i = 0; i < arrayListAnimales.size(); i++) {
-                if (arrayListAnimales.get(i).getEdad() == filtroEdad){
-                    arrayAuxiliar.add(arrayListAnimales.get(i));
+            for (int i = 0; i < arrayAuxiliar1.size(); i++) {
+                if (arrayAuxiliar1.get(i).getEdad() == filtroEdad){
+                    arrayAuxiliar2.add(arrayAuxiliar1.get(i));
                 }
             }
-            arrayListAnimales.clear();
-            arrayListAnimales = new ArrayList<>(arrayAuxiliar); //copiar los del auxiliar en el original
-            arrayAuxiliar.clear();
+            arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
+            arrayAuxiliar2.clear();
         }
 
-        /*if (filtroDistancia != -1) {
-            /*for (int i = 0; i < arrayListAnimales.size(); i++) {
-                if (arrayListAnimales.get(i).getDistancia == filtroDistancia){
-                    arrayAuxiliar.add(arrayListAnimales.get(i));
+        if (filtroDistancia != -1) {
+            for (int i = 0; i < arrayAuxiliar1.size(); i++) {
+                if (arrayAuxiliar1.get(i).getDistancia() <= filtroDistancia ){
+                    arrayAuxiliar2.add(arrayAuxiliar1.get(i));
                 }
             }
-            arrayListAnimales.clear();
-            arrayListAnimales = new ArrayList<>(arrayAuxiliar); //copiar los del auxiliar en el original
-            arrayAuxiliar.clear();
+            arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
+            arrayAuxiliar2.clear();
+        }
+
+        /*for (int i = 0; i < arrayAuxiliar.size(); i++) {
+            Log.i(TAG, "Esto es :"+arrayAuxiliar.get(i).getNombre());
         }*/
 
-        arrayAuxiliar.clear();
-
-        mostrarListaAnimales();
+        mostrarListaAnimales(arrayAuxiliar1);
     }
 
     private void requestPermission(Activity context, String permiso, String justificacion, int idCode){
@@ -496,6 +497,14 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         }
     }
 
+    protected LocationRequest createLocationRequest() {
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(1000); //tasa de refresco en milisegundos
+        mLocationRequest.setFastestInterval(1000); //máxima tasa de refresco
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        return mLocationRequest;
+    }
+
     private void revisarActivacionGPS() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -508,8 +517,8 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
                 @Override
                 public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                    mFusedLocationClient.getLastLocation(); //Todas las condiciones para recibir localizaciones
-                    leerListaAnimalesSinFiltro();
+                    //mFusedLocationClient.getLastLocation(); //Todas las condiciones para recibir localizaciones
+                    startLocationUpdates();
                 }
             });
 
@@ -567,6 +576,24 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
         }
 
+    }
+
+    private void startLocationUpdates() {
+        //Verificación de permiso!!
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopLocationUpdates();
+    }
+
+    private void stopLocationUpdates(){
+        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
     }
 
     public double calcularDistancia(double lat1, double long1, double lat2, double long2) {

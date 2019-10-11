@@ -2,10 +2,7 @@ package com.example.adoptapp;
 
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +10,9 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class CustomAdapter implements ListAdapter {
@@ -79,8 +73,19 @@ public class CustomAdapter implements ListAdapter {
 
             TextView textViewNombre =convertView.findViewById(R.id.textViewItemNombreAnimal);
             textViewNombre.setText(animal.getNombre());
-            String datos = animal.getTamano()+"\n"+animal.getEdad()+"\nEn "+animal.getCiudad()
-                    +"\nA "+animal.getDistancia()+" km de tu ubicación actual"
+            String edad;
+            if (animal.getEdad()==1){
+                edad = animal.getEdad()+" año";
+            }else{
+                edad = animal.getEdad()+" años";
+            }
+
+            String fechaPublicacion = new SimpleDateFormat("dd/MM/yyyy").
+                    format(animal.getFechaPublicacion());
+
+            String datos = animal.getTamano()+"\n"+edad+"\nEn "+animal.getCiudad()
+                    +"\nA "+animal.getDistancia()+" km de ti"+
+                    "\nEsperando hogar desde: "+fechaPublicacion
                     +"\nResponsable: "+animal.getNombreResponsable();
             TextView textViewDatos =convertView.findViewById(R.id.textViewItemDetallesAnimal);
             textViewDatos.setText(datos);
