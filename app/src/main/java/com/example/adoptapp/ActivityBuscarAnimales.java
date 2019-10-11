@@ -28,6 +28,7 @@ import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
@@ -112,7 +113,27 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mLocationRequest = createLocationRequest();
 
-        mFusedLocationClient.getLastLocation()
+        mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                Location location = locationResult.getLastLocation();
+                Log.i("LOCATION", "Location update in the callback: " + location);
+                if (location != null) {
+                    latitudActual = location.getLatitude();
+                    longitudActual = location.getLongitude();
+                    if (arrayListAnimales.size() == 0) {
+                        leerListaAnimalesSinFiltro();
+                    }
+                    stopLocationUpdates();
+                    Log.i(TAG, String.valueOf(latitudActual)+" "+String.valueOf(longitudActual));
+                }
+            }
+        };
+
+        latitudActual = 200; //inicializar con latitud que no existe
+        longitudActual = 200; //inicializar con longitud que no existe
+
+        /*mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
@@ -124,7 +145,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                             Log.i(TAG, String.valueOf(latitudActual)+" "+String.valueOf(longitudActual));
                         }
                     }
-                });
+                });*/
 
         imageButtonFiltrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -274,10 +295,8 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         }
         if (requestCode == REQUEST_CHECK_SETTINGS) { //se obtuvo acceso a hardware para localización
             if (resultCode == RESULT_OK) {
-                mFusedLocationClient.getLastLocation();
-                if (arrayListAnimales.size() == 0) {
-                    leerListaAnimalesSinFiltro();
-                }
+                //mFusedLocationClient.getLastLocation();
+                startLocationUpdates();
             } else {
                 Toast.makeText(this,
                         "Sin acceso a localización, hardware deshabilitado!",
@@ -480,6 +499,8 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
     protected LocationRequest createLocationRequest() {
         LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(1000); //tasa de refresco en milisegundos
+        mLocationRequest.setFastestInterval(1000); //máxima tasa de refresco
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         return mLocationRequest;
     }
@@ -496,10 +517,8 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
                 @Override
                 public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                    mFusedLocationClient.getLastLocation(); //Todas las condiciones para recibir localizaciones
-                    if (arrayListAnimales.size() == 0) {
-                        leerListaAnimalesSinFiltro();
-                    }
+                    //mFusedLocationClient.getLastLocation(); //Todas las condiciones para recibir localizaciones
+                    startLocationUpdates();
                 }
             });
 
@@ -557,6 +576,24 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
         }
 
+    }
+
+    private void startLocationUpdates() {
+        //Verificación de permiso!!
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopLocationUpdates();
+    }
+
+    private void stopLocationUpdates(){
+        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
     }
 
     public double calcularDistancia(double lat1, double long1, double lat2, double long2) {
