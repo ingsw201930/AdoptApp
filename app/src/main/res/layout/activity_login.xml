@@ -43,47 +43,139 @@
         android:id="@+id/buttonIngresarLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         android:text="@string/botonIngresar"
-        app:layout_constraintBottom_toTopOf="@id/guideline"
+        app:layout_constraintBottom_toTopOf="@id/buttonRegistrarse"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editTextContrasena" />
 
     <Button
-        android:id="@+id/buttonFacebook"
+        android:id="@+id/buttonRegistrarse"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/botonFacebook"
-        app:layout_constraintBottom_toTopOf="@id/buttonTwitter"
+        android:background="@color/colorPrimary"
+        android:text="@string/botonRegistrarse"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonIngresarLogin"
+        tools:text="@string/botonRegistrarse" />
 
-    <Button
-        android:id="@+id/buttonTwitter"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ConstraintLayoutIngresarConFacebook"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/botonTwitter"
-        app:layout_constraintBottom_toTopOf="@id/buttonGoogle"
+        android:background="@color/colorPrimary"
+
+        app:layout_constraintBottom_toTopOf="@id/ConstraintLayoutIngresarTwitter"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonFacebook" />
+        app:layout_constraintTop_toBottomOf="@id/guideline">
 
-    <Button
-        android:id="@+id/buttonGoogle"
+        <ImageView
+            android:id="@+id/imageViewIngresarFacebook"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@string/botonFacebook"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/textViewIngresarFacebook"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/facebook_logo" />
+
+        <TextView
+            android:id="@+id/textViewIngresarFacebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/botonFacebook"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/imageViewIngresarFacebook"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="Autofill"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ConstraintLayoutIngresarTwitter"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/botonGoogle"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/ConstraintLayoutIngresarGoogle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ConstraintLayoutIngresarConFacebook">
+
+        <ImageView
+            android:id="@+id/imageViewIngresarTwitter"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:contentDescription="@string/botonTwitter"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/textViewIngresarTwitter"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/twitter_logo" />
+
+        <TextView
+            android:id="@+id/textViewIngresarTwitter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/botonTwitter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/imageViewIngresarTwitter"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="Autofill"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ConstraintLayoutIngresarGoogle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonTwitter" />
+        app:layout_constraintTop_toBottomOf="@id/ConstraintLayoutIngresarTwitter">
+
+        <ImageView
+            android:id="@+id/imageViewIngresarGoogle"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:contentDescription="@string/botonGoogle"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/textViewIngresarGoogle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/common_google_signin_btn_icon_light_normal" />
+
+        <TextView
+            android:id="@+id/textViewIngresarGoogle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/botonGoogle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/imageViewIngresarGoogle"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="Autofill"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:scrollbarSize="4dp"
         app:layout_constraintGuide_percent="0.65" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

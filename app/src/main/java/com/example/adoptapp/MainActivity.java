@@ -10,7 +10,6 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
 
     Button botonIngresar;
-    Button botonRegistrarse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         botonIngresar = findViewById(R.id.buttonIngresar);
-        botonRegistrarse = findViewById(R.id.buttonRegistrarse);
 
         botonIngresar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -27,13 +25,5 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        botonRegistrarse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
     }
 }
