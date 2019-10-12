@@ -170,19 +170,20 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         recyclerViewAnimales.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerViewAnimales.setAdapter(mAdapter);
 
-        /*recyclerViewAnimales.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext()
+        recyclerViewAnimales.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext()
                 , recyclerViewAnimales, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Animal animal = movieList.get(position);
-                Toast.makeText(getApplicationContext(), movie.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
+                Animal animal = arrayListAnimales.get(position);
+                Toast.makeText(getApplicationContext(), animal.getNombre() + " is selected!",
+                        Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onLongClick(View view, int position) {
 
             }
-        }));*/
+        }));
 
         //leerListaAnimalesSinFiltro();
 
@@ -200,7 +201,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         }
     }
 
-    public void mostrarListaAnimales(ArrayList<Animal> arrayAnimales) {
+    public void mostrarListaAnimales(final ArrayList<Animal> arrayAnimales) {
         if (arrayAnimales.size() > 0){
             //mAdapter = new AdapterAnimales(arrayAnimales);
             //customAdapter = new CustomAdapter(this, arrayAnimales);
@@ -208,6 +209,22 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             //progressBarCargarLista.setVisibility(View.GONE);
             mAdapter = new AdapterAnimales(arrayAnimales);
             recyclerViewAnimales.setAdapter(mAdapter);
+
+            recyclerViewAnimales.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext()
+                    , recyclerViewAnimales, new RecyclerTouchListener.ClickListener() {
+                @Override
+                public void onClick(View view, int position) {
+                    Animal animal = arrayAnimales.get(position);
+                    Toast.makeText(getApplicationContext(), animal.getNombre() + " is selected!",
+                            Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onLongClick(View view, int position) {
+
+                }
+            }));
+
             textViewCargando.setText("");
         }else{
             textViewCargando.setText(R.string.resultadosNoEncontrados);
