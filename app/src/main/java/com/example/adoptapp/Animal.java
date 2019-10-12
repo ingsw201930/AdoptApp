@@ -1,5 +1,9 @@
 package com.example.adoptapp;
 
+import android.os.Parcel;
+
+import java.util.Date;
+
 class Animal {
 
     private String id;
@@ -12,8 +16,17 @@ class Animal {
     private String nombreResponsable;
     private String municipioResponsable;
     private double distancia;
+    private Date fechaPublicacion;
 
     Animal() {
+    }
+
+    public Date getFechaPublicacion() {
+        return fechaPublicacion;
+    }
+
+    public void setFechaPublicacion(Date fechaPublicacion) {
+        this.fechaPublicacion = fechaPublicacion;
     }
 
     public String getNombreResponsable() {

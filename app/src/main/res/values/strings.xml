@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">AdoptApp</string>
     <string name="botonIngresar">Ingresar</string>
-    <string name="botonRegistrarse">Registrarse</string>
+    <string name="botonRegistrarse">Crear cuenta</string>
     <string name="descripcionImagenLogo">Logo de AdoptApp</string>
     <string name="hintEmail">Correo electrónico</string>
     <string name="hintContrasena">Contraseña</string>
@@ -55,4 +55,8 @@
     <string name="distanciaFiltro">Distancia máxima desde mi ubicación (en km)</string>
     <string name="mostrarCargando">Cargando resultados</string>
     <string name="resultadosNoEncontrados">No hay resultados</string>
+    <string name="botonAdoptar">Adoptar</string>
+    <string name="botonApadrinar">Apadrinar</string>
+    <string name="botonHacerDonacion">Realizar donación</string>
+    <string name="nombreAnimalPerfil">Nombre animal</string>
 </resources>
