@@ -59,9 +59,9 @@ import java.util.ArrayList;
 
 public class ActivityBuscarAnimales extends AppCompatActivity {
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseStorage storage = FirebaseStorage.getInstance();
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseFirestore db;
+    FirebaseAuth mAuth;
+    FirebaseUser currentUser;
 
     RecyclerView recyclerViewAnimales;
     ProgressBar progressBarCargarLista;
@@ -104,13 +104,16 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buscar_animales);
 
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user == null) {
-            signInAnonymously();
-        }
-
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
         StrictMode.setThreadPolicy(policy);
+
+        db = FirebaseFirestore.getInstance();
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            signInAnonymously();
+        }
 
         recyclerViewAnimales = findViewById(R.id.RecyclerViewAnimales);
         imageButtonFiltrar = findViewById(R.id.imageButtonFiltrar);
