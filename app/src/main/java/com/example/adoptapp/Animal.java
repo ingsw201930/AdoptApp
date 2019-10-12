@@ -1,9 +1,7 @@
 package com.example.adoptapp;
 
-import com.google.firebase.Timestamp;
+import android.os.Parcel;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 class Animal {

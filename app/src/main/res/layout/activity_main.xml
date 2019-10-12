@@ -32,21 +32,10 @@
         android:layout_height="wrap_content"
         android:text="@string/botonIngresar"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/buttonRegistrarse"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageViewLogo"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:text="@string/botonIngresar" />
 
-    <Button
-        android:id="@+id/buttonRegistrarse"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/botonRegistrarse"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonIngresar"
-        tools:text="@string/botonRegistrarse" />
 </androidx.constraintlayout.widget.ConstraintLayout>

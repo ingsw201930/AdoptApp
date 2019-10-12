@@ -4,6 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Activity;
@@ -50,6 +54,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class ActivityBuscarAnimales extends AppCompatActivity {
@@ -58,14 +63,17 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    ListView listViewAnimales;
+    RecyclerView recyclerViewAnimales;
     ProgressBar progressBarCargarLista;
     TextView textViewCargando;
     ImageButton imageButtonFiltrar;
 
     private static final String TAG = "Buscar animales";
     ArrayList<Animal> arrayListAnimales;
-    CustomAdapter customAdapter;
+    ArrayList<Animal> arrayListAnimalesFiltrados;
+    //CustomAdapter customAdapter;
+
+    private AdapterAnimales mAdapter;
 
     static final int FILTRO_REQUEST = 2;
 
@@ -104,7 +112,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
         StrictMode.setThreadPolicy(policy);
 
-        listViewAnimales = findViewById(R.id.listViewAnimales);
+        recyclerViewAnimales = findViewById(R.id.RecyclerViewAnimales);
         imageButtonFiltrar = findViewById(R.id.imageButtonFiltrar);
         progressBarCargarLista = findViewById(R.id.progressBarListaAnimales);
         textViewCargando = findViewById(R.id.textViewCargaListaAnimales);
@@ -156,6 +164,48 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         });
 
         arrayListAnimales = new ArrayList<>();
+        arrayListAnimalesFiltrados = new ArrayList<>(arrayListAnimales);
+
+        mAdapter = new AdapterAnimales(arrayListAnimalesFiltrados);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerViewAnimales.setLayoutManager(mLayoutManager);
+        recyclerViewAnimales.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewAnimales.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        recyclerViewAnimales.setAdapter(mAdapter);
+
+        recyclerViewAnimales.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext()
+                , recyclerViewAnimales, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Animal animal = arrayListAnimalesFiltrados.get(position);
+                /*Toast.makeText(getApplicationContext(), animal.getNombre() + " is selected!",
+                        Toast.LENGTH_SHORT).show();*/
+                Intent intent = new Intent(view.getContext(), ActivityPerfilAnimal.class);
+                intent.putExtra("Nombre", animal.getNombre());
+                intent.putExtra("Foto_principal", animal.getUrlFotoPrincipal());
+
+                String fechaPublicacion = new SimpleDateFormat("dd/MM/yyyy").
+                        format(animal.getFechaPublicacion());
+                String edad;
+                if (animal.getEdad()==1){
+                    edad = animal.getEdad()+" año";
+                }else{
+                    edad = animal.getEdad()+" años";
+                }
+                String datosAnimal = animal.getTamano()+"\n"+edad+"\nEn "+animal.getCiudad()
+                        +"\nA "+animal.getDistancia()+" km de ti"+
+                        "\nEsperando hogar desde: "+fechaPublicacion
+                        +"\nResponsable: "+animal.getNombreResponsable();
+
+                intent.putExtra("Descripcion", datosAnimal);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
 
         //leerListaAnimalesSinFiltro();
 
@@ -173,11 +223,15 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         }
     }
 
-    public void mostrarListaAnimales(ArrayList<Animal> arrayAnimales) {
-        if (arrayAnimales.size() > 0){
-            customAdapter = new CustomAdapter(this, arrayAnimales);
-            listViewAnimales.setAdapter(customAdapter);
+    public void mostrarListaAnimales() {
+        if (arrayListAnimalesFiltrados.size() > 0){
+            //mAdapter = new AdapterAnimales(arrayAnimales);
+            //customAdapter = new CustomAdapter(this, arrayAnimales);
+            //listViewAnimales.setAdapter(customAdapter);
             //progressBarCargarLista.setVisibility(View.GONE);
+            mAdapter = new AdapterAnimales(arrayListAnimalesFiltrados);
+            recyclerViewAnimales.setAdapter(mAdapter);
+            //mAdapter.notifyDataSetChanged();
             textViewCargando.setText("");
         }else{
             textViewCargando.setText(R.string.resultadosNoEncontrados);
@@ -218,7 +272,8 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
                                 //Log.d(TAG, document.getId() + " => " + animal.getNombre());
                             }
-                            mostrarListaAnimales(arrayListAnimales);
+                            arrayListAnimalesFiltrados = new ArrayList<>(arrayListAnimales);
+                            mostrarListaAnimales();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
@@ -269,7 +324,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                         == PackageManager.PERMISSION_GRANTED) {
 
                     //arrayListAnimales.clear();
-                    listViewAnimales.setAdapter(null);
+                    recyclerViewAnimales.setAdapter(null);
 
                     textViewCargando.setText(R.string.mostrarCargando);
                     progressBarCargarLista.setVisibility(View.VISIBLE);
@@ -481,7 +536,9 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             Log.i(TAG, "Esto es :"+arrayAuxiliar.get(i).getNombre());
         }*/
 
-        mostrarListaAnimales(arrayAuxiliar1);
+        arrayListAnimalesFiltrados = new ArrayList<>(arrayAuxiliar1);
+
+        mostrarListaAnimales();
     }
 
     private void requestPermission(Activity context, String permiso, String justificacion, int idCode){
