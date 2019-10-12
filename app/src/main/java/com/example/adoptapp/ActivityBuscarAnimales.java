@@ -54,6 +54,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class ActivityBuscarAnimales extends AppCompatActivity {
@@ -177,8 +178,27 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 Animal animal = arrayListAnimalesFiltrados.get(position);
-                Toast.makeText(getApplicationContext(), animal.getNombre() + " is selected!",
-                        Toast.LENGTH_SHORT).show();
+                /*Toast.makeText(getApplicationContext(), animal.getNombre() + " is selected!",
+                        Toast.LENGTH_SHORT).show();*/
+                Intent intent = new Intent(view.getContext(), ActivityPerfilAnimal.class);
+                intent.putExtra("Nombre", animal.getNombre());
+                intent.putExtra("Foto_principal", animal.getUrlFotoPrincipal());
+
+                String fechaPublicacion = new SimpleDateFormat("dd/MM/yyyy").
+                        format(animal.getFechaPublicacion());
+                String edad;
+                if (animal.getEdad()==1){
+                    edad = animal.getEdad()+" año";
+                }else{
+                    edad = animal.getEdad()+" años";
+                }
+                String datosAnimal = animal.getTamano()+"\n"+edad+"\nEn "+animal.getCiudad()
+                        +"\nA "+animal.getDistancia()+" km de ti"+
+                        "\nEsperando hogar desde: "+fechaPublicacion
+                        +"\nResponsable: "+animal.getNombreResponsable();
+
+                intent.putExtra("Descripcion", datosAnimal);
+                startActivity(intent);
             }
 
             @Override
