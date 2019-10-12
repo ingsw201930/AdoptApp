@@ -58,21 +58,24 @@ public class ActivityLogin extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if( validarFormulario() ){
+                if( validarFormulario() ) {
 
                     String email = editTextEmail.getText().toString();
                     String password = editTextContrasena.getText().toString();
                     //signInUser(email, password);
 
-                    if( editTextEmail.getText().toString().equals("persona@adoptapp.co") ){
+                    if (editTextEmail.getText().toString().equals("persona@adoptapp.co")) {
                         Intent intent = new Intent(view.getContext(), ActivityInicioPersona.class);
                         startActivity(intent);
+                    } else {
+                        if (editTextEmail.getText().toString().equals("institucion@adoptapp.co")) {
+                            Intent intent = new Intent(view.getContext(), ActivityMenuKeeper.class);
+                            startActivity(intent);
+                        }else{
+                            Toast.makeText(ActivityLogin.this, "Autenticación fallida",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
-                    if( editTextEmail.getText().toString().equals("institucion@adoptapp.co") ){
-                        Intent intent = new Intent(view.getContext(), ActivityMenuKeeper.class);
-                        startActivity(intent);
-                    }
-
                 }
 
             }
@@ -101,7 +104,12 @@ public class ActivityLogin extends AppCompatActivity {
             editTextContrasena.setError("Requerido");
             valid = false;
         } else {
-            editTextContrasena.setError(null);
+            if(password.length() < 8){
+                editTextContrasena.setError("Debe tener mínimo 8 caracteres");
+                valid = false;
+            }else {
+                editTextContrasena.setError(null);
+            }
         }
         return valid;
     }

@@ -15,6 +15,8 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -104,6 +106,26 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buscar_animales);
 
+        recyclerViewAnimales = findViewById(R.id.RecyclerViewAnimales);
+        imageButtonFiltrar = findViewById(R.id.imageButtonFiltrar);
+        progressBarCargarLista = findViewById(R.id.progressBarListaAnimales);
+        textViewCargando = findViewById(R.id.textViewCargaListaAnimales);
+        imageButtonFiltrar.setEnabled(false);
+
+        ConnectivityManager cm = (ConnectivityManager)ActivityBuscarAnimales.this.getSystemService
+                (ActivityBuscarAnimales.this.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        if(!isConnected){
+            progressBarCargarLista.setVisibility(View.GONE);
+            imageButtonFiltrar.setEnabled(false);
+            textViewCargando.setText("No hay conexión");
+            Toast.makeText(ActivityBuscarAnimales.this, "No hay conexión a internet",
+                    Toast.LENGTH_SHORT).show();
+        }
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -114,12 +136,6 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         if (currentUser == null) {
             signInAnonymously();
         }
-
-        recyclerViewAnimales = findViewById(R.id.RecyclerViewAnimales);
-        imageButtonFiltrar = findViewById(R.id.imageButtonFiltrar);
-        progressBarCargarLista = findViewById(R.id.progressBarListaAnimales);
-        textViewCargando = findViewById(R.id.textViewCargaListaAnimales);
-        imageButtonFiltrar.setEnabled(false);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mLocationRequest = createLocationRequest();
