@@ -333,7 +333,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                     filtroTipo = data.getStringExtra("Tipo");
                     filtroTamano = data.getStringExtra("Tamano");
                     filtroEdad = data.getIntExtra("Edad", -1);
-                    filtroDistancia = data.getDoubleExtra("Distancia", -1);
+                    filtroDistancia = data.getDoubleExtra("Distancia", -1.0);
                     numeroFiltrosAplicados = data.getIntExtra("numeroFiltrosAplicados", 0);
                     //aplicarFiltro();
                     aplicarFiltros();
@@ -522,7 +522,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             arrayAuxiliar2.clear();
         }
 
-        if (filtroDistancia != -1) {
+        if (filtroDistancia != -1.0) {
             for (int i = 0; i < arrayAuxiliar1.size(); i++) {
                 if (arrayAuxiliar1.get(i).getDistancia() <= filtroDistancia ){
                     arrayAuxiliar2.add(arrayAuxiliar1.get(i));
