@@ -69,6 +69,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
     private static final String TAG = "Buscar animales";
     ArrayList<Animal> arrayListAnimales;
+    ArrayList<Animal> arrayListAnimalesFiltrados;
     //CustomAdapter customAdapter;
 
     private AdapterAnimales mAdapter;
@@ -162,8 +163,9 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         });
 
         arrayListAnimales = new ArrayList<>();
+        arrayListAnimalesFiltrados = new ArrayList<>(arrayListAnimales);
 
-        mAdapter = new AdapterAnimales(arrayListAnimales);
+        mAdapter = new AdapterAnimales(arrayListAnimalesFiltrados);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerViewAnimales.setLayoutManager(mLayoutManager);
         recyclerViewAnimales.setItemAnimator(new DefaultItemAnimator());
@@ -174,7 +176,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                 , recyclerViewAnimales, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Animal animal = arrayListAnimales.get(position);
+                Animal animal = arrayListAnimalesFiltrados.get(position);
                 Toast.makeText(getApplicationContext(), animal.getNombre() + " is selected!",
                         Toast.LENGTH_SHORT).show();
             }
@@ -201,30 +203,15 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         }
     }
 
-    public void mostrarListaAnimales(final ArrayList<Animal> arrayAnimales) {
-        if (arrayAnimales.size() > 0){
+    public void mostrarListaAnimales() {
+        if (arrayListAnimalesFiltrados.size() > 0){
             //mAdapter = new AdapterAnimales(arrayAnimales);
             //customAdapter = new CustomAdapter(this, arrayAnimales);
             //listViewAnimales.setAdapter(customAdapter);
             //progressBarCargarLista.setVisibility(View.GONE);
-            mAdapter = new AdapterAnimales(arrayAnimales);
+            mAdapter = new AdapterAnimales(arrayListAnimalesFiltrados);
             recyclerViewAnimales.setAdapter(mAdapter);
-
-            recyclerViewAnimales.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext()
-                    , recyclerViewAnimales, new RecyclerTouchListener.ClickListener() {
-                @Override
-                public void onClick(View view, int position) {
-                    Animal animal = arrayAnimales.get(position);
-                    Toast.makeText(getApplicationContext(), animal.getNombre() + " is selected!",
-                            Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onLongClick(View view, int position) {
-
-                }
-            }));
-
+            //mAdapter.notifyDataSetChanged();
             textViewCargando.setText("");
         }else{
             textViewCargando.setText(R.string.resultadosNoEncontrados);
@@ -265,7 +252,8 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
                                 //Log.d(TAG, document.getId() + " => " + animal.getNombre());
                             }
-                            mostrarListaAnimales(arrayListAnimales);
+                            arrayListAnimalesFiltrados = new ArrayList<>(arrayListAnimales);
+                            mostrarListaAnimales();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
@@ -528,7 +516,9 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             Log.i(TAG, "Esto es :"+arrayAuxiliar.get(i).getNombre());
         }*/
 
-        mostrarListaAnimales(arrayAuxiliar1);
+        arrayListAnimalesFiltrados = new ArrayList<>(arrayAuxiliar1);
+
+        mostrarListaAnimales();
     }
 
     private void requestPermission(Activity context, String permiso, String justificacion, int idCode){
