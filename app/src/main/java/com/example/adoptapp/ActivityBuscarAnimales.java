@@ -4,6 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Activity;
@@ -58,14 +62,16 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    ListView listViewAnimales;
+    RecyclerView recyclerViewAnimales;
     ProgressBar progressBarCargarLista;
     TextView textViewCargando;
     ImageButton imageButtonFiltrar;
 
     private static final String TAG = "Buscar animales";
     ArrayList<Animal> arrayListAnimales;
-    CustomAdapter customAdapter;
+    //CustomAdapter customAdapter;
+
+    private AdapterAnimales mAdapter;
 
     static final int FILTRO_REQUEST = 2;
 
@@ -104,7 +110,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
         StrictMode.setThreadPolicy(policy);
 
-        listViewAnimales = findViewById(R.id.listViewAnimales);
+        recyclerViewAnimales = findViewById(R.id.RecyclerViewAnimales);
         imageButtonFiltrar = findViewById(R.id.imageButtonFiltrar);
         progressBarCargarLista = findViewById(R.id.progressBarListaAnimales);
         textViewCargando = findViewById(R.id.textViewCargaListaAnimales);
@@ -157,6 +163,27 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
         arrayListAnimales = new ArrayList<>();
 
+        mAdapter = new AdapterAnimales(arrayListAnimales);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerViewAnimales.setLayoutManager(mLayoutManager);
+        recyclerViewAnimales.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewAnimales.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        recyclerViewAnimales.setAdapter(mAdapter);
+
+        /*recyclerViewAnimales.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext()
+                , recyclerViewAnimales, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Animal animal = movieList.get(position);
+                Toast.makeText(getApplicationContext(), movie.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));*/
+
         //leerListaAnimalesSinFiltro();
 
         /*for (int i = 0; i < arrayListAnimales.size(); i++) {
@@ -175,9 +202,12 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
     public void mostrarListaAnimales(ArrayList<Animal> arrayAnimales) {
         if (arrayAnimales.size() > 0){
-            customAdapter = new CustomAdapter(this, arrayAnimales);
-            listViewAnimales.setAdapter(customAdapter);
+            //mAdapter = new AdapterAnimales(arrayAnimales);
+            //customAdapter = new CustomAdapter(this, arrayAnimales);
+            //listViewAnimales.setAdapter(customAdapter);
             //progressBarCargarLista.setVisibility(View.GONE);
+            mAdapter = new AdapterAnimales(arrayAnimales);
+            recyclerViewAnimales.setAdapter(mAdapter);
             textViewCargando.setText("");
         }else{
             textViewCargando.setText(R.string.resultadosNoEncontrados);
@@ -269,7 +299,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                         == PackageManager.PERMISSION_GRANTED) {
 
                     //arrayListAnimales.clear();
-                    listViewAnimales.setAdapter(null);
+                    recyclerViewAnimales.setAdapter(null);
 
                     textViewCargando.setText(R.string.mostrarCargando);
                     progressBarCargarLista.setVisibility(View.VISIBLE);
