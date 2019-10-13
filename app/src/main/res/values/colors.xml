@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#CF0F61AE</color>
     <color name="colorPrimaryDark">#B0002D57</color>
-    <color name="colorAccent">#FAF0F1F3</color>
-    <color name="tituloPerfil">#396998F8</color>
+    <color name="colorAccent">#FAAAACAE</color>
+    <color name="tituloPerfil">#C61E4DAD</color>
     <color name="datosPerfil">#31D5DEEF</color>
 </resources>

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -113,7 +114,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         imageButtonFiltrar.setEnabled(false);
 
         ConnectivityManager cm = (ConnectivityManager)ActivityBuscarAnimales.this.getSystemService
-                (ActivityBuscarAnimales.this.CONNECTIVITY_SERVICE);
+                (CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();

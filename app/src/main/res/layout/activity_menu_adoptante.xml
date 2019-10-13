@@ -26,20 +26,20 @@
                 android:id="@+id/ConstraintLayoutReporteRapido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary">
+                android:background="@drawable/roundcornercolorprimario">
 
                 <ImageView
                     android:id="@+id/imageViewReporteRapido"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_margin="5dp"
                     android:background="@color/common_google_signin_btn_text_dark_default"
                     android:contentDescription="@string/botonReporteRapido"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@tools:sample/avatars[2]"
-                    android:layout_margin="5dp"/>
+                    tools:srcCompat="@tools:sample/avatars[2]" />
 
                 <TextView
                     android:id="@+id/textViewReporteRapido"
@@ -61,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:background="@color/colorPrimary">
+                android:background="@drawable/roundcornercolorprimario">
 
                 <ImageView
                     android:id="@+id/imageViewBuscarAnimales"
@@ -96,7 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:background="@color/colorPrimary">
+                android:background="@drawable/roundcornercolorprimario">
 
                 <ImageView
                     android:id="@+id/imageViewBuscarInstituciones"
@@ -130,20 +130,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:background="@color/colorPrimary">
+                android:background="@drawable/roundcornercolorprimario">
 
                 <ImageView
                     android:id="@+id/imageViewVerEventos"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_margin="5dp"
                     android:background="@color/common_google_signin_btn_text_dark_default"
                     android:contentDescription="@string/botonVerEventos"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@tools:sample/avatars[2]"
-                    android:layout_margin="5dp"/>
+                    tools:srcCompat="@tools:sample/avatars[2]" />
 
                 <TextView
                     android:id="@+id/textViewVerEventos"
@@ -164,7 +164,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:background="@color/colorPrimary">
+                android:background="@drawable/roundcornercolorprimario">
 
                 <ImageView
                     android:id="@+id/imageViewVerHistoriasFelices"
@@ -199,20 +199,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:background="@color/colorPrimary">
+                android:background="@drawable/roundcornercolorprimario">
 
                 <ImageView
                     android:id="@+id/imageViewEditarPerfil"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_margin="5dp"
                     android:background="@color/common_google_signin_btn_text_dark_default"
                     android:contentDescription="@string/botonEditarPerfil"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@tools:sample/avatars[2]"
-                    android:layout_margin="5dp"/>
+                    tools:srcCompat="@tools:sample/avatars[2]" />
 
                 <TextView
                     android:id="@+id/textViewEditarPerfil"
@@ -234,20 +234,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:background="@color/colorPrimary">
+                android:background="@drawable/roundcornercolorprimario">
 
                 <ImageView
                     android:id="@+id/imageViewCerrarSesion"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_margin="5dp"
                     android:background="@color/common_google_signin_btn_text_dark_default"
                     android:contentDescription="@string/botonCerrarSesion"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@tools:sample/avatars[2]"
-                    android:layout_margin="5dp"/>
+                    tools:srcCompat="@tools:sample/avatars[2]" />
 
                 <TextView
                     android:id="@+id/textViewCerrarSesion"

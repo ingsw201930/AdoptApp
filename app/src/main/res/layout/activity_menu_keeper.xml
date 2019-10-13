@@ -26,7 +26,7 @@
                 android:id="@+id/ConstraintLayoutRegistrarAnimal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary">
+                android:background="@drawable/roundcornercolorprimario">
 
                 <ImageView
                     android:id="@+id/imageViewRegistrarAnimal"
@@ -60,8 +60,8 @@
                 android:id="@+id/ConstraintLayoutVerMisAnimales"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:background="@drawable/roundcornercolorprimario">
 
                 <ImageView
                     android:id="@+id/imageViewVerMisAnimales"
@@ -95,21 +95,21 @@
                 android:id="@+id/ConstraintLayoutVerPeticiones"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:background="@drawable/roundcornercolorprimario">
 
                 <ImageView
                     android:id="@+id/imageViewVerPeticiones"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_margin="5dp"
                     android:background="@color/common_google_signin_btn_text_dark_default"
                     android:contentDescription="@string/botonVerPeticiones"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@tools:sample/avatars[2]"
-                    android:layout_margin="5dp"/>
+                    tools:src="@tools:sample/avatars[2]" />
 
                 <TextView
                     android:id="@+id/textViewVerPeticiones"
@@ -130,21 +130,21 @@
                 android:id="@+id/ConstraintLayoutEventos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:background="@drawable/roundcornercolorprimario">
 
                 <ImageView
                     android:id="@+id/imageViewEventos"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_margin="5dp"
                     android:background="@color/common_google_signin_btn_text_dark_default"
                     android:contentDescription="@string/botonEventos"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@tools:sample/avatars[2]"
-                    android:layout_margin="5dp"/>
+                    tools:src="@tools:sample/avatars[2]" />
 
                 <TextView
                     android:id="@+id/textViewEventos"
@@ -165,21 +165,21 @@
                 android:id="@+id/ConstraintLayoutBuscarOtrasInstituciones"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:background="@drawable/roundcornercolorprimario">
 
                 <ImageView
                     android:id="@+id/imageViewBuscarOtrasInstituciones"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_margin="5dp"
                     android:background="@color/common_google_signin_btn_text_dark_default"
                     android:contentDescription="@string/botonBuscarInstituciones"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@tools:sample/avatars[2]"
-                    android:layout_margin="5dp"/>
+                    tools:src="@tools:sample/avatars[2]" />
 
                 <TextView
                     android:id="@+id/textViewBuscarOtrasInstituciones"
@@ -200,21 +200,21 @@
                 android:id="@+id/ConstraintLayoutEditarPerfilKeeper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:background="@drawable/roundcornercolorprimario">
 
                 <ImageView
                     android:id="@+id/imageViewEditarPerfilKeeper"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_margin="5dp"
                     android:background="@color/common_google_signin_btn_text_dark_default"
                     android:contentDescription="@string/botonEditarPerfil"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@tools:sample/avatars[2]"
-                    android:layout_margin="5dp"/>
+                    tools:src="@tools:sample/avatars[2]" />
 
                 <TextView
                     android:id="@+id/textViewEditarPerfilKeeper"
@@ -234,21 +234,21 @@
                 android:id="@+id/ConstraintLayoutCerrarSesionKeeper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:background="@drawable/roundcornercolorprimario">
 
                 <ImageView
                     android:id="@+id/imageViewCerrarSesionKeeper"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_margin="5dp"
                     android:background="@color/common_google_signin_btn_text_dark_default"
                     android:contentDescription="@string/botonCerrarSesion"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@tools:sample/avatars[2]"
-                    android:layout_margin="5dp"/>
+                    tools:src="@tools:sample/avatars[2]" />
 
                 <TextView
                     android:id="@+id/textViewCerrarSesionKeeper"
