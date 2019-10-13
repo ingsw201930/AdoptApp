@@ -164,9 +164,11 @@
         android:id="@+id/buttonContinuarRegistroAnimal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         android:text="@string/botonContinuar"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="20dp"/>
+        app:layout_constraintRight_toRightOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
