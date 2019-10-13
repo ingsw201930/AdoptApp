@@ -28,18 +28,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/mostrarCargando"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
             android:textSize="30sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/imageButtonFiltrar"
+            style="@style/Widget.AppCompat.ImageButton"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/icono_filtro"
             android:contentDescription="@string/descripcionImagenFiltro"
             android:scaleType="fitCenter"
+            android:tint="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -52,10 +56,11 @@
         style="@android:style/Widget.Holo.Light.ProgressBar"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:progressTint="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/RecyclerViewAnimales"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ConstraintLayoutFiltro"
-        app:layout_constraintBottom_toTopOf="@id/RecyclerViewAnimales"/>
+        app:layout_constraintTop_toBottomOf="@id/ConstraintLayoutFiltro" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RecyclerViewAnimales"
