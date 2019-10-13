@@ -190,7 +190,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerViewAnimales.setLayoutManager(mLayoutManager);
         recyclerViewAnimales.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewAnimales.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        //recyclerViewAnimales.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerViewAnimales.setAdapter(mAdapter);
 
         recyclerViewAnimales.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext()
