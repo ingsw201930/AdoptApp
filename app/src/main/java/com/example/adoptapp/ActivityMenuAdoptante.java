@@ -15,16 +15,16 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
     ConstraintLayout constraintLayoutBuscarAnimales;
     ConstraintLayout constraintLayoutCerrarSesion;
 
-    //FirebaseAuth mAuth;
-    //FirebaseUser currentUser;
+    FirebaseAuth mAuth;
+    FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_adoptante);
 
-        //mAuth = FirebaseAuth.getInstance();
-        //currentUser = mAuth.getCurrentUser();
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
 
         constraintLayoutBuscarAnimales = findViewById(R.id.ConstraintLayoutBuscarAnimales);
         constraintLayoutCerrarSesion = findViewById(R.id.ConstraintLayoutCerrarSesion);
@@ -40,7 +40,7 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
         constraintLayoutCerrarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mAuth.signOut();
+                mAuth.signOut();
             }
         });
     }

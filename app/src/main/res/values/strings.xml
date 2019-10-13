@@ -59,4 +59,5 @@
     <string name="botonApadrinar">Apadrinar</string>
     <string name="botonHacerDonacion">Realizar donación</string>
     <string name="nombreAnimalPerfil">Nombre animal</string>
+    <string name="AvisoNoConexion">No hay conexión</string>
 </resources>

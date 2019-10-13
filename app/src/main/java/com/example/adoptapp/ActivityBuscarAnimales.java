@@ -121,7 +121,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         if(!isConnected){
             progressBarCargarLista.setVisibility(View.GONE);
             imageButtonFiltrar.setEnabled(false);
-            textViewCargando.setText("No hay conexión");
+            textViewCargando.setText(R.string.AvisoNoConexion);
             Toast.makeText(ActivityBuscarAnimales.this, "No hay conexión a internet",
                     Toast.LENGTH_SHORT).show();
         }
@@ -133,9 +133,9 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-        if (currentUser == null) {
+        /*if (currentUser == null) {
             signInAnonymously();
-        }
+        }*/
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mLocationRequest = createLocationRequest();
@@ -152,7 +152,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                         leerListaAnimalesSinFiltro();
                     }
                     stopLocationUpdates();
-                    Log.i(TAG, String.valueOf(latitudActual)+" "+String.valueOf(longitudActual));
+                    Log.i(TAG, latitudActual+" "+longitudActual);
                 }
             }
         };

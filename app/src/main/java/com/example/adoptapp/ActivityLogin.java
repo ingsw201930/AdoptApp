@@ -27,6 +27,7 @@ public class ActivityLogin extends AppCompatActivity {
     Button botonIngresar;
     EditText editTextEmail;
     EditText editTextContrasena;
+
     private FirebaseAuth mAuth;
     FirebaseUser currentUser;
 
@@ -45,14 +46,14 @@ public class ActivityLogin extends AppCompatActivity {
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextContrasena = findViewById(R.id.editTextContrasena);
 
-        //mAuth = FirebaseAuth.getInstance();
-        //currentUser = mAuth.getCurrentUser();
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
         tipoUsuario = "";
 
-        /*if(currentUser!=null) {
+        if(currentUser!=null) {
             //verificarTipoUsuario(currentUser.getUid()); //entrar de una
             mAuth.signOut();
-        }*/
+        }
 
         botonIngresar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,9 +63,9 @@ public class ActivityLogin extends AppCompatActivity {
 
                     String email = editTextEmail.getText().toString();
                     String password = editTextContrasena.getText().toString();
-                    //signInUser(email, password);
+                    signInUser(email, password);
 
-                    if (editTextEmail.getText().toString().equals("persona@adoptapp.co")) {
+                    /*if (editTextEmail.getText().toString().equals("persona@adoptapp.co")) {
                         Intent intent = new Intent(view.getContext(), ActivityInicioPersona.class);
                         startActivity(intent);
                     } else {
@@ -75,7 +76,7 @@ public class ActivityLogin extends AppCompatActivity {
                             Toast.makeText(ActivityLogin.this, "Autenticación fallida",
                                     Toast.LENGTH_SHORT).show();
                         }
-                    }
+                    }*/
                 }
 
             }
