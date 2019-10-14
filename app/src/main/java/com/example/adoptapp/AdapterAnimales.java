@@ -71,19 +71,20 @@ public class AdapterAnimales extends RecyclerView.Adapter<AdapterAnimales.MyView
                 }else{ //al dividir entre 12 hay residuo
                     String anio;
                     String mes;
-                    if( Math.floor( (animal.getEdad())/12 ) == 1 ){
+                    int anioNumero = (int)(Math.floor( (animal.getEdad())/12 ));
+                    int mesNumero = (int)(animal.getEdad() -
+                            12*(Math.floor( (animal.getEdad())/12 )) );
+                    if( anioNumero == 1 ){
                         anio = " año y ";
                     }else{
                         anio = " años y ";
                     }
-                    if( animal.getEdad() - 12*(Math.floor( (animal.getEdad())/12 )) == 1 ){
+                    if( mesNumero == 1 ){
                         mes = " mes";
                     }else{
                         mes = " meses";
                     }
-                    edad =(int)(Math.floor( (animal.getEdad())/12 )) + anio
-                            + (int)(animal.getEdad() -
-                            12*(Math.floor( (animal.getEdad())/12 )) ) + mes;
+                    edad = anioNumero + anio + mesNumero + mes;
                 }
             }
         }
