@@ -19,6 +19,7 @@ public class ActivityFiltro extends AppCompatActivity {
     Button buttonAplicarFiltro;
     Spinner spinnerFiltroTipo;
     Spinner spinnerFiltroTamano;
+    Spinner spinnerFiltroSexo;
     EditText editTextFiltroEdad;
     Spinner spinnerCategoriaEdad;
     EditText editTextFiltroDistancia;
@@ -51,8 +52,9 @@ public class ActivityFiltro extends AppCompatActivity {
         buttonAplicarFiltro = findViewById(R.id.buttonAplicarFiltro);
         spinnerFiltroTipo = findViewById(R.id.spinnerFiltroTipo);
         spinnerFiltroTamano = findViewById(R.id.spinnerFiltroTamano);
+        spinnerFiltroSexo = findViewById(R.id.spinnerFiltroSexo);
         editTextFiltroEdad = findViewById(R.id.editTextFiltroEdad);
-        spinnerCategoriaEdad = findViewById(R.id.spinnerCategoriaEdad);
+        spinnerCategoriaEdad = findViewById(R.id.spinnerCategoriaEdadFiltro);
         editTextFiltroDistancia = findViewById(R.id.editTextFiltroDistancia);
 
         checkBoxAlegre = findViewById(R.id.checkBoxAlegre);
@@ -115,12 +117,20 @@ public class ActivityFiltro extends AppCompatActivity {
                         returnIntent.putExtra("Tamano", "");
                     }
 
+                    if (!spinnerFiltroSexo.getSelectedItem().toString().equals("Sexo de animal")) {
+                        returnIntent.putExtra("Sexo", spinnerFiltroSexo.getSelectedItem().toString());
+                        numeroFiltrosAplicados = numeroFiltrosAplicados + 1;
+                    } else {
+                        returnIntent.putExtra("Sexo", "");
+                    }
+
                     if (!editTextFiltroEdad.getText().toString().equals("")) {
                         returnIntent.putExtra("Edad", Integer.parseInt(editTextFiltroEdad.getText().toString()));
                         returnIntent.putExtra("CategoriaEdad", spinnerCategoriaEdad.getSelectedItem().toString());
                         numeroFiltrosAplicados = numeroFiltrosAplicados + 1;
                     } else {
                         returnIntent.putExtra("Edad", -1);
+                        returnIntent.putExtra("CategoriaEdad", "");
                     }
 
                     if (!editTextFiltroDistancia.getText().toString().equals("")) {

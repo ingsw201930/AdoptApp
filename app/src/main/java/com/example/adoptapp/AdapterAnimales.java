@@ -88,7 +88,7 @@ public class AdapterAnimales extends RecyclerView.Adapter<AdapterAnimales.MyView
                 }
             }
         }
-        String datosAnimal = animal.getTamano()+"\n"+edad+"\nEn "+animal.getCiudad()
+        String datosAnimal = animal.getSexo()+"\n"+animal.getTamano()+"\n"+edad+"\nEn "+animal.getCiudad()
                 +"\nA "+animal.getDistancia()+" km de ti"+
                 "\nEsperando hogar desde: "+fechaPublicacion
                 +"\nResponsable: "+animal.getNombreResponsable();

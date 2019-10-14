@@ -31,7 +31,18 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/spinnerFiltroTipo"
+        app:layout_constraintBottom_toTopOf="@id/spinnerFiltroSexo"
+        android:layout_marginTop="10dp"/>
+
+    <Spinner
+        android:id="@+id/spinnerFiltroSexo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:entries="@array/SexoAnimal"
         app:layout_constraintBottom_toTopOf="@id/ConstraintLayoutEdad"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinnerFiltroTamano"
         android:layout_marginTop="10dp"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -41,7 +52,7 @@
         app:layout_constraintBottom_toTopOf="@id/editTextFiltroDistancia"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spinnerFiltroTamano">
+        app:layout_constraintTop_toBottomOf="@id/spinnerFiltroSexo">
 
         <EditText
             android:id="@+id/editTextFiltroEdad"
@@ -53,11 +64,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/spinnerCategoriaEdad"
+            app:layout_constraintRight_toLeftOf="@id/spinnerCategoriaEdadFiltro"
             tools:ignore="Autofill" />
 
         <Spinner
-            android:id="@+id/spinnerCategoriaEdad"
+            android:id="@+id/spinnerCategoriaEdadFiltro"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:entries="@array/CategoriaEdad"

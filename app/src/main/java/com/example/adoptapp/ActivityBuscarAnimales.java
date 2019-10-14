@@ -83,6 +83,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
     String filtroTipo;
     String filtroTamano;
+    String filtroSexo;
     int filtroEdad;
     String categoriaEdad;
     double filtroDistancia;
@@ -249,7 +250,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                         }
                     }
                 }
-                String datosAnimal = animal.getTamano()+"\n"+edad+"\nEn "+animal.getCiudad()
+                String datosAnimal = animal.getSexo()+"\n"+animal.getTamano()+"\n"+edad+"\nEn "+animal.getCiudad()
                         +"\nA "+animal.getDistancia()+" km de ti"+
                         "\nEsperando hogar desde: "+fechaPublicacion
                         +"\nResponsable: "+animal.getNombreResponsable();
@@ -319,6 +320,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                                 animal.setTipo( document.getString("Tipo") );
                                 animal.setEdad( Integer.parseInt(document.get("Edad").toString()) );
                                 animal.setTamano( document.getString("Tamano") );
+                                animal.setSexo( document.getString("Sexo") );
                                 animal.setCiudad( document.getString("Ciudad") );
                                 animal.setUrlFotoPrincipal( document.getString("FotoPrincipal") );
                                 animal.setCiudad( document.getString("MunicipioResponsable") );
@@ -450,6 +452,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
                     filtroTipo = data.getStringExtra("Tipo");
                     filtroTamano = data.getStringExtra("Tamano");
+                    filtroSexo = data.getStringExtra("Sexo");
                     filtroEdad = data.getIntExtra("Edad", -1);
                     categoriaEdad = data.getStringExtra("CategoriaEdad");
                     filtroDistancia = data.getDoubleExtra("Distancia", -1.0);
@@ -635,6 +638,17 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
             arrayAuxiliar2.clear();
         }
+
+        if (!filtroSexo.equals("")) {
+            for (int i = 0; i < arrayAuxiliar1.size(); i++) {
+                if (arrayAuxiliar1.get(i).getSexo().equals(filtroSexo)){
+                    arrayAuxiliar2.add(arrayAuxiliar1.get(i));
+                }
+            }
+            arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
+            arrayAuxiliar2.clear();
+        }
+
         if (filtroEdad != -1) {
             for (int i = 0; i < arrayAuxiliar1.size(); i++) {
                 if(categoriaEdad.equals("Años")){
