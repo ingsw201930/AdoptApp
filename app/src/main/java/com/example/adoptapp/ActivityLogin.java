@@ -67,6 +67,9 @@ public class ActivityLogin extends AppCompatActivity {
 
                     String email = editTextEmail.getText().toString();
                     String password = editTextContrasena.getText().toString();
+                    botonIngresar.setEnabled(false);
+                    Toast.makeText(ActivityLogin.this, "Procesando, por favor espera",
+                            Toast.LENGTH_SHORT).show();
                     signInUser(email, password);
 
                     /*if (editTextEmail.getText().toString().equals("persona@adoptapp.co")) {
@@ -157,7 +160,11 @@ public class ActivityLogin extends AppCompatActivity {
     private void updateUI(){
 
         if(currentUser != null){
+            editTextEmail.setText("");
+            editTextContrasena.setText("");
             verificarTipoUsuario(currentUser.getUid());
+        }else{
+            botonIngresar.setEnabled(true);
         }
 
     }

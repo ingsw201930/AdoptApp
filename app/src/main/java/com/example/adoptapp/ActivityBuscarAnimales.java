@@ -83,7 +83,9 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
     String filtroTipo;
     String filtroTamano;
+    String filtroSexo;
     int filtroEdad;
+    String categoriaEdad;
     double filtroDistancia;
     int numeroFiltrosAplicados;
     ArrayList<String> listaDescriptores;
@@ -220,17 +222,43 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                 String fechaPublicacion = new SimpleDateFormat("dd/MM/yyyy").
                         format(animal.getFechaPublicacion());
                 String edad;
-                if (animal.getEdad()==1){
-                    edad = animal.getEdad()+" año";
+                if (animal.getEdad()<12){
+                    edad = animal.getEdad()+" meses";
                 }else{
-                    edad = animal.getEdad()+" años";
+                    if (animal.getEdad()==12) {
+                        edad = "1 año";
+                    }else{ //animal.getEdad()>12
+                        if( animal.getEdad() % 12 == 0 ){ //al dividir entre 12 no hay residuo
+                            edad = (animal.getEdad())/12+" años";
+                        }else{ //al dividir entre 12 hay residuo
+                            String anio;
+                            String mes;
+                            int anioNumero = (int)(Math.floor( (animal.getEdad())/12 ));
+                            int mesNumero = (int)(animal.getEdad() -
+                                    12*(Math.floor( (animal.getEdad())/12 )) );
+                            if( anioNumero == 1 ){
+                                anio = " año y ";
+                            }else{
+                                anio = " años y ";
+                            }
+                            if( mesNumero == 1 ){
+                                mes = " mes";
+                            }else{
+                                mes = " meses";
+                            }
+                            edad = anioNumero + anio + mesNumero + mes;
+                        }
+                    }
                 }
-                String datosAnimal = animal.getTamano()+"\n"+edad+"\nEn "+animal.getCiudad()
+                String datosAnimal = animal.getSexo()+"\n"+animal.getTamano()+"\n"+edad+"\nEn "+animal.getCiudad()
                         +"\nA "+animal.getDistancia()+" km de ti"+
                         "\nEsperando hogar desde: "+fechaPublicacion
                         +"\nResponsable: "+animal.getNombreResponsable();
 
                 intent.putExtra("Descripcion", datosAnimal);
+
+                intent.putStringArrayListExtra("descriptores", animal.getDescriptores());
+
                 startActivity(intent);
             }
 
@@ -295,6 +323,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                                 animal.setTipo( document.getString("Tipo") );
                                 animal.setEdad( Integer.parseInt(document.get("Edad").toString()) );
                                 animal.setTamano( document.getString("Tamano") );
+                                animal.setSexo( document.getString("Sexo") );
                                 animal.setCiudad( document.getString("Ciudad") );
                                 animal.setUrlFotoPrincipal( document.getString("FotoPrincipal") );
                                 animal.setCiudad( document.getString("MunicipioResponsable") );
@@ -426,7 +455,9 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
                     filtroTipo = data.getStringExtra("Tipo");
                     filtroTamano = data.getStringExtra("Tamano");
+                    filtroSexo = data.getStringExtra("Sexo");
                     filtroEdad = data.getIntExtra("Edad", -1);
+                    categoriaEdad = data.getStringExtra("CategoriaEdad");
                     filtroDistancia = data.getDoubleExtra("Distancia", -1.0);
                     numeroFiltrosAplicados = data.getIntExtra("numeroFiltrosAplicados", 0);
                     listaDescriptores = new ArrayList<>(data.getStringArrayListExtra("listaDescriptores"));
@@ -461,7 +492,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         }
     }
 
-    private void signInAnonymously() {
+    /*private void signInAnonymously() {
         mAuth.signInAnonymously().addOnSuccessListener(this, new  OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
@@ -474,7 +505,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                         Log.e(TAG, "signInAnonymously:FAILURE", exception);
                     }
                 });
-    }
+    }*/
 
     /*public void aplicarFiltro(){
 
@@ -610,10 +641,27 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
             arrayAuxiliar2.clear();
         }
+
+        if (!filtroSexo.equals("")) {
+            for (int i = 0; i < arrayAuxiliar1.size(); i++) {
+                if (arrayAuxiliar1.get(i).getSexo().equals(filtroSexo)){
+                    arrayAuxiliar2.add(arrayAuxiliar1.get(i));
+                }
+            }
+            arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
+            arrayAuxiliar2.clear();
+        }
+
         if (filtroEdad != -1) {
             for (int i = 0; i < arrayAuxiliar1.size(); i++) {
-                if (arrayAuxiliar1.get(i).getEdad() == filtroEdad){
-                    arrayAuxiliar2.add(arrayAuxiliar1.get(i));
+                if(categoriaEdad.equals("Años")){
+                    if ( (arrayAuxiliar1.get(i).getEdad())/12 == filtroEdad){
+                        arrayAuxiliar2.add(arrayAuxiliar1.get(i));
+                    }
+                }else{ //en meses
+                    if (arrayAuxiliar1.get(i).getEdad() == filtroEdad){
+                        arrayAuxiliar2.add(arrayAuxiliar1.get(i));
+                    }
                 }
             }
             arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
@@ -630,34 +678,37 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             arrayAuxiliar2.clear();
         }
 
-        ArrayList<String> descriptores;
-        String descriptor;
-        boolean cumpleConDescriptores;
+        if(listaDescriptores.size()>0) {
 
-        for (int i = 0; i < arrayAuxiliar1.size(); i++) {
+            ArrayList<String> descriptores;
+            String descriptor;
+            boolean cumpleConDescriptores;
 
-            descriptores = new ArrayList<>(arrayAuxiliar1.get(i).getDescriptores());
-            cumpleConDescriptores = true;
+            for (int i = 0; i < arrayAuxiliar1.size(); i++) {
 
-            for (int j = 0; j < listaDescriptores.size(); j++) {
+                descriptores = new ArrayList<>(arrayAuxiliar1.get(i).getDescriptores());
+                cumpleConDescriptores = true;
 
-                Log.i(TAG, "Lista descriptores :"+listaDescriptores.get(j));
-                descriptor = listaDescriptores.get(j);
+                for (int j = 0; j < listaDescriptores.size(); j++) {
 
-                if (!descriptores.contains(descriptor)) { //si el animal no tiene ese descriptor
-                    cumpleConDescriptores = false;
-                    break;
+                    Log.i(TAG, "Lista descriptores :" + listaDescriptores.get(j));
+                    descriptor = listaDescriptores.get(j);
+
+                    if (!descriptores.contains(descriptor)) { //si el animal no tiene ese descriptor
+                        cumpleConDescriptores = false;
+                        break;
+                    }
+
                 }
 
+                if (cumpleConDescriptores) {
+                    arrayAuxiliar2.add(arrayAuxiliar1.get(i));
+                }
             }
 
-            if(cumpleConDescriptores){
-                arrayAuxiliar2.add(arrayAuxiliar1.get(i));
-            }
+            arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
+            arrayAuxiliar2.clear();
         }
-
-        arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
-        arrayAuxiliar2.clear();
 
         /*for (int i = 0; i < arrayAuxiliar.size(); i++) {
             Log.i(TAG, "Esto es :"+arrayAuxiliar.get(i).getNombre());

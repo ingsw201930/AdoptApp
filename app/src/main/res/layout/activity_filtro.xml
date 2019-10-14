@@ -31,22 +31,53 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/spinnerFiltroTipo"
-        app:layout_constraintBottom_toTopOf="@id/editTextFiltroEdad"
+        app:layout_constraintBottom_toTopOf="@id/spinnerFiltroSexo"
         android:layout_marginTop="10dp"/>
 
-    <EditText
-        android:id="@+id/editTextFiltroEdad"
+    <Spinner
+        android:id="@+id/spinnerFiltroSexo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/hintEdad"
-        android:inputType="number"
+        android:entries="@array/SexoAnimal"
+        app:layout_constraintBottom_toTopOf="@id/ConstraintLayoutEdad"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/spinnerFiltroTamano"
-        app:layout_constraintBottom_toTopOf="@+id/editTextFiltroDistancia"
-        tools:ignore="Autofill"
         android:layout_marginTop="10dp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ConstraintLayoutEdad"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/editTextFiltroDistancia"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinnerFiltroSexo">
+
+        <EditText
+            android:id="@+id/editTextFiltroEdad"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/hintEdad"
+            android:inputType="number"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/spinnerCategoriaEdadFiltro"
+            tools:ignore="Autofill" />
+
+        <Spinner
+            android:id="@+id/spinnerCategoriaEdadFiltro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:entries="@array/CategoriaEdad"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/editTextFiltroEdad"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <EditText
         android:id="@+id/editTextFiltroDistancia"
@@ -57,7 +88,7 @@
         android:inputType="number"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextFiltroEdad"
+        app:layout_constraintTop_toBottomOf="@+id/ConstraintLayoutEdad"
         app:layout_constraintBottom_toTopOf="@id/checkBoxNecesidadesEspeciales"
         tools:ignore="Autofill"
         android:layout_marginTop="10dp"/>

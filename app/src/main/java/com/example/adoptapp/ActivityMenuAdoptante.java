@@ -57,9 +57,8 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
             case R.id.MenuCerrarSesion:
                 cerrarSesion();
                 return true;
-
             default:
-                return false;
+                return true;
         }
     }
 

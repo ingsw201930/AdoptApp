@@ -58,9 +58,8 @@ public class ActivityMenuKeeper extends AppCompatActivity {
             case R.id.MenuCerrarSesion:
                 cerrarSesion();
                 return true;
-
             default:
-                return false;
+                return true;
         }
     }
 

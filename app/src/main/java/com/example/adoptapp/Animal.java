@@ -11,6 +11,7 @@ class Animal {
     private String id;
     private String nombre;
     private String tamano;
+    private String sexo;
     private int edad;
     private String ciudad;
     private String urlFotoPrincipal;
@@ -23,6 +24,14 @@ class Animal {
     private ArrayList<String> descriptores;
 
     Animal() {
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
     }
 
     ArrayList<String> getDescriptores() {

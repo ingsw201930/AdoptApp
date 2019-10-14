@@ -50,7 +50,7 @@
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:contentDescription="@string/descripcionImagenAnimal"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/icono_item_animal" />
+                app:srcCompat="@drawable/cargando_imagen" />
 
             <TextView
                 android:id="@+id/textViewDatosPerfilAnimal"
