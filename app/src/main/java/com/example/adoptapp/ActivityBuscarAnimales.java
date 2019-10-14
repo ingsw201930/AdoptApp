@@ -461,7 +461,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         }
     }
 
-    private void signInAnonymously() {
+    /*private void signInAnonymously() {
         mAuth.signInAnonymously().addOnSuccessListener(this, new  OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
@@ -474,7 +474,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                         Log.e(TAG, "signInAnonymously:FAILURE", exception);
                     }
                 });
-    }
+    }*/
 
     /*public void aplicarFiltro(){
 
@@ -630,34 +630,37 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             arrayAuxiliar2.clear();
         }
 
-        ArrayList<String> descriptores;
-        String descriptor;
-        boolean cumpleConDescriptores;
+        if(listaDescriptores.size()>0) {
 
-        for (int i = 0; i < arrayAuxiliar1.size(); i++) {
+            ArrayList<String> descriptores;
+            String descriptor;
+            boolean cumpleConDescriptores;
 
-            descriptores = new ArrayList<>(arrayAuxiliar1.get(i).getDescriptores());
-            cumpleConDescriptores = true;
+            for (int i = 0; i < arrayAuxiliar1.size(); i++) {
 
-            for (int j = 0; j < listaDescriptores.size(); j++) {
+                descriptores = new ArrayList<>(arrayAuxiliar1.get(i).getDescriptores());
+                cumpleConDescriptores = true;
 
-                Log.i(TAG, "Lista descriptores :"+listaDescriptores.get(j));
-                descriptor = listaDescriptores.get(j);
+                for (int j = 0; j < listaDescriptores.size(); j++) {
 
-                if (!descriptores.contains(descriptor)) { //si el animal no tiene ese descriptor
-                    cumpleConDescriptores = false;
-                    break;
+                    Log.i(TAG, "Lista descriptores :" + listaDescriptores.get(j));
+                    descriptor = listaDescriptores.get(j);
+
+                    if (!descriptores.contains(descriptor)) { //si el animal no tiene ese descriptor
+                        cumpleConDescriptores = false;
+                        break;
+                    }
+
                 }
 
+                if (cumpleConDescriptores) {
+                    arrayAuxiliar2.add(arrayAuxiliar1.get(i));
+                }
             }
 
-            if(cumpleConDescriptores){
-                arrayAuxiliar2.add(arrayAuxiliar1.get(i));
-            }
+            arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
+            arrayAuxiliar2.clear();
         }
-
-        arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
-        arrayAuxiliar2.clear();
 
         /*for (int i = 0; i < arrayAuxiliar.size(); i++) {
             Log.i(TAG, "Esto es :"+arrayAuxiliar.get(i).getNombre());
