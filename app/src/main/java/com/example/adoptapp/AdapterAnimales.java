@@ -60,10 +60,32 @@ public class AdapterAnimales extends RecyclerView.Adapter<AdapterAnimales.MyView
         String fechaPublicacion = new SimpleDateFormat("dd/MM/yyyy").
                 format(animal.getFechaPublicacion());
         String edad;
-        if (animal.getEdad()==1){
-            edad = animal.getEdad()+" año";
+        if (animal.getEdad()<12){
+            edad = animal.getEdad()+" meses";
         }else{
-            edad = animal.getEdad()+" años";
+            if (animal.getEdad()==12) {
+                edad = "1 año";
+            }else{ //animal.getEdad()>12
+                if( animal.getEdad() % 12 == 0 ){ //al dividir entre 12 no hay residuo
+                    edad = (animal.getEdad())/12+" años";
+                }else{ //al dividir entre 12 hay residuo
+                    String anio;
+                    String mes;
+                    if( Math.floor( (animal.getEdad())/12 ) == 1 ){
+                        anio = " año y ";
+                    }else{
+                        anio = " años y ";
+                    }
+                    if( animal.getEdad() - 12*(Math.floor( (animal.getEdad())/12 )) == 1 ){
+                        mes = " mes";
+                    }else{
+                        mes = " meses";
+                    }
+                    edad =(int)(Math.floor( (animal.getEdad())/12 )) + anio
+                            + (int)(animal.getEdad() -
+                            12*(Math.floor( (animal.getEdad())/12 )) ) + mes;
+                }
+            }
         }
         String datosAnimal = animal.getTamano()+"\n"+edad+"\nEn "+animal.getCiudad()
                 +"\nA "+animal.getDistancia()+" km de ti"+

@@ -27,7 +27,7 @@
     <string name="botonVerMisAnimales">Ver mis animales</string>
     <string name="botonVerPeticiones">Ver peticiones</string>
     <string name="botonEventos">Eventos</string>
-    <string name="hintEdad">Edad (en años)</string>
+    <string name="hintEdad">Edad</string>
     <string-array name="TipoAnimal">
         <item>Tipo de animal</item>
         <item>Perro</item>
@@ -79,4 +79,9 @@
     <string name="Dominante">Dominante</string>
     <string name="Leal">Leal</string>
     <string name="NecesidadesEspeciales">Con necesidades físicas especiales (p.ej. discapacidad)</string>
+    <string-array name="CategoriaEdad">
+        <item>Categoría edad</item>
+        <item>Años</item>
+        <item>Meses</item>
+    </string-array>
 </resources>

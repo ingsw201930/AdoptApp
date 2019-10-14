@@ -84,6 +84,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     String filtroTipo;
     String filtroTamano;
     int filtroEdad;
+    String categoriaEdad;
     double filtroDistancia;
     int numeroFiltrosAplicados;
     ArrayList<String> listaDescriptores;
@@ -220,10 +221,32 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                 String fechaPublicacion = new SimpleDateFormat("dd/MM/yyyy").
                         format(animal.getFechaPublicacion());
                 String edad;
-                if (animal.getEdad()==1){
-                    edad = animal.getEdad()+" año";
+                if (animal.getEdad()<12){
+                    edad = animal.getEdad()+" meses";
                 }else{
-                    edad = animal.getEdad()+" años";
+                    if (animal.getEdad()==12) {
+                        edad = "1 año";
+                    }else{ //animal.getEdad()>12
+                        if( animal.getEdad() % 12 == 0 ){ //al dividir entre 12 no hay residuo
+                            edad = (animal.getEdad())/12+" años";
+                        }else{ //al dividir entre 12 hay residuo
+                            String anio;
+                            String mes;
+                            if( Math.floor( (animal.getEdad())/12 ) == 1 ){
+                                anio = " año y ";
+                            }else{
+                                anio = " años y ";
+                            }
+                            if( animal.getEdad() - 12*(Math.floor( (animal.getEdad())/12 )) == 1 ){
+                                mes = " mes";
+                            }else{
+                                mes = " meses";
+                            }
+                            edad =(int)(Math.floor( (animal.getEdad())/12 )) + anio
+                                    + (int)(animal.getEdad() -
+                                    12*(Math.floor( (animal.getEdad())/12 )) ) + mes;
+                        }
+                    }
                 }
                 String datosAnimal = animal.getTamano()+"\n"+edad+"\nEn "+animal.getCiudad()
                         +"\nA "+animal.getDistancia()+" km de ti"+
@@ -427,6 +450,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                     filtroTipo = data.getStringExtra("Tipo");
                     filtroTamano = data.getStringExtra("Tamano");
                     filtroEdad = data.getIntExtra("Edad", -1);
+                    categoriaEdad = data.getStringExtra("CategoriaEdad");
                     filtroDistancia = data.getDoubleExtra("Distancia", -1.0);
                     numeroFiltrosAplicados = data.getIntExtra("numeroFiltrosAplicados", 0);
                     listaDescriptores = new ArrayList<>(data.getStringArrayListExtra("listaDescriptores"));
@@ -612,8 +636,14 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         }
         if (filtroEdad != -1) {
             for (int i = 0; i < arrayAuxiliar1.size(); i++) {
-                if (arrayAuxiliar1.get(i).getEdad() == filtroEdad){
-                    arrayAuxiliar2.add(arrayAuxiliar1.get(i));
+                if(categoriaEdad.equals("Años")){
+                    if ( (arrayAuxiliar1.get(i).getEdad())/12 == filtroEdad){
+                        arrayAuxiliar2.add(arrayAuxiliar1.get(i));
+                    }
+                }else{ //en meses
+                    if (arrayAuxiliar1.get(i).getEdad() == filtroEdad){
+                        arrayAuxiliar2.add(arrayAuxiliar1.get(i));
+                    }
                 }
             }
             arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);

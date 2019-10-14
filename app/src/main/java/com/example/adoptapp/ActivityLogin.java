@@ -157,6 +157,8 @@ public class ActivityLogin extends AppCompatActivity {
     private void updateUI(){
 
         if(currentUser != null){
+            editTextEmail.setText("");
+            editTextContrasena.setText("");
             verificarTipoUsuario(currentUser.getUid());
         }
 
