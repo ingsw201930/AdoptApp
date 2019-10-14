@@ -11,6 +11,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
+
 public class ActivityFiltro extends AppCompatActivity {
 
     Button buttonAplicarFiltro;
@@ -101,7 +103,62 @@ public class ActivityFiltro extends AppCompatActivity {
                     returnIntent.putExtra("Distancia", -1.0);
                 }
 
+                ArrayList<String> listaDescriptores = new ArrayList<>();
+
+                if(checkBoxAlegre.isChecked() == true){
+                    listaDescriptores.add("Alegre");
+                }
+                if(checkBoxCalmado.isChecked() == true){
+                    listaDescriptores.add("Calmado");
+                }
+                if(checkBoxJugueton.isChecked() == true){
+                    listaDescriptores.add("Jugueton");
+                }
+                if(checkBoxComelon.isChecked() == true){
+                    listaDescriptores.add("Comelon");
+                }
+                if(checkBoxTimido.isChecked() == true){
+                    listaDescriptores.add("Timido");
+                }
+                if(checkBoxAnsioso.isChecked() == true){
+                    listaDescriptores.add("Ansioso");
+                }
+                if(checkBoxEnergetico.isChecked() == true){
+                    listaDescriptores.add("Energetico");
+                }
+                if(checkBoxFuerte.isChecked() == true){
+                    listaDescriptores.add("Fuerte");
+                }
+                if(checkBoxEmpatico.isChecked() == true){
+                    listaDescriptores.add("Empatico");
+                }
+                if(checkBoxNinos.isChecked() == true){
+                    listaDescriptores.add("Ninos");
+                }
+                if(checkBoxDestructivo.isChecked() == true){
+                    listaDescriptores.add("Destructivo");
+                }
+                if(checkBoxAgresivo.isChecked() == true){
+                    listaDescriptores.add("Agresivo");
+                }
+                if(checkBoxAmoroso.isChecked() == true){
+                    listaDescriptores.add("Amoroso");
+                }
+                if(checkBoxIndependiente.isChecked() == true){
+                    listaDescriptores.add("Independiente");
+                }
+                if(checkBoxNervioso.isChecked() == true){
+                    listaDescriptores.add("Nervioso");
+                }
+                if(checkBoxDominante.isChecked() == true){
+                    listaDescriptores.add("Dominante");
+                }
+                if(checkBoxLeal.isChecked() == true){
+                    listaDescriptores.add("Leal");
+                }
+
                 returnIntent.putExtra("numeroFiltrosAplicados", numeroFiltrosAplicados);
+                returnIntent.putStringArrayListExtra("listaDescriptores",listaDescriptores);
 
                 setResult(Activity.RESULT_OK,returnIntent);
                 finish();
