@@ -2,23 +2,22 @@ package com.example.adoptapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -27,7 +26,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,9 +54,6 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.ListResult;
-import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -72,11 +67,13 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     RecyclerView recyclerViewAnimales;
     ProgressBar progressBarCargarLista;
     TextView textViewCargando;
-    ImageButton imageButtonFiltrar;
+    ConstraintLayout constraintLayoutFiltro;
+    //ImageButton imageButtonFiltrar;
 
     private static final String TAG = "Buscar animales";
     ArrayList<Animal> arrayListAnimales;
     ArrayList<Animal> arrayListAnimalesFiltrados;
+    MenuInflater menuInflaterOpciones;
     //CustomAdapter customAdapter;
 
     private AdapterAnimales mAdapter;
@@ -105,7 +102,9 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
     final int RADIUS_OF_EARTH_KM = 6371; //en km
 
-    Boolean deseoRegresar, sesionCerrada;
+    Boolean deseoRegresar, sesionCerrada, activacionFiltro;
+
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,12 +113,15 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
         deseoRegresar = false;
         sesionCerrada = false;
+        activacionFiltro = false;
 
         recyclerViewAnimales = findViewById(R.id.RecyclerViewAnimales);
-        imageButtonFiltrar = findViewById(R.id.imageButtonFiltrar);
+        //imageButtonFiltrar = findViewById(R.id.imageButtonFiltrar);
         progressBarCargarLista = findViewById(R.id.progressBarListaAnimales);
         textViewCargando = findViewById(R.id.textViewCargaListaAnimales);
-        imageButtonFiltrar.setEnabled(false);
+        constraintLayoutFiltro = findViewById(R.id.ConstraintLayoutFiltro);
+        activacionFiltro = false;
+        //imageButtonFiltrar.setEnabled(false);
 
         ConnectivityManager cm = (ConnectivityManager)ActivityBuscarAnimales.this.getSystemService
                 (CONNECTIVITY_SERVICE);
@@ -129,7 +131,8 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
         if(!isConnected){
             progressBarCargarLista.setVisibility(View.GONE);
-            imageButtonFiltrar.setEnabled(false);
+            activacionFiltro = false;
+            //imageButtonFiltrar.setEnabled(false);
             textViewCargando.setText(R.string.AvisoNoConexion);
             Toast.makeText(ActivityBuscarAnimales.this, "No hay conexión a internet",
                     Toast.LENGTH_SHORT).show();
@@ -183,13 +186,13 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                     }
                 });*/
 
-        imageButtonFiltrar.setOnClickListener(new View.OnClickListener() {
+        /*imageButtonFiltrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ActivityFiltro.class);
                 startActivityForResult(intent, FILTRO_REQUEST);
             }
-        });
+        });*/
 
         arrayListAnimales = new ArrayList<>();
         arrayListAnimalesFiltrados = new ArrayList<>(arrayListAnimales);
@@ -261,13 +264,15 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             recyclerViewAnimales.setAdapter(mAdapter);
             //mAdapter.notifyDataSetChanged();
             textViewCargando.setText("");
+            constraintLayoutFiltro.setVisibility(View.GONE);
         }else{
             textViewCargando.setText(R.string.resultadosNoEncontrados);
             Toast.makeText(ActivityBuscarAnimales.this, "La búsqueda no " +
                     "ha encontrado resultados", Toast.LENGTH_SHORT).show();
         }
         progressBarCargarLista.setVisibility(View.GONE);
-        imageButtonFiltrar.setEnabled(true);
+        //imageButtonFiltrar.setEnabled(true);
+        activacionFiltro = true;
     }
 
     public void leerListaAnimalesSinFiltro(){
@@ -353,10 +358,11 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
                     //arrayListAnimales.clear();
                     recyclerViewAnimales.setAdapter(null);
-
+                    constraintLayoutFiltro.setVisibility(View.VISIBLE);
                     textViewCargando.setText(R.string.mostrarCargando);
                     progressBarCargarLista.setVisibility(View.VISIBLE);
-                    imageButtonFiltrar.setEnabled(false);
+                    //imageButtonFiltrar.setEnabled(false);
+                    activacionFiltro = false;
 
                     filtroTipo = data.getStringExtra("Tipo");
                     filtroTamano = data.getStringExtra("Tamano");
@@ -384,9 +390,11 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                 Toast.makeText(this,
                         "Sin acceso a localización, hardware deshabilitado!",
                         Toast.LENGTH_LONG).show();
+                constraintLayoutFiltro.setVisibility(View.GONE);
                 textViewCargando.setText("");
                 progressBarCargarLista.setVisibility(View.GONE);
-                imageButtonFiltrar.setEnabled(false);
+                //imageButtonFiltrar.setEnabled(false);
+                activacionFiltro = false;
             }
         }
     }
@@ -652,9 +660,11 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                     Toast.makeText(this,
                             "Sin acceso a localización, permiso denegado!",
                             Toast.LENGTH_LONG).show();
+                    constraintLayoutFiltro.setVisibility(View.GONE);
                     textViewCargando.setText("");
                     progressBarCargarLista.setVisibility(View.GONE);
-                    imageButtonFiltrar.setEnabled(false);
+                    //imageButtonFiltrar.setEnabled(false);
+                    activacionFiltro = false;
                 }
             }
             break;
@@ -701,7 +711,9 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menusesion, menu);
+        inflater.inflate(R.menu.menu_filtro, menu);
+        menuInflaterOpciones = inflater;
+        this.menu = menu;
         return true;
     }
 
@@ -709,12 +721,21 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.MenuCerrarSesion:
+            case R.id.cerrarSesionMenu:
                 cerrarSesion();
                 return true;
-
+            case R.id.mostrarOpcionesFiltroMenu:
+                if (activacionFiltro) {
+                    Intent intent = new Intent(ActivityBuscarAnimales.this, ActivityFiltro.class);
+                    startActivityForResult(intent, FILTRO_REQUEST);
+                }/*else{
+                    Toast toast = Toast.makeText(ActivityBuscarAnimales.this, "No se puede " +
+                            "filtrar porque no hay animales disponibles", Toast.LENGTH_LONG);
+                    toast.show();
+                }*/
+                return true;
             default:
-                return false;
+                return true;
         }
     }
 
