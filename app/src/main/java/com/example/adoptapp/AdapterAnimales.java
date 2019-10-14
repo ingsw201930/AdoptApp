@@ -53,9 +53,9 @@ public class AdapterAnimales extends RecyclerView.Adapter<AdapterAnimales.MyView
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
 
-        Animal animal = listaAnimales.get(position);
+        final Animal animal = listaAnimales.get(position);
         holder.textViewNombre.setText(animal.getNombre());
         String fechaPublicacion = new SimpleDateFormat("dd/MM/yyyy").
                 format(animal.getFechaPublicacion());
@@ -94,16 +94,32 @@ public class AdapterAnimales extends RecyclerView.Adapter<AdapterAnimales.MyView
                 +"\nResponsable: "+animal.getNombreResponsable();
         holder.textViewDatos.setText(datosAnimal);
 
-        if(!animal.getUrlFotoPrincipal().equals("") ) {
-            try {
-                String imageUrl = animal.getUrlFotoPrincipal();
-                InputStream URLcontent = (InputStream) new URL(imageUrl).getContent();
-                Drawable image = Drawable.createFromStream(URLcontent, "your source link");
-                holder.imageViewFoto.setImageDrawable(image);
-            } catch (Exception e) {
-                e.printStackTrace();
+        new Thread(new Runnable() {
+            public void run() {
+                // a potentially time consuming task
+
+                if(!animal.getUrlFotoPrincipal().equals("") ) {
+                    try {
+                        String imageUrl = animal.getUrlFotoPrincipal();
+                        InputStream URLcontent = (InputStream) new URL(imageUrl).getContent();
+                        final Drawable image = Drawable.createFromStream(URLcontent, "your source link");
+
+                        holder.imageViewFoto.post(new Runnable() {
+                            public void run() {
+                                holder.imageViewFoto.setImageDrawable(image);
+                            }
+                        });
+
+                        //holder.imageViewFoto.setImageDrawable(image);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
-        }
+        }).start();
+
+
     }
 
     @Override
