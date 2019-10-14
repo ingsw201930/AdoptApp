@@ -27,28 +27,16 @@
             android:id="@+id/textViewCargaListaAnimales"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:text="@string/mostrarCargando"
+            android:textAlignment="center"
             android:textColor="@color/common_google_signin_btn_text_dark_default"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-            android:id="@+id/imageButtonFiltrar"
-            style="@style/Widget.AppCompat.ImageButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/icono_filtro"
-            android:contentDescription="@string/descripcionImagenFiltro"
-            android:scaleType="fitCenter"
-            android:tint="#FFFFFF"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/icono_filtro" />
+            app:layout_constraintRight_toRightOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
