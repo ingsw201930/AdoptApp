@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -18,6 +19,24 @@ public class ActivityFiltro extends AppCompatActivity {
     EditText editTextFiltroEdad;
     EditText editTextFiltroDistancia;
 
+    CheckBox checkBoxAlegre;
+    CheckBox checkBoxCalmado;
+    CheckBox checkBoxJugueton;
+    CheckBox checkBoxComelon;
+    CheckBox checkBoxTimido;
+    CheckBox checkBoxAnsioso;
+    CheckBox checkBoxEnergetico;
+    CheckBox checkBoxFuerte;
+    CheckBox checkBoxEmpatico;
+    CheckBox checkBoxNinos;
+    CheckBox checkBoxDestructivo;
+    CheckBox checkBoxAgresivo;
+    CheckBox checkBoxAmoroso;
+    CheckBox checkBoxIndependiente;
+    CheckBox checkBoxNervioso;
+    CheckBox checkBoxDominante;
+    CheckBox checkBoxLeal;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +47,24 @@ public class ActivityFiltro extends AppCompatActivity {
         spinnerFiltroTamano = findViewById(R.id.spinnerFiltroTamano);
         editTextFiltroEdad = findViewById(R.id.editTextFiltroEdad);
         editTextFiltroDistancia = findViewById(R.id.editTextFiltroDistancia);
+
+        checkBoxAlegre = findViewById(R.id.checkBoxAlegre);
+        checkBoxCalmado = findViewById(R.id.checkBoxCalmado);
+        checkBoxJugueton = findViewById(R.id.checkBoxJugueton);
+        checkBoxComelon = findViewById(R.id.checkBoxComelon);
+        checkBoxTimido = findViewById(R.id.checkBoxTimido);
+        checkBoxAnsioso = findViewById(R.id.checkBoxAnsioso);
+        checkBoxEnergetico = findViewById(R.id.checkBoxEnergetico);
+        checkBoxFuerte = findViewById(R.id.checkBoxFuerte);
+        checkBoxEmpatico = findViewById(R.id.checkBoxEmpatico);
+        checkBoxNinos = findViewById(R.id.checkBoxNinos);
+        checkBoxDestructivo = findViewById(R.id.checkBoxDestructivo);
+        checkBoxAgresivo = findViewById(R.id.checkBoxAgresivo);
+        checkBoxAmoroso = findViewById(R.id.checkBoxAmoroso);
+        checkBoxIndependiente = findViewById(R.id.checkBoxIndependiente);
+        checkBoxNervioso = findViewById(R.id.checkBoxNervioso);
+        checkBoxDominante = findViewById(R.id.checkBoxDominante);
+        checkBoxLeal = findViewById(R.id.checkBoxLeal);
 
         buttonAplicarFiltro.setOnClickListener(new View.OnClickListener() {
             @Override
