@@ -53,35 +53,73 @@ public class AdapterAnimales extends RecyclerView.Adapter<AdapterAnimales.MyView
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
 
-        Animal animal = listaAnimales.get(position);
+        final Animal animal = listaAnimales.get(position);
         holder.textViewNombre.setText(animal.getNombre());
         String fechaPublicacion = new SimpleDateFormat("dd/MM/yyyy").
                 format(animal.getFechaPublicacion());
         String edad;
-        if (animal.getEdad()==1){
-            edad = animal.getEdad()+" año";
+        if (animal.getEdad()<12){
+            edad = animal.getEdad()+" meses";
         }else{
-            edad = animal.getEdad()+" años";
+            if (animal.getEdad()==12) {
+                edad = "1 año";
+            }else{ //animal.getEdad()>12
+                if( animal.getEdad() % 12 == 0 ){ //al dividir entre 12 no hay residuo
+                    edad = (animal.getEdad())/12+" años";
+                }else{ //al dividir entre 12 hay residuo
+                    String anio;
+                    String mes;
+                    int anioNumero = (int)(Math.floor( (animal.getEdad())/12 ));
+                    int mesNumero = (int)(animal.getEdad() -
+                            12*(Math.floor( (animal.getEdad())/12 )) );
+                    if( anioNumero == 1 ){
+                        anio = " año y ";
+                    }else{
+                        anio = " años y ";
+                    }
+                    if( mesNumero == 1 ){
+                        mes = " mes";
+                    }else{
+                        mes = " meses";
+                    }
+                    edad = anioNumero + anio + mesNumero + mes;
+                }
+            }
         }
-        String datosAnimal = animal.getTamano()+"\n"+edad+"\nEn "+animal.getCiudad()
+        String datosAnimal = animal.getSexo()+"\n"+animal.getTamano()+"\n"+edad+"\nEn "+animal.getCiudad()
                 +"\nA "+animal.getDistancia()+" km de ti"+
                 "\nEsperando hogar desde: "+fechaPublicacion
                 +"\nResponsable: "+animal.getNombreResponsable();
         holder.textViewDatos.setText(datosAnimal);
 
-        if(!animal.getUrlFotoPrincipal().equals("") ) {
-            try {
-                //String imageUrl = "https://firebasestorage.googleapis.com/v0/b/adoptapp-77514.appspot.com/o/animales%2Fexx9WvDpQZM11MI3Cubi%2Flulu1.jpg?alt=media&token=9715c5a1-fed5-42de-98c4-7d42fe771cce";
-                String imageUrl = animal.getUrlFotoPrincipal();
-                InputStream URLcontent = (InputStream) new URL(imageUrl).getContent();
-                Drawable image = Drawable.createFromStream(URLcontent, "your source link");
-                holder.imageViewFoto.setImageDrawable(image);
-            } catch (Exception e) {
-                e.printStackTrace();
+        new Thread(new Runnable() {
+            public void run() {
+                // a potentially time consuming task
+
+                if(!animal.getUrlFotoPrincipal().equals("") ) {
+                    try {
+                        String imageUrl = animal.getUrlFotoPrincipal();
+                        InputStream URLcontent = (InputStream) new URL(imageUrl).getContent();
+                        final Drawable image = Drawable.createFromStream(URLcontent, "your source link");
+
+                        holder.imageViewFoto.post(new Runnable() {
+                            public void run() {
+                                holder.imageViewFoto.setImageDrawable(image);
+                            }
+                        });
+
+                        //holder.imageViewFoto.setImageDrawable(image);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
-        }
+        }).start();
+
+
     }
 
     @Override

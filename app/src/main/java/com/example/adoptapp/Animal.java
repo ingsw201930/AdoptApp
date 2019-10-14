@@ -2,13 +2,16 @@ package com.example.adoptapp;
 
 import android.os.Parcel;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 class Animal {
 
     private String id;
     private String nombre;
     private String tamano;
+    private String sexo;
     private int edad;
     private String ciudad;
     private String urlFotoPrincipal;
@@ -17,23 +20,41 @@ class Animal {
     private String municipioResponsable;
     private double distancia;
     private Date fechaPublicacion;
+    //private Map<String,Integer> descriptores;
+    private ArrayList<String> descriptores;
 
     Animal() {
     }
 
-    public Date getFechaPublicacion() {
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    ArrayList<String> getDescriptores() {
+        return descriptores;
+    }
+
+    void setDescriptores(ArrayList<String> descriptores) {
+        this.descriptores = descriptores;
+    }
+
+    Date getFechaPublicacion() {
         return fechaPublicacion;
     }
 
-    public void setFechaPublicacion(Date fechaPublicacion) {
+    void setFechaPublicacion(Date fechaPublicacion) {
         this.fechaPublicacion = fechaPublicacion;
     }
 
-    public String getNombreResponsable() {
+    String getNombreResponsable() {
         return nombreResponsable;
     }
 
-    public void setNombreResponsable(String nombreResponsable) {
+    void setNombreResponsable(String nombreResponsable) {
         this.nombreResponsable = nombreResponsable;
     }
 
@@ -45,11 +66,11 @@ class Animal {
         this.municipioResponsable = municipioResponsable;
     }
 
-    public double getDistancia() {
+    double getDistancia() {
         return distancia;
     }
 
-    public void setDistancia(double distancia) {
+    void setDistancia(double distancia) {
         this.distancia = distancia;
     }
 

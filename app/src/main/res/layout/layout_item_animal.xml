@@ -15,8 +15,9 @@
             android:id="@+id/textViewItemNombreAnimal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="7.5dp"
-            android:text="@string/nombreAnimal"
+            android:background="@drawable/roundcornercolorprimario"
+            android:text="@string/nombreAnimalPerfil"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -29,6 +30,7 @@
         android:id="@+id/ConstraintLayoutDetallesItem"
         android:layout_width="match_parent"
         android:layout_height="120dp"
+        android:background="@drawable/roundcornercolordatos"
         android:padding="10dp"
         android:paddingStart="10dp"
         android:paddingLeft="10dp"
@@ -44,12 +46,12 @@
             android:contentDescription="@string/descripcionImagenAnimal"
             android:maxWidth="100dp"
             android:maxHeight="100dp"
-            android:scaleType="fitXY"
+            android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/textViewItemDetallesAnimal"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/icono_item_animal" />
+            app:srcCompat="@drawable/cargando_imagen" />
 
         <TextView
             android:id="@+id/textViewItemDetallesAnimal"

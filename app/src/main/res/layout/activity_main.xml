@@ -30,12 +30,15 @@
         android:id="@+id/buttonIngresar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/roundcornercolorprimario"
         android:text="@string/botonIngresar"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:textStyle="bold"
         android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageViewLogo"
-        app:layout_constraintBottom_toBottomOf="parent"
         tools:text="@string/botonIngresar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
