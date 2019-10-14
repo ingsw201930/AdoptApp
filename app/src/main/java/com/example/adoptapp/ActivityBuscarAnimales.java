@@ -2,10 +2,10 @@ package com.example.adoptapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,13 +15,17 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.net.Uri;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,27 +54,27 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.ListResult;
-import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ActivityBuscarAnimales extends AppCompatActivity {
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseStorage storage = FirebaseStorage.getInstance();
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseFirestore db;
+    FirebaseAuth mAuth;
+    FirebaseUser currentUser;
 
     RecyclerView recyclerViewAnimales;
     ProgressBar progressBarCargarLista;
     TextView textViewCargando;
-    ImageButton imageButtonFiltrar;
+    ConstraintLayout constraintLayoutFiltro;
+    //ImageButton imageButtonFiltrar;
 
     private static final String TAG = "Buscar animales";
     ArrayList<Animal> arrayListAnimales;
     ArrayList<Animal> arrayListAnimalesFiltrados;
+    MenuInflater menuInflaterOpciones;
     //CustomAdapter customAdapter;
 
     private AdapterAnimales mAdapter;
@@ -82,6 +86,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     int filtroEdad;
     double filtroDistancia;
     int numeroFiltrosAplicados;
+    ArrayList<String> listaDescriptores;
 
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 0;
     private static final int REQUEST_CHECK_SETTINGS = 1;
@@ -99,24 +104,52 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
     final int RADIUS_OF_EARTH_KM = 6371; //en km
 
+    Boolean deseoRegresar, sesionCerrada, activacionFiltro;
+
+    private Menu menu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buscar_animales);
 
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user == null) {
-            signInAnonymously();
+        deseoRegresar = false;
+        sesionCerrada = false;
+        activacionFiltro = false;
+
+        recyclerViewAnimales = findViewById(R.id.RecyclerViewAnimales);
+        //imageButtonFiltrar = findViewById(R.id.imageButtonFiltrar);
+        progressBarCargarLista = findViewById(R.id.progressBarListaAnimales);
+        textViewCargando = findViewById(R.id.textViewCargaListaAnimales);
+        constraintLayoutFiltro = findViewById(R.id.ConstraintLayoutFiltro);
+        activacionFiltro = false;
+        //imageButtonFiltrar.setEnabled(false);
+
+        ConnectivityManager cm = (ConnectivityManager)ActivityBuscarAnimales.this.getSystemService
+                (CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        if(!isConnected){
+            progressBarCargarLista.setVisibility(View.GONE);
+            activacionFiltro = false;
+            //imageButtonFiltrar.setEnabled(false);
+            textViewCargando.setText(R.string.AvisoNoConexion);
+            Toast.makeText(ActivityBuscarAnimales.this, "No hay conexión a internet",
+                    Toast.LENGTH_SHORT).show();
         }
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
         StrictMode.setThreadPolicy(policy);
 
-        recyclerViewAnimales = findViewById(R.id.RecyclerViewAnimales);
-        imageButtonFiltrar = findViewById(R.id.imageButtonFiltrar);
-        progressBarCargarLista = findViewById(R.id.progressBarListaAnimales);
-        textViewCargando = findViewById(R.id.textViewCargaListaAnimales);
-        imageButtonFiltrar.setEnabled(false);
+        db = FirebaseFirestore.getInstance();
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        /*if (currentUser == null) {
+            signInAnonymously();
+        }*/
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mLocationRequest = createLocationRequest();
@@ -133,7 +166,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                         leerListaAnimalesSinFiltro();
                     }
                     stopLocationUpdates();
-                    Log.i(TAG, String.valueOf(latitudActual)+" "+String.valueOf(longitudActual));
+                    Log.i(TAG, latitudActual+" "+longitudActual);
                 }
             }
         };
@@ -155,13 +188,13 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                     }
                 });*/
 
-        imageButtonFiltrar.setOnClickListener(new View.OnClickListener() {
+        /*imageButtonFiltrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ActivityFiltro.class);
                 startActivityForResult(intent, FILTRO_REQUEST);
             }
-        });
+        });*/
 
         arrayListAnimales = new ArrayList<>();
         arrayListAnimalesFiltrados = new ArrayList<>(arrayListAnimales);
@@ -170,7 +203,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerViewAnimales.setLayoutManager(mLayoutManager);
         recyclerViewAnimales.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewAnimales.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        //recyclerViewAnimales.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerViewAnimales.setAdapter(mAdapter);
 
         recyclerViewAnimales.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext()
@@ -233,13 +266,15 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             recyclerViewAnimales.setAdapter(mAdapter);
             //mAdapter.notifyDataSetChanged();
             textViewCargando.setText("");
+            constraintLayoutFiltro.setVisibility(View.GONE);
         }else{
             textViewCargando.setText(R.string.resultadosNoEncontrados);
             Toast.makeText(ActivityBuscarAnimales.this, "La búsqueda no " +
                     "ha encontrado resultados", Toast.LENGTH_SHORT).show();
         }
         progressBarCargarLista.setVisibility(View.GONE);
-        imageButtonFiltrar.setEnabled(true);
+        //imageButtonFiltrar.setEnabled(true);
+        activacionFiltro = true;
     }
 
     public void leerListaAnimalesSinFiltro(){
@@ -268,6 +303,64 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                                 animal.setDistancia( calcularDistancia(latitudActual, longitudActual,
                                         ubicacion.getLatitude(),ubicacion.getLongitude()) );
                                 animal.setFechaPublicacion( document.getDate("FechaPublicacion") );
+
+                                ArrayList<String> descriptores = new ArrayList<>();
+
+                                //retrieve descriptores
+                                if (document.getBoolean("dAlegre")){
+                                    descriptores.add("Alegre");
+                                }
+                                if (document.getBoolean("dCalmado")){
+                                    descriptores.add("Calmado");
+                                }
+                                if (document.getBoolean("dJugueton")){
+                                    descriptores.add("Jugueton");
+                                }
+                                if (document.getBoolean("dComelon")){
+                                    descriptores.add("Comelon");
+                                }
+                                if (document.getBoolean("dTimido")){
+                                    descriptores.add("Timido");
+                                }
+                                if (document.getBoolean("dAnsioso")){
+                                    descriptores.add("Ansioso");
+                                }
+                                if (document.getBoolean("dEnergetico")){
+                                    descriptores.add("Energetico");
+                                }
+                                if (document.getBoolean("dFuerte")){
+                                    descriptores.add("Fuerte");
+                                }
+                                if (document.getBoolean("dEmpatico")){
+                                    descriptores.add("Empatico");
+                                }
+                                if (document.getBoolean("dDestructivo")){
+                                    descriptores.add("Destructivo");
+                                }
+                                if (document.getBoolean("dAgresivo")){
+                                    descriptores.add("Agresivo");
+                                }
+                                if (document.getBoolean("dAmoroso")){
+                                    descriptores.add("Amoroso");
+                                }
+                                if (document.getBoolean("dIndependiente")){
+                                    descriptores.add("Independiente");
+                                }
+                                if (document.getBoolean("dNervioso")){
+                                    descriptores.add("Nervioso");
+                                }
+                                if (document.getBoolean("dDominante")){
+                                    descriptores.add("Dominante");
+                                }
+                                if (document.getBoolean("dLeal")){
+                                    descriptores.add("Leal");
+                                }
+
+                                if (document.getBoolean("dNecesidades")){
+                                    descriptores.add("Necesidades");
+                                }
+
+                                animal.setDescriptores(descriptores);
                                 arrayListAnimales.add(animal);
 
                                 //Log.d(TAG, document.getId() + " => " + animal.getNombre());
@@ -325,16 +418,19 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
                     //arrayListAnimales.clear();
                     recyclerViewAnimales.setAdapter(null);
-
+                    constraintLayoutFiltro.setVisibility(View.VISIBLE);
                     textViewCargando.setText(R.string.mostrarCargando);
                     progressBarCargarLista.setVisibility(View.VISIBLE);
-                    imageButtonFiltrar.setEnabled(false);
+                    //imageButtonFiltrar.setEnabled(false);
+                    activacionFiltro = false;
 
                     filtroTipo = data.getStringExtra("Tipo");
                     filtroTamano = data.getStringExtra("Tamano");
                     filtroEdad = data.getIntExtra("Edad", -1);
-                    filtroDistancia = data.getDoubleExtra("Distancia", -1);
+                    filtroDistancia = data.getDoubleExtra("Distancia", -1.0);
                     numeroFiltrosAplicados = data.getIntExtra("numeroFiltrosAplicados", 0);
+                    listaDescriptores = new ArrayList<>(data.getStringArrayListExtra("listaDescriptores"));
+
                     //aplicarFiltro();
                     aplicarFiltros();
                     //Log.i(TAG, "Parámetros de filtro: "+result);
@@ -356,9 +452,11 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                 Toast.makeText(this,
                         "Sin acceso a localización, hardware deshabilitado!",
                         Toast.LENGTH_LONG).show();
+                constraintLayoutFiltro.setVisibility(View.GONE);
                 textViewCargando.setText("");
                 progressBarCargarLista.setVisibility(View.GONE);
-                imageButtonFiltrar.setEnabled(false);
+                //imageButtonFiltrar.setEnabled(false);
+                activacionFiltro = false;
             }
         }
     }
@@ -522,7 +620,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             arrayAuxiliar2.clear();
         }
 
-        if (filtroDistancia != -1) {
+        if (filtroDistancia != -1.0) {
             for (int i = 0; i < arrayAuxiliar1.size(); i++) {
                 if (arrayAuxiliar1.get(i).getDistancia() <= filtroDistancia ){
                     arrayAuxiliar2.add(arrayAuxiliar1.get(i));
@@ -531,6 +629,35 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
             arrayAuxiliar2.clear();
         }
+
+        ArrayList<String> descriptores;
+        String descriptor;
+        boolean cumpleConDescriptores;
+
+        for (int i = 0; i < arrayAuxiliar1.size(); i++) {
+
+            descriptores = new ArrayList<>(arrayAuxiliar1.get(i).getDescriptores());
+            cumpleConDescriptores = true;
+
+            for (int j = 0; j < listaDescriptores.size(); j++) {
+
+                Log.i(TAG, "Lista descriptores :"+listaDescriptores.get(j));
+                descriptor = listaDescriptores.get(j);
+
+                if (!descriptores.contains(descriptor)) { //si el animal no tiene ese descriptor
+                    cumpleConDescriptores = false;
+                    break;
+                }
+
+            }
+
+            if(cumpleConDescriptores){
+                arrayAuxiliar2.add(arrayAuxiliar1.get(i));
+            }
+        }
+
+        arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
+        arrayAuxiliar2.clear();
 
         /*for (int i = 0; i < arrayAuxiliar.size(); i++) {
             Log.i(TAG, "Esto es :"+arrayAuxiliar.get(i).getNombre());
@@ -624,9 +751,11 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                     Toast.makeText(this,
                             "Sin acceso a localización, permiso denegado!",
                             Toast.LENGTH_LONG).show();
+                    constraintLayoutFiltro.setVisibility(View.GONE);
                     textViewCargando.setText("");
                     progressBarCargarLista.setVisibility(View.GONE);
-                    imageButtonFiltrar.setEnabled(false);
+                    //imageButtonFiltrar.setEnabled(false);
+                    activacionFiltro = false;
                 }
             }
             break;
@@ -647,6 +776,12 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         stopLocationUpdates();
+        if (deseoRegresar == true){
+            finish();
+        }
+        if (sesionCerrada == true){
+            finish();
+        }
     }
 
     private void stopLocationUpdates(){
@@ -662,6 +797,53 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double result = RADIUS_OF_EARTH_KM * c;
         return Math.round(result*100.0)/100.0;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_filtro, menu);
+        menuInflaterOpciones = inflater;
+        this.menu = menu;
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.cerrarSesionMenu:
+                cerrarSesion();
+                return true;
+            case R.id.mostrarOpcionesFiltroMenu:
+                if (activacionFiltro) {
+                    Intent intent = new Intent(ActivityBuscarAnimales.this, ActivityFiltro.class);
+                    startActivityForResult(intent, FILTRO_REQUEST);
+                }/*else{
+                    Toast toast = Toast.makeText(ActivityBuscarAnimales.this, "No se puede " +
+                            "filtrar porque no hay animales disponibles", Toast.LENGTH_LONG);
+                    toast.show();
+                }*/
+                return true;
+            default:
+                return true;
+        }
+    }
+
+    private void cerrarSesion(){
+        if (currentUser == null) {
+            mAuth.signOut();
+        }
+        sesionCerrada = true;
+        Intent intent = new Intent(ActivityBuscarAnimales.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        deseoRegresar = true;
+        Intent intent = new Intent(ActivityBuscarAnimales.this, ActivityMenuAdoptante.class);
+        startActivity(intent);
     }
 
 }

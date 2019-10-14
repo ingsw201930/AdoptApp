@@ -26,12 +26,14 @@
                 android:id="@+id/ConstraintLayoutReporteRapido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary">
+                android:background="@drawable/roundcornercolorprimario">
 
                 <ImageView
                     android:id="@+id/imageViewReporteRapido"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_margin="5dp"
+                    android:background="@color/common_google_signin_btn_text_dark_default"
                     android:contentDescription="@string/botonReporteRapido"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -45,6 +47,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/botonReporteRapido"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -58,14 +61,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:background="@color/colorPrimary">
+                android:background="@drawable/roundcornercolorprimario">
 
                 <ImageView
                     android:id="@+id/imageViewBuscarAnimales"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_margin="5dp"
                     android:contentDescription="@string/botonBuscarAnimales"
                     android:scaleType="fitCenter"
+                    android:tint="@color/common_google_signin_btn_text_dark_default"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -73,10 +78,11 @@
 
                 <TextView
                     android:id="@+id/textViewBuscarAnimales"
-                    android:text="@string/botonBuscarAnimales"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:text="@string/botonBuscarAnimales"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -90,14 +96,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:background="@color/colorPrimary">
+                android:background="@drawable/roundcornercolorprimario">
 
                 <ImageView
                     android:id="@+id/imageViewBuscarInstituciones"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_margin="5dp"
                     android:contentDescription="@string/botonBuscarInstituciones"
                     android:scaleType="fitCenter"
+                    android:tint="@color/common_google_signin_btn_text_dark_default"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -105,10 +113,11 @@
 
                 <TextView
                     android:id="@+id/textViewBuscarInstituciones"
-                    android:text="@string/botonBuscarInstituciones"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:text="@string/botonBuscarInstituciones"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -121,12 +130,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:background="@color/colorPrimary">
+                android:background="@drawable/roundcornercolorprimario">
 
                 <ImageView
                     android:id="@+id/imageViewVerEventos"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_margin="5dp"
+                    android:background="@color/common_google_signin_btn_text_dark_default"
                     android:contentDescription="@string/botonVerEventos"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -140,6 +151,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/botonVerEventos"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -152,14 +164,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:background="@color/colorPrimary">
+                android:background="@drawable/roundcornercolorprimario">
 
                 <ImageView
                     android:id="@+id/imageViewVerHistoriasFelices"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_margin="5dp"
                     android:contentDescription="@string/botonVerHistoriasFelices"
                     android:scaleType="fitCenter"
+                    android:tint="@color/common_google_signin_btn_text_dark_default"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -171,6 +185,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/botonVerHistoriasFelices"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -184,12 +199,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:background="@color/colorPrimary">
+                android:background="@drawable/roundcornercolorprimario">
 
                 <ImageView
                     android:id="@+id/imageViewEditarPerfil"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_margin="5dp"
+                    android:background="@color/common_google_signin_btn_text_dark_default"
                     android:contentDescription="@string/botonEditarPerfil"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -203,43 +220,13 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/botonEditarPerfil"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageViewEditarPerfil"
                     app:layout_constraintTop_toTopOf="parent" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/ConstraintLayoutCerrarSesion"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:background="@color/colorPrimary">
-
-                <ImageView
-                    android:id="@+id/imageViewCerrarSesion"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:contentDescription="@string/botonCerrarSesion"
-                    android:scaleType="fitCenter"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@tools:sample/avatars[2]" />
-
-                <TextView
-                    android:id="@+id/textViewCerrarSesion"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/botonCerrarSesion"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageViewCerrarSesion"
-                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
