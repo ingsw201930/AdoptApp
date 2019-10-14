@@ -230,40 +230,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/ConstraintLayoutCerrarSesionKeeper"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/roundcornercolorprimario">
-
-                <ImageView
-                    android:id="@+id/imageViewCerrarSesionKeeper"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_margin="5dp"
-                    android:background="@color/common_google_signin_btn_text_dark_default"
-                    android:contentDescription="@string/botonCerrarSesion"
-                    android:scaleType="fitCenter"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@tools:sample/avatars[2]" />
-
-                <TextView
-                    android:id="@+id/textViewCerrarSesionKeeper"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/botonCerrarSesion"
-                    android:textColor="@color/common_google_signin_btn_text_dark_default"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageViewCerrarSesionKeeper"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

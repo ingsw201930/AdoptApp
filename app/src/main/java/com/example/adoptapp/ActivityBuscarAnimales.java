@@ -22,6 +22,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -102,10 +105,15 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
     final int RADIUS_OF_EARTH_KM = 6371; //en km
 
+    Boolean deseoRegresar, sesionCerrada;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buscar_animales);
+
+        deseoRegresar = false;
+        sesionCerrada = false;
 
         recyclerViewAnimales = findViewById(R.id.RecyclerViewAnimales);
         imageButtonFiltrar = findViewById(R.id.imageButtonFiltrar);
@@ -667,6 +675,12 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         stopLocationUpdates();
+        if (deseoRegresar == true){
+            finish();
+        }
+        if (sesionCerrada == true){
+            finish();
+        }
     }
 
     private void stopLocationUpdates(){
@@ -682,6 +696,42 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double result = RADIUS_OF_EARTH_KM * c;
         return Math.round(result*100.0)/100.0;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menusesion, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.MenuCerrarSesion:
+                cerrarSesion();
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    private void cerrarSesion(){
+        if (currentUser == null) {
+            mAuth.signOut();
+        }
+        sesionCerrada = true;
+        Intent intent = new Intent(ActivityBuscarAnimales.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        deseoRegresar = true;
+        Intent intent = new Intent(ActivityBuscarAnimales.this, ActivityMenuAdoptante.class);
+        startActivity(intent);
     }
 
 }

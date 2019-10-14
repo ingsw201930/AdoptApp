@@ -37,10 +37,14 @@ public class ActivityLogin extends AppCompatActivity {
 
     String tipoUsuario;
 
+    //Boolean loginExitoso;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //loginExitoso = false;
 
         botonIngresar = findViewById(R.id.buttonIngresarLogin);
         editTextEmail = findViewById(R.id.editTextEmail);
@@ -135,6 +139,7 @@ public class ActivityLogin extends AppCompatActivity {
                             // Sign in success, update UI
                             Log.d(TAG, "signInWithEmail:success");
                             currentUser = mAuth.getCurrentUser();
+                            //loginExitoso = true;
                             updateUI();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -189,4 +194,17 @@ public class ActivityLogin extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //if(loginExitoso == true){
+        finish();
+        //}
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(ActivityLogin.this, ActivityMenuAdoptante.class);
+        startActivity(intent);
+    }
 }

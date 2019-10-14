@@ -5,7 +5,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -13,21 +17,23 @@ import com.google.firebase.auth.FirebaseUser;
 public class ActivityMenuAdoptante extends AppCompatActivity {
 
     ConstraintLayout constraintLayoutBuscarAnimales;
-    ConstraintLayout constraintLayoutCerrarSesion;
 
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
+
+    //Boolean sesionCerrada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_adoptante);
 
+        //sesionCerrada = false;
+
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
         constraintLayoutBuscarAnimales = findViewById(R.id.ConstraintLayoutBuscarAnimales);
-        constraintLayoutCerrarSesion = findViewById(R.id.ConstraintLayoutCerrarSesion);
 
         constraintLayoutBuscarAnimales.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,12 +42,47 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        constraintLayoutCerrarSesion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-            }
-        });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menusesion, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.MenuCerrarSesion:
+                cerrarSesion();
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    private void cerrarSesion(){
+        if (currentUser == null) {
+            mAuth.signOut();
+        }
+        //sesionCerrada = true;
+        Intent intent = new Intent(ActivityMenuAdoptante.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(ActivityMenuAdoptante.this, ActivityInicioPersona.class);
+        startActivity(intent);
+    }
+
 }
