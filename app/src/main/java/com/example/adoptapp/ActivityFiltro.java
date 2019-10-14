@@ -39,6 +39,8 @@ public class ActivityFiltro extends AppCompatActivity {
     CheckBox checkBoxDominante;
     CheckBox checkBoxLeal;
 
+    CheckBox checkBoxNecesidades;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +69,8 @@ public class ActivityFiltro extends AppCompatActivity {
         checkBoxNervioso = findViewById(R.id.checkBoxNervioso);
         checkBoxDominante = findViewById(R.id.checkBoxDominante);
         checkBoxLeal = findViewById(R.id.checkBoxLeal);
+
+        checkBoxNecesidades = findViewById(R.id.checkBoxNecesidadesEspeciales);
 
         buttonAplicarFiltro.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +159,10 @@ public class ActivityFiltro extends AppCompatActivity {
                 }
                 if(checkBoxLeal.isChecked()){
                     listaDescriptores.add("Leal");
+                }
+
+                if(checkBoxNecesidades.isChecked()){
+                    listaDescriptores.add("Necesidades");
                 }
 
                 returnIntent.putExtra("numeroFiltrosAplicados", numeroFiltrosAplicados);

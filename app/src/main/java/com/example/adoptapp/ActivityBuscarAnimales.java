@@ -57,6 +57,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ActivityBuscarAnimales extends AppCompatActivity {
 
@@ -85,6 +86,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     int filtroEdad;
     double filtroDistancia;
     int numeroFiltrosAplicados;
+    ArrayList<String> listaDescriptores;
 
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 0;
     private static final int REQUEST_CHECK_SETTINGS = 1;
@@ -301,7 +303,64 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                                 animal.setDistancia( calcularDistancia(latitudActual, longitudActual,
                                         ubicacion.getLatitude(),ubicacion.getLongitude()) );
                                 animal.setFechaPublicacion( document.getDate("FechaPublicacion") );
-                                
+
+                                ArrayList<String> descriptores = new ArrayList<>();
+
+                                //retrieve descriptores
+                                if (document.getBoolean("dAlegre")){
+                                    descriptores.add("Alegre");
+                                }
+                                if (document.getBoolean("dCalmado")){
+                                    descriptores.add("Calmado");
+                                }
+                                if (document.getBoolean("dJugueton")){
+                                    descriptores.add("Jugueton");
+                                }
+                                if (document.getBoolean("dComelon")){
+                                    descriptores.add("Comelon");
+                                }
+                                if (document.getBoolean("dTimido")){
+                                    descriptores.add("Timido");
+                                }
+                                if (document.getBoolean("dAnsioso")){
+                                    descriptores.add("Ansioso");
+                                }
+                                if (document.getBoolean("dEnergetico")){
+                                    descriptores.add("Energetico");
+                                }
+                                if (document.getBoolean("dFuerte")){
+                                    descriptores.add("Fuerte");
+                                }
+                                if (document.getBoolean("dEmpatico")){
+                                    descriptores.add("Empatico");
+                                }
+                                if (document.getBoolean("dDestructivo")){
+                                    descriptores.add("Destructivo");
+                                }
+                                if (document.getBoolean("dAgresivo")){
+                                    descriptores.add("Agresivo");
+                                }
+                                if (document.getBoolean("dAmoroso")){
+                                    descriptores.add("Amoroso");
+                                }
+                                if (document.getBoolean("dIndependiente")){
+                                    descriptores.add("Independiente");
+                                }
+                                if (document.getBoolean("dNervioso")){
+                                    descriptores.add("Nervioso");
+                                }
+                                if (document.getBoolean("dDominante")){
+                                    descriptores.add("Dominante");
+                                }
+                                if (document.getBoolean("dLeal")){
+                                    descriptores.add("Leal");
+                                }
+
+                                if (document.getBoolean("dNecesidades")){
+                                    descriptores.add("Necesidades");
+                                }
+
+                                animal.setDescriptores(descriptores);
                                 arrayListAnimales.add(animal);
 
                                 //Log.d(TAG, document.getId() + " => " + animal.getNombre());
@@ -370,6 +429,8 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                     filtroEdad = data.getIntExtra("Edad", -1);
                     filtroDistancia = data.getDoubleExtra("Distancia", -1.0);
                     numeroFiltrosAplicados = data.getIntExtra("numeroFiltrosAplicados", 0);
+                    listaDescriptores = new ArrayList<>(data.getStringArrayListExtra("listaDescriptores"));
+
                     //aplicarFiltro();
                     aplicarFiltros();
                     //Log.i(TAG, "Parámetros de filtro: "+result);
@@ -568,6 +629,35 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
             arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
             arrayAuxiliar2.clear();
         }
+
+        ArrayList<String> descriptores;
+        String descriptor;
+        boolean cumpleConDescriptores;
+
+        for (int i = 0; i < arrayAuxiliar1.size(); i++) {
+
+            descriptores = new ArrayList<>(arrayAuxiliar1.get(i).getDescriptores());
+            cumpleConDescriptores = true;
+
+            for (int j = 0; j < listaDescriptores.size(); j++) {
+
+                Log.i(TAG, "Lista descriptores :"+listaDescriptores.get(j));
+                descriptor = listaDescriptores.get(j);
+
+                if (!descriptores.contains(descriptor)) { //si el animal no tiene ese descriptor
+                    cumpleConDescriptores = false;
+                    break;
+                }
+
+            }
+
+            if(cumpleConDescriptores){
+                arrayAuxiliar2.add(arrayAuxiliar1.get(i));
+            }
+        }
+
+        arrayAuxiliar1 = new ArrayList<>(arrayAuxiliar2);
+        arrayAuxiliar2.clear();
 
         /*for (int i = 0; i < arrayAuxiliar.size(); i++) {
             Log.i(TAG, "Esto es :"+arrayAuxiliar.get(i).getNombre());
