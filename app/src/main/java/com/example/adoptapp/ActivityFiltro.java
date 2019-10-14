@@ -105,55 +105,55 @@ public class ActivityFiltro extends AppCompatActivity {
 
                 ArrayList<String> listaDescriptores = new ArrayList<>();
 
-                if(checkBoxAlegre.isChecked() == true){
+                if(checkBoxAlegre.isChecked()){
                     listaDescriptores.add("Alegre");
                 }
-                if(checkBoxCalmado.isChecked() == true){
+                if(checkBoxCalmado.isChecked()){
                     listaDescriptores.add("Calmado");
                 }
-                if(checkBoxJugueton.isChecked() == true){
+                if(checkBoxJugueton.isChecked()){
                     listaDescriptores.add("Jugueton");
                 }
-                if(checkBoxComelon.isChecked() == true){
+                if(checkBoxComelon.isChecked()){
                     listaDescriptores.add("Comelon");
                 }
-                if(checkBoxTimido.isChecked() == true){
+                if(checkBoxTimido.isChecked()){
                     listaDescriptores.add("Timido");
                 }
-                if(checkBoxAnsioso.isChecked() == true){
+                if(checkBoxAnsioso.isChecked()){
                     listaDescriptores.add("Ansioso");
                 }
-                if(checkBoxEnergetico.isChecked() == true){
+                if(checkBoxEnergetico.isChecked()){
                     listaDescriptores.add("Energetico");
                 }
-                if(checkBoxFuerte.isChecked() == true){
+                if(checkBoxFuerte.isChecked()){
                     listaDescriptores.add("Fuerte");
                 }
-                if(checkBoxEmpatico.isChecked() == true){
+                if(checkBoxEmpatico.isChecked()){
                     listaDescriptores.add("Empatico");
                 }
-                if(checkBoxNinos.isChecked() == true){
+                if(checkBoxNinos.isChecked()){
                     listaDescriptores.add("Ninos");
                 }
-                if(checkBoxDestructivo.isChecked() == true){
+                if(checkBoxDestructivo.isChecked()){
                     listaDescriptores.add("Destructivo");
                 }
-                if(checkBoxAgresivo.isChecked() == true){
+                if(checkBoxAgresivo.isChecked()){
                     listaDescriptores.add("Agresivo");
                 }
-                if(checkBoxAmoroso.isChecked() == true){
+                if(checkBoxAmoroso.isChecked()){
                     listaDescriptores.add("Amoroso");
                 }
-                if(checkBoxIndependiente.isChecked() == true){
+                if(checkBoxIndependiente.isChecked()){
                     listaDescriptores.add("Independiente");
                 }
-                if(checkBoxNervioso.isChecked() == true){
+                if(checkBoxNervioso.isChecked()){
                     listaDescriptores.add("Nervioso");
                 }
-                if(checkBoxDominante.isChecked() == true){
+                if(checkBoxDominante.isChecked()){
                     listaDescriptores.add("Dominante");
                 }
-                if(checkBoxLeal.isChecked() == true){
+                if(checkBoxLeal.isChecked()){
                     listaDescriptores.add("Leal");
                 }
 
