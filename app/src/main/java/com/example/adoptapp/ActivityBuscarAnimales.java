@@ -301,6 +301,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
                                 animal.setDistancia( calcularDistancia(latitudActual, longitudActual,
                                         ubicacion.getLatitude(),ubicacion.getLongitude()) );
                                 animal.setFechaPublicacion( document.getDate("FechaPublicacion") );
+                                
                                 arrayListAnimales.add(animal);
 
                                 //Log.d(TAG, document.getId() + " => " + animal.getNombre());

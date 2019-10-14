@@ -21,7 +21,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/spinnerFiltroTamano"/>
+        app:layout_constraintBottom_toTopOf="@id/spinnerFiltroTamano"
+        android:layout_marginTop="10dp"/>
 
     <Spinner
         android:id="@+id/spinnerFiltroTamano"
@@ -31,7 +32,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/spinnerFiltroTipo"
-        app:layout_constraintBottom_toTopOf="@id/editTextFiltroEdad"/>
+        app:layout_constraintBottom_toTopOf="@id/editTextFiltroEdad"
+        android:layout_marginTop="10dp"/>
 
     <EditText
         android:id="@+id/editTextFiltroEdad"
@@ -44,7 +46,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/spinnerFiltroTamano"
         app:layout_constraintBottom_toTopOf="@+id/editTextFiltroDistancia"
-        tools:ignore="Autofill" />
+        tools:ignore="Autofill"
+        android:layout_marginTop="10dp"/>
 
     <EditText
         android:id="@+id/editTextFiltroDistancia"
@@ -56,8 +59,9 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextFiltroEdad"
-        app:layout_constraintBottom_toTopOf="@id/buttonAplicarFiltro"
-        tools:ignore="Autofill"/>
+        app:layout_constraintBottom_toTopOf="@id/textViewDescriptores"
+        tools:ignore="Autofill"
+        android:layout_marginTop="10dp"/>
 
     <Button
         android:id="@+id/buttonAplicarFiltro"
@@ -69,6 +73,139 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/textViewDescriptores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/textDescriptores"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/ScrollViewDescriptores"
+        app:layout_constraintTop_toBottomOf="@id/editTextFiltroDistancia"
+        android:layout_marginTop="10dp"/>
+
+    <ScrollView
+        android:id="@+id/ScrollViewDescriptores"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/buttonAplicarFiltro"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewDescriptores"
+        android:layout_marginTop="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/checkBoxAlegre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Alegre" />
+
+            <CheckBox
+                android:id="@+id/checkBoxCalmado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Calmado" />
+
+            <CheckBox
+                android:id="@+id/checkBoxJugueton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Jugueton" />
+
+            <CheckBox
+                android:id="@+id/checkBoxComelon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Comelon" />
+
+            <CheckBox
+                android:id="@+id/checkBoxTimido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Timido" />
+
+            <CheckBox
+                android:id="@+id/checkBoxAnsioso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Ansioso" />
+
+            <CheckBox
+                android:id="@+id/checkBoxEnergetico"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Energetico" />
+
+            <CheckBox
+                android:id="@+id/checkBoxFuerte"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Fuerte" />
+
+            <CheckBox
+                android:id="@+id/checkBoxEmpatico"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Empatico" />
+
+            <CheckBox
+                android:id="@+id/checkBoxNinos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Ninos" />
+
+            <CheckBox
+                android:id="@+id/checkBoxDestructivo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Destructivo" />
+
+            <CheckBox
+                android:id="@+id/checkBoxAgresivo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Agresivo" />
+
+            <CheckBox
+                android:id="@+id/checkBoxAmoroso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Amoroso" />
+
+            <CheckBox
+                android:id="@+id/checkBoxIndependiente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Independiente" />
+
+            <CheckBox
+                android:id="@+id/checkBoxNervioso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Nervioso" />
+
+            <CheckBox
+                android:id="@+id/checkBoxDominante"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Dominante" />
+
+            <CheckBox
+                android:id="@+id/checkBoxLeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Leal" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

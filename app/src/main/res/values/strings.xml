@@ -60,4 +60,22 @@
     <string name="botonHacerDonacion">Realizar donación</string>
     <string name="nombreAnimalPerfil">Nombre animal</string>
     <string name="AvisoNoConexion">No hay conexión</string>
+    <string name="textDescriptores">Descriptores de comportamiento</string>
+    <string name="Alegre">Alegre</string>
+    <string name="Calmado">Calmado</string>
+    <string name="Jugueton">Jugueton</string>
+    <string name="Comelon">Comelon</string>
+    <string name="Timido">Timido</string>
+    <string name="Ansioso">Ansioso</string>
+    <string name="Energetico">Energetico</string>
+    <string name="Fuerte">Fuerte</string>
+    <string name="Empatico">Empatico</string>
+    <string name="Ninos">Compatible con niños</string>
+    <string name="Destructivo">Destructivo</string>
+    <string name="Agresivo">Agresivo</string>
+    <string name="Amoroso">Amoroso</string>
+    <string name="Independiente">Independiente</string>
+    <string name="Nervioso">Nervioso</string>
+    <string name="Dominante">Dominante</string>
+    <string name="Leal">Leal</string>
 </resources>

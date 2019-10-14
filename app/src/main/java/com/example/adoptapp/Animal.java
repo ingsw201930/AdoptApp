@@ -3,6 +3,7 @@ package com.example.adoptapp;
 import android.os.Parcel;
 
 import java.util.Date;
+import java.util.Map;
 
 class Animal {
 
@@ -17,8 +18,17 @@ class Animal {
     private String municipioResponsable;
     private double distancia;
     private Date fechaPublicacion;
+    private Map<String,Integer> descriptores;
 
     Animal() {
+    }
+
+    public Map<String, Integer> getDescriptores() {
+        return descriptores;
+    }
+
+    public void setDescriptores(Map<String, Integer> descriptores) {
+        this.descriptores = descriptores;
     }
 
     public Date getFechaPublicacion() {
