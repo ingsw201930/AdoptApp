@@ -655,7 +655,8 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
         if (filtroEdad != -1) {
             for (int i = 0; i < arrayAuxiliar1.size(); i++) {
                 if(categoriaEdad.equals("Años")){
-                    if ( (arrayAuxiliar1.get(i).getEdad())/12 == filtroEdad){
+                    if ( (arrayAuxiliar1.get(i).getEdad())/12 == filtroEdad ||
+                            Math.floor((arrayAuxiliar1.get(i).getEdad())/12) == filtroEdad ){
                         arrayAuxiliar2.add(arrayAuxiliar1.get(i));
                     }
                 }else{ //en meses

@@ -95,6 +95,12 @@ public class ActivityFiltro extends AppCompatActivity {
                                         "edad pero no se proporcionó la edad",
                                 Toast.LENGTH_SHORT).show();
                         pasoValido = false;
+                    }else{
+                        if( Integer.parseInt(editTextFiltroEdad.getText().toString()) == 0 ){
+                            Toast.makeText(ActivityFiltro.this, "La edad debe ser mayor " +
+                                    "a cero",Toast.LENGTH_SHORT).show();
+                            pasoValido = false;
+                        }
                     }
                 }
 
