@@ -95,6 +95,22 @@ public class ActivityFiltro extends AppCompatActivity {
                                         "edad pero no se proporcionó la edad",
                                 Toast.LENGTH_SHORT).show();
                         pasoValido = false;
+                    }else{
+                        if( !editTextFiltroEdad.getText().toString().equals("")) {
+                            if (Integer.parseInt(editTextFiltroEdad.getText().toString()) == 0) {
+                                Toast.makeText(ActivityFiltro.this, "La edad debe ser mayor " +
+                                        "a cero", Toast.LENGTH_SHORT).show();
+                                pasoValido = false;
+                            }
+                        }
+                    }
+                }
+
+                if( !editTextFiltroDistancia.getText().toString().equals("")) {
+                    if (Integer.parseInt(editTextFiltroDistancia.getText().toString()) == 0) {
+                        Toast.makeText(ActivityFiltro.this, "La distancia debe ser mayor " +
+                                "a cero", Toast.LENGTH_SHORT).show();
+                        pasoValido = false;
                     }
                 }
 
