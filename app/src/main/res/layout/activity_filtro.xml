@@ -61,10 +61,11 @@
             android:ems="10"
             android:hint="@string/hintEdad"
             android:inputType="number"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toLeftOf="@id/spinnerCategoriaEdadFiltro"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="Autofill" />
 
         <Spinner
@@ -83,15 +84,16 @@
         android:id="@+id/editTextFiltroDistancia"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="@string/distanciaFiltro"
         android:inputType="number"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@id/checkBoxNecesidadesEspeciales"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ConstraintLayoutEdad"
-        app:layout_constraintBottom_toTopOf="@id/checkBoxNecesidadesEspeciales"
-        tools:ignore="Autofill"
-        android:layout_marginTop="10dp"/>
+        tools:ignore="Autofill" />
 
     <Button
         android:id="@+id/buttonAplicarFiltro"

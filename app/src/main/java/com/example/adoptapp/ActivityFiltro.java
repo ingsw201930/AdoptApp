@@ -104,6 +104,12 @@ public class ActivityFiltro extends AppCompatActivity {
                     }
                 }
 
+                if ( Integer.parseInt(editTextFiltroDistancia.getText().toString()) == 0) {
+                    Toast.makeText(ActivityFiltro.this, "La distancia debe ser mayor " +
+                            "a cero",Toast.LENGTH_SHORT).show();
+                    pasoValido = false;
+                }
+
                 if(pasoValido == true) {
 
                     Intent returnIntent = new Intent();
