@@ -208,10 +208,4 @@ public class ActivityLogin extends AppCompatActivity {
         finish();
         //}
     }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(ActivityLogin.this, ActivityMenuAdoptante.class);
-        startActivity(intent);
-    }
 }
