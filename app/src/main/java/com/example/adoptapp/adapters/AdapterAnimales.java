@@ -1,4 +1,4 @@
-package com.example.adoptapp.views;
+package com.example.adoptapp.adapters;
 
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;

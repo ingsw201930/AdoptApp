@@ -29,6 +29,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.adoptapp.R;
+import com.example.adoptapp.adapters.AdapterAnimales;
+import com.example.adoptapp.adapters.RecyclerTouchListener;
 import com.example.adoptapp.model.Animal;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
