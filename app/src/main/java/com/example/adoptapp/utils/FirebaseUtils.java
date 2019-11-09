@@ -23,7 +23,7 @@ public class FirebaseUtils {
     {
         db.setFirestoreSettings(settings);
         StorageReference photoRef = mStorageRef.child(ruta);
-        final long ONE_MEGABYTE = 1024 * 1024 * 5*5;
+        final long ONE_MEGABYTE = 1024 * 1024; //(1024 bytes = 1 KB) x (1024 = 1 MB) x 1 = 1 MB
         photoRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>()
         {
             @Override
