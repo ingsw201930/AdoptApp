@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class ActivityMenuAdoptante extends AppCompatActivity {
 
     ConstraintLayout constraintLayoutBuscarAnimales;
+    ConstraintLayout constraintLayoutBuscarInstituciones;
 
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
@@ -34,11 +35,20 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
 
         constraintLayoutBuscarAnimales = findViewById(R.id.ConstraintLayoutBuscarAnimales);
+        constraintLayoutBuscarInstituciones = findViewById(R.id.ConstraintLayoutBuscarInstituciones);
 
         constraintLayoutBuscarAnimales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ActivityBuscarAnimales.class);
+                startActivity(intent);
+            }
+        });
+
+        constraintLayoutBuscarInstituciones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ActivityBuscarInstituciones.class);
                 startActivity(intent);
             }
         });

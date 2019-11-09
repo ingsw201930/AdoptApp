@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tv_cargando_lista_instituciones"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.ActivityPerfilInstitucion"
+    android:padding="10dp">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65"/>
+
+    <TextView
+        android:id="@+id/tv_perfil_nombre_fundacion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/roundcornercolorprimario"
+        android:gravity="center_horizontal"
+        android:text="@string/nombre_item_institucion"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/sv_perfil_institucion"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/sv_perfil_institucion"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/guideline3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_perfil_nombre_fundacion">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_perfil_foto_fundacion"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:contentDescription="@string/imagen_item_institucion"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/cargando_imagen" />
+
+            <TextView
+                android:id="@+id/tv_perfil_datos_fundacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="@string/detallesInstitucion" />
+        </LinearLayout>
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_donar_fundacion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundcornercolorprimario"
+        app:layout_constraintBottom_toTopOf="@id/cl_voluntariado"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline3">
+
+        <ImageView
+            android:id="@+id/iv_perfil_fundacion_donar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/botonHacerDonacion"
+            android:tint="@color/common_google_signin_btn_text_dark_default"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tv_perfil_fundacion_donar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icono_adoptante" />
+
+        <TextView
+            android:id="@+id/tv_perfil_fundacion_donar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/botonHacerDonacion"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/iv_perfil_fundacion_donar"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_voluntariado"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundcornercolorprimario"
+        app:layout_constraintBottom_toTopOf="@id/cl_chat_con_fundacion"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_donar_fundacion">
+
+        <ImageView
+            android:id="@+id/iv_perfil_fundacion_voluntariado"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/voluntariado"
+            android:tint="@color/common_google_signin_btn_text_dark_default"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tv_perfil_fundacion_voluntariado"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icono_adoptante" />
+
+        <TextView
+            android:id="@+id/tv_perfil_fundacion_voluntariado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/voluntariado"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/iv_perfil_fundacion_voluntariado"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_chat_con_fundacion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundcornercolorprimario"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_voluntariado">
+
+        <ImageView
+            android:id="@+id/iv_perfil_fundacion_chat"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/iniciar_chat"
+            android:tint="@color/common_google_signin_btn_text_dark_default"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tv_perfil_fundacion_chat"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icono_institucion" />
+
+        <TextView
+            android:id="@+id/tv_perfil_fundacion_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/iniciar_chat"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/iv_perfil_fundacion_chat"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

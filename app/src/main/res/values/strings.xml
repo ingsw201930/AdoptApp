@@ -87,4 +87,6 @@
     <string name="nombre_item_institucion">Nombre de la institución</string>
     <string name="imagen_item_institucion">Foto de la institución</string>
     <string name="detallesInstitucion">Ciudad, Departamento\nEncargado</string>
+    <string name="voluntariado">Ofrecer voluntariado</string>
+    <string name="iniciar_chat">Iniciar chat</string>
 </resources>
