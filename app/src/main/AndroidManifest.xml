@@ -17,9 +17,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.ActivityPerfilAnimal"></activity>
-        <activity android:name=".views.ActivityFiltro"
-            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".views.ActivityBuscarInstituciones"></activity>
+        <activity android:name=".views.ActivityPerfilAnimal" />
+        <activity
+            android:name=".views.ActivityFiltro"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".views.ActivityRegistrarAnimal"
             android:screenOrientation="portrait" />

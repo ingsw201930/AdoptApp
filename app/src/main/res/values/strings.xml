@@ -84,4 +84,7 @@
         <item>Años</item>
         <item>Meses</item>
     </string-array>
+    <string name="nombre_item_institucion">Nombre de la institución</string>
+    <string name="imagen_item_institucion">Foto de la institución</string>
+    <string name="detallesInstitucion">Ciudad, Departamento\nEncargado</string>
 </resources>
