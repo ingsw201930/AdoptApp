@@ -1,4 +1,4 @@
-package com.example.adoptapp;
+package com.example.adoptapp.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -10,12 +10,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.adoptapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class ActivityMenuKeeper extends AppCompatActivity {
+public class ActivityMenuAdoptante extends AppCompatActivity {
 
-    ConstraintLayout constraintLayoutRegistrarAnimal;
+    ConstraintLayout constraintLayoutBuscarAnimales;
 
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
@@ -25,23 +26,22 @@ public class ActivityMenuKeeper extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_keeper);
+        setContentView(R.layout.activity_menu_adoptante);
 
         //sesionCerrada = false;
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
-        constraintLayoutRegistrarAnimal = findViewById(R.id.ConstraintLayoutRegistrarAnimal);
+        constraintLayoutBuscarAnimales = findViewById(R.id.ConstraintLayoutBuscarAnimales);
 
-        constraintLayoutRegistrarAnimal.setOnClickListener(new View.OnClickListener() {
+        constraintLayoutBuscarAnimales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), ActivityRegistrarAnimal.class);
+                Intent intent = new Intent(view.getContext(), ActivityBuscarAnimales.class);
                 startActivity(intent);
             }
         });
-
     }
 
     @Override
@@ -68,21 +68,20 @@ public class ActivityMenuKeeper extends AppCompatActivity {
             mAuth.signOut();
         }
         //sesionCerrada = true;
-        Intent intent = new Intent(ActivityMenuKeeper.this, MainActivity.class);
+        Intent intent = new Intent(ActivityMenuAdoptante.this, MainActivity.class);
         startActivity(intent);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        //if(sesionCerrada == true){
         finish();
-        //}
     }
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(ActivityMenuKeeper.this, ActivityLogin.class);
+        Intent intent = new Intent(ActivityMenuAdoptante.this, ActivityInicioPersona.class);
         startActivity(intent);
     }
+
 }

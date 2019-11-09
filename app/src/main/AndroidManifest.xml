@@ -17,29 +17,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ActivityPerfilAnimal"></activity>
-        <activity android:name=".ActivityFiltro"
+        <activity android:name=".views.ActivityPerfilAnimal"></activity>
+        <activity android:name=".views.ActivityFiltro"
             android:windowSoftInputMode="stateHidden"/>
         <activity
-            android:name=".ActivityRegistrarAnimal"
+            android:name=".views.ActivityRegistrarAnimal"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ActivityMenuKeeper"
+            android:name=".views.ActivityMenuKeeper"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ActivityBuscarAnimales"
+            android:name=".views.ActivityBuscarAnimales"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ActivityMenuAdoptante"
+            android:name=".views.ActivityMenuAdoptante"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ActivityInicioPersona"
+            android:name=".views.ActivityInicioPersona"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ActivityLogin"
+            android:name=".views.ActivityLogin"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name=".views.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

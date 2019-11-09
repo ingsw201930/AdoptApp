@@ -1,4 +1,4 @@
-package com.example.adoptapp;
+package com.example.adoptapp.model;
 
 import android.os.Parcel;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
-class Animal {
+public class Animal {
 
     private String id;
     private String nombre;
@@ -23,7 +23,7 @@ class Animal {
     //private Map<String,Integer> descriptores;
     private ArrayList<String> descriptores;
 
-    Animal() {
+    public Animal() {
     }
 
     public String getSexo() {
@@ -34,27 +34,27 @@ class Animal {
         this.sexo = sexo;
     }
 
-    ArrayList<String> getDescriptores() {
+    public ArrayList<String> getDescriptores() {
         return descriptores;
     }
 
-    void setDescriptores(ArrayList<String> descriptores) {
+    public void setDescriptores(ArrayList<String> descriptores) {
         this.descriptores = descriptores;
     }
 
-    Date getFechaPublicacion() {
+    public Date getFechaPublicacion() {
         return fechaPublicacion;
     }
 
-    void setFechaPublicacion(Date fechaPublicacion) {
+    public void setFechaPublicacion(Date fechaPublicacion) {
         this.fechaPublicacion = fechaPublicacion;
     }
 
-    String getNombreResponsable() {
+    public String getNombreResponsable() {
         return nombreResponsable;
     }
 
-    void setNombreResponsable(String nombreResponsable) {
+    public void setNombreResponsable(String nombreResponsable) {
         this.nombreResponsable = nombreResponsable;
     }
 
@@ -66,27 +66,27 @@ class Animal {
         this.municipioResponsable = municipioResponsable;
     }
 
-    double getDistancia() {
+    public double getDistancia() {
         return distancia;
     }
 
-    void setDistancia(double distancia) {
+    public void setDistancia(double distancia) {
         this.distancia = distancia;
     }
 
-    String getTipo() {
+    public String getTipo() {
         return tipo;
     }
 
-    void setTipo(String tipo) {
+    public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 
-    String getUrlFotoPrincipal() {
+    public String getUrlFotoPrincipal() {
         return urlFotoPrincipal;
     }
 
-    void setUrlFotoPrincipal(String urlFotoPrincipal) {
+    public void setUrlFotoPrincipal(String urlFotoPrincipal) {
         this.urlFotoPrincipal = urlFotoPrincipal;
     }
 
@@ -98,35 +98,35 @@ class Animal {
         this.id = id;
     }
 
-    String getNombre() {
+    public String getNombre() {
         return nombre;
     }
 
-    void setNombre(String nombre) {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    String getTamano() {
+    public String getTamano() {
         return tamano;
     }
 
-    void setTamano(String tamano) {
+    public void setTamano(String tamano) {
         this.tamano = tamano;
     }
 
-    int getEdad() {
+    public int getEdad() {
         return edad;
     }
 
-    void setEdad(int edad) {
+    public void setEdad(int edad) {
         this.edad = edad;
     }
 
-    String getCiudad() {
+    public String getCiudad() {
         return ciudad;
     }
 
-    void setCiudad(String ciudad) {
+    public void setCiudad(String ciudad) {
         this.ciudad = ciudad;
     }
 }

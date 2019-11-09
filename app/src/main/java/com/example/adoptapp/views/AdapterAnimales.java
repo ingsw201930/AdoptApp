@@ -1,6 +1,5 @@
-package com.example.adoptapp;
+package com.example.adoptapp.views;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.adoptapp.R;
+import com.example.adoptapp.model.Animal;
 
 import java.io.InputStream;
 import java.net.URL;
