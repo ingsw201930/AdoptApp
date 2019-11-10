@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">AdoptApp</string>
-    <string name="api_key">AIzaSyCkSVbfyFl9Nju56fwaAM4vct0pTwSc_ss</string>
     <string name="botonIngresar">Ingresar</string>
     <string name="botonRegistrarse">Crear cuenta</string>
     <string name="descripcionImagenLogo">Logo de AdoptApp</string>
@@ -102,4 +101,5 @@
     <string name="campo_obligatorio">Campo obligatorio</string>
 
     <string name="ver_reportes">Ver reportes</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
