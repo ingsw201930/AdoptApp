@@ -19,6 +19,7 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
     ConstraintLayout constraintLayoutBuscarAnimales;
     ConstraintLayout constraintLayoutBuscarInstituciones;
     ConstraintLayout constraintLayoutReporteRapido;
+    ConstraintLayout constraintLayoutVerReportes;
 
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
@@ -33,6 +34,7 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
         constraintLayoutBuscarAnimales = findViewById(R.id.ConstraintLayoutBuscarAnimales);
         constraintLayoutBuscarInstituciones = findViewById(R.id.ConstraintLayoutBuscarInstituciones);
         constraintLayoutReporteRapido = findViewById(R.id.ConstraintLayoutReporteRapido);
+        constraintLayoutVerReportes = findViewById(R.id.ConstraintLayoutVerReportes);
 
         //sesionCerrada = false;
 
@@ -59,6 +61,14 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ActivityReporteRapido.class);
+                startActivity(intent);
+            }
+        });
+
+        constraintLayoutVerReportes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ActivityBuscarReporte.class);
                 startActivity(intent);
             }
         });

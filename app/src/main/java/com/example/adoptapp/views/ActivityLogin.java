@@ -24,18 +24,18 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class ActivityLogin extends AppCompatActivity {
 
-    Button botonIngresar;
-    EditText editTextEmail;
-    EditText editTextContrasena;
+    private Button botonIngresar;
+    private EditText editTextEmail;
+    private EditText editTextContrasena;
 
     private FirebaseAuth mAuth;
-    FirebaseUser currentUser;
+    private FirebaseUser currentUser;
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private static final String TAG = "ActivityLogin";
 
-    String tipoUsuario;
+    private String tipoUsuario;
 
     //Boolean loginExitoso;
 

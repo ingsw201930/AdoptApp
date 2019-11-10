@@ -10,14 +10,20 @@ public class ReporteRapido {
     private GeoPoint ubicacion;
     private Date fecha;
     private String direccionFoto;
+    private String idResponsable;
+    private String nombreResponsable;
+    private double distancia;
 
     public ReporteRapido() {
     }
 
-    public ReporteRapido(String descripcion, String foto, Date fecha) {
+    public ReporteRapido(String descripcion, String direccionFoto, Date fecha, String idResponsable,
+                         String nombreResponsable) {
         this.descripcion = descripcion;
-        this.direccionFoto = foto;
         this.fecha = fecha;
+        this.direccionFoto = direccionFoto;
+        this.idResponsable = idResponsable;
+        this.nombreResponsable = nombreResponsable;
     }
 
     public String getDescripcion() {
@@ -50,5 +56,25 @@ public class ReporteRapido {
 
     public void setDireccionFoto(String direccionFoto) {
         this.direccionFoto = direccionFoto;
+    }
+
+    public String getIdResponsable() {
+        return idResponsable;
+    }
+
+    public void setIdResponsable(String idResponsable) {
+        this.idResponsable = idResponsable;
+    }
+
+    public String getNombreResponsable() {
+        return nombreResponsable;
+    }
+
+    public void setNombreResponsable(String nombreResponsable) {
+        this.nombreResponsable = nombreResponsable;
+    }
+
+    public void setDistancia(double distancia) {
+        this.distancia = distancia;
     }
 }

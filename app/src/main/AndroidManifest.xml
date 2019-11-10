@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <dist:module dist:instant="true" />
 
@@ -18,13 +18,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".views.ActivityDetalleReporte"></activity>
+        <activity android:name=".views.ActivityBuscarReporte" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/api_key"/>
-        <activity android:name=".views.ActivityReporteRapido"></activity>
-        <activity android:name=".views.ActivityPerfilInstitucion" />
-        <activity android:name=".views.ActivityBuscarInstituciones" />
-        <activity android:name=".views.ActivityPerfilAnimal" />
+            android:value="@string/api_key" />
+
+        <activity
+            android:name=".views.ActivityReporteRapido"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".views.ActivityPerfilInstitucion"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ActivityBuscarInstituciones"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ActivityPerfilAnimal"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".views.ActivityFiltro"
             android:windowSoftInputMode="stateHidden" />

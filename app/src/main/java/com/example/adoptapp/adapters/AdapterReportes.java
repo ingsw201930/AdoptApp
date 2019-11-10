@@ -6,21 +6,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.adoptapp.R;
 import com.example.adoptapp.model.Institucion;
+import com.example.adoptapp.model.ReporteRapido;
 import com.example.adoptapp.utils.FirebaseUtils;
 
 import java.util.ArrayList;
 
-public class AdapterInstituciones extends RecyclerView.Adapter<AdapterInstituciones.MyViewHolder> {
+public class AdapterReportes extends RecyclerView.Adapter<AdapterReportes.MyViewHolder> {
 
-    private ArrayList<Institucion> listaInstituciones;
+    private ArrayList<ReporteRapido> listaReportes;
 
-    public AdapterInstituciones(ArrayList<Institucion> listaInstituciones) {
-        this.listaInstituciones = listaInstituciones;
+    public AdapterReportes(ArrayList<ReporteRapido> listaReportes) {
+        this.listaReportes = listaReportes;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -53,19 +53,19 @@ public class AdapterInstituciones extends RecyclerView.Adapter<AdapterInstitucio
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        final Institucion institucion = listaInstituciones.get(position);
-        holder.textViewNombre.setText(institucion.getNombre());
-        String datosInstitucion = "Encargado: " + institucion.getEncargado()+"\n"+
-                "Municipio: "+institucion.getMunicipio()+"\n"+
-                "A "+institucion.getDistancia()+" km de tu ubicación\n";
-        holder.textViewDatos.setText(datosInstitucion);
+        final ReporteRapido reporte = listaReportes.get(position);
+        holder.textViewNombre.setText("Reporte rápido");
+        String datosReporte = "Descripcion:\n" + reporte.getDescripcion()+"\n"+
+                "Fecha :" + reporte.getFecha()+"\n"+
+                "Nombre responsable :" + reporte.getNombreResponsable();
+        holder.textViewDatos.setText(datosReporte);
 
         new Thread(new Runnable() {
             public void run() {
                 // a potentially time consuming task
 
-                if (!institucion.getImagenPrincipal().equals("")) {
-                    FirebaseUtils.descargarFotoImageView(institucion.getImagenPrincipal(), holder.imageViewFoto);
+                if (!reporte.getDireccionFoto().equals("")) {
+                    FirebaseUtils.descargarFotoImageView(reporte.getDireccionFoto(), holder.imageViewFoto);
                 }
             }
         }).start();
@@ -73,6 +73,6 @@ public class AdapterInstituciones extends RecyclerView.Adapter<AdapterInstitucio
 
     @Override
     public int getItemCount() {
-        return listaInstituciones.size();
+        return listaReportes.size();
     }
 }

@@ -100,4 +100,6 @@
     <string name="descripcion_reporte_rapido">Descripción</string>
     <string name="ubicacion_reporte_rapido">Ubicación</string>
     <string name="campo_obligatorio">Campo obligatorio</string>
+
+    <string name="ver_reportes">Ver reportes</string>
 </resources>

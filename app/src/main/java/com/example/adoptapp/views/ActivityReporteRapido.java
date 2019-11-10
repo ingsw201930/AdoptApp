@@ -53,6 +53,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
@@ -70,12 +71,12 @@ import java.util.Date;
 
 public class ActivityReporteRapido extends AppCompatActivity implements OnMapReadyCallback {
 
-    ImageView imageViewFoto;
-    EditText editTextReporte;
-    Button buttonReportar;
-    ImageButton ib_upload_photo;
-    ImageButton imageButtonGaleria;
-    SupportMapFragment mapFragment;
+    private ImageView imageViewFoto;
+    private EditText editTextReporte;
+    private Button buttonReportar;
+    private ImageButton ib_upload_photo;
+    private ImageButton imageButtonGaleria;
+    private SupportMapFragment mapFragment;
 
     private static String[] PERMISSIONS = {
             android.Manifest.permission.CAMERA,
@@ -91,6 +92,7 @@ public class ActivityReporteRapido extends AppCompatActivity implements OnMapRea
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
 
     private static final int REQUEST_IMAGE_CAPTURE = 3;
     private static final int IMAGE_PICKER_REQUEST = 2;
@@ -109,12 +111,11 @@ public class ActivityReporteRapido extends AppCompatActivity implements OnMapRea
 
     private FirebaseFirestoreSettings settings;
 
-    LatLng latLng1;
-    LatLng latLng2;
+    private LatLng latLng1;
 
-    Geocoder mGeocoder;
+    private Geocoder mGeocoder;
 
-    ReporteRapido reporte;
+    private ReporteRapido reporte;
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -140,13 +141,15 @@ public class ActivityReporteRapido extends AppCompatActivity implements OnMapRea
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+
         mGeocoder = new Geocoder( getBaseContext());
 
         settings = new FirebaseFirestoreSettings.Builder()
                 .build();
         storageReference = FirebaseStorage.getInstance().getReference();
-
-        mAuth = FirebaseAuth.getInstance();
 
         ubicacionCliente = new GeoPoint(0,0);
 
@@ -479,12 +482,9 @@ public class ActivityReporteRapido extends AppCompatActivity implements OnMapRea
         if(!completo) {
             return null;
         }else{
-
-            Calendar calendar;
-            calendar = Calendar.getInstance();
             Date dateObj = Calendar.getInstance().getTime();
-
-            return new ReporteRapido(descripcion, foto, dateObj);
+            return new ReporteRapido(descripcion, foto, dateObj, currentUser.getUid(),
+                    currentUser.getDisplayName());
         }
 
     }

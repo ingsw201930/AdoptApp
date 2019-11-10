@@ -30,8 +30,10 @@ import android.widget.Toast;
 
 import com.example.adoptapp.R;
 import com.example.adoptapp.adapters.AdapterInstituciones;
+import com.example.adoptapp.adapters.AdapterReportes;
 import com.example.adoptapp.adapters.RecyclerTouchListener;
 import com.example.adoptapp.model.Institucion;
+import com.example.adoptapp.model.ReporteRapido;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -58,7 +60,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class ActivityBuscarInstituciones extends AppCompatActivity {
+public class ActivityBuscarReporte extends AppCompatActivity {
 
     FirebaseFirestore db;
     FirebaseAuth mAuth;
@@ -69,10 +71,10 @@ public class ActivityBuscarInstituciones extends AppCompatActivity {
     TextView textViewCargando;
     ConstraintLayout constraintLayoutSuperior;
 
-    private static final String TAG = "Buscar instituciones";
-    ArrayList<Institucion> arrayListInstituciones;
+    private static final String TAG = "Ver reportes";
+    ArrayList<ReporteRapido> arrayListReportes;
 
-    private AdapterInstituciones mAdapter;
+    private AdapterReportes mAdapter;
 
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 0;
     private static final int REQUEST_CHECK_SETTINGS = 1;
@@ -93,14 +95,14 @@ public class ActivityBuscarInstituciones extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_buscar_instituciones);
+        setContentView(R.layout.activity_buscar_reportes);
 
-        recyclerViewInstituciones = findViewById(R.id.rv_lista_instituciones);
-        progressBarCargarLista = findViewById(R.id.pb_lista_instituciones);
-        textViewCargando = findViewById(R.id.tv_cargando_lista_instituciones);
-        constraintLayoutSuperior = findViewById(R.id.cl_superior);
+        recyclerViewInstituciones = findViewById(R.id.rv_lista_reportes);
+        progressBarCargarLista = findViewById(R.id.pb_lista_reportes);
+        textViewCargando = findViewById(R.id.tv_cargando_lista_reportes);
+        constraintLayoutSuperior = findViewById(R.id.cl_superior_reportes);
 
-        ConnectivityManager cm = (ConnectivityManager)ActivityBuscarInstituciones.this.getSystemService
+        ConnectivityManager cm = (ConnectivityManager)ActivityBuscarReporte.this.getSystemService
                 (CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
@@ -109,7 +111,7 @@ public class ActivityBuscarInstituciones extends AppCompatActivity {
         if(!isConnected) {
             progressBarCargarLista.setVisibility(View.GONE);
             textViewCargando.setText(R.string.AvisoNoConexion);
-            Toast.makeText(ActivityBuscarInstituciones.this, "No hay conexión a internet",
+            Toast.makeText(ActivityBuscarReporte.this, "No hay conexión a internet",
                     Toast.LENGTH_SHORT).show();
         }
 
@@ -132,8 +134,8 @@ public class ActivityBuscarInstituciones extends AppCompatActivity {
                 if (location != null) {
                     latitudActual = location.getLatitude();
                     longitudActual = location.getLongitude();
-                    if (arrayListInstituciones.size() == 0) {
-                        leerListaInstituciones();
+                    if (arrayListReportes.size() == 0) {
+                        leerListaReportes();
                     }
                     stopLocationUpdates();
                     Log.i(TAG, latitudActual+" "+longitudActual);
@@ -144,9 +146,9 @@ public class ActivityBuscarInstituciones extends AppCompatActivity {
         latitudActual = 200; //inicializar con latitud que no existe
         longitudActual = 200; //inicializar con longitud que no existe
 
-        arrayListInstituciones = new ArrayList<>();
+        arrayListReportes = new ArrayList<>();
 
-        mAdapter = new AdapterInstituciones(arrayListInstituciones);
+        mAdapter = new AdapterReportes(arrayListReportes);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerViewInstituciones.setLayoutManager(mLayoutManager);
         recyclerViewInstituciones.setItemAnimator(new DefaultItemAnimator());
@@ -158,20 +160,20 @@ public class ActivityBuscarInstituciones extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
 
-                Institucion institucion = arrayListInstituciones.get(position);
+                ReporteRapido reporte = arrayListReportes.get(position);
 
-                Intent intent = new Intent(view.getContext(), ActivityPerfilInstitucion.class);
+                Intent intent = new Intent(view.getContext(), ActivityDetalleReporte.class);
 
-                intent.putExtra("Nombre", institucion.getNombre());
-                intent.putExtra("Foto_principal", institucion.getImagenPrincipal());
+                intent.putExtra("Nombre", "Reporte rápido");
+                intent.putExtra("Foto_principal", reporte.getDireccionFoto());
 
-                String datosInstitucion = "Encargado: " + institucion.getEncargado()+"\n"+
-                        "Municipio: "+institucion.getMunicipio()+"\n"+
-                        "Email: "+institucion.getEmail()+"\n"+
-                        "Teléfono: "+institucion.getTelefono()+"\n"+
-                        "A "+institucion.getDistancia()+" km de tu ubicación\n"+
-                        "Descripción:\n"+institucion.getDescripcion()+"";
-                intent.putExtra("Descripcion", datosInstitucion);
+                String datosReporte = "Descripcion:\n" + reporte.getDescripcion()+"\n"+
+                        "Fecha :" + reporte.getFecha()+"\n"+
+                        "Nombre responsable :" + reporte.getNombreResponsable();
+
+                intent.putExtra("Descripcion", datosReporte);
+                intent.putExtra("Latitud", reporte.getUbicacion().getLatitude());
+                intent.putExtra("Longitud", reporte.getUbicacion().getLongitude());
 
                 startActivity(intent);
             }
@@ -182,14 +184,15 @@ public class ActivityBuscarInstituciones extends AppCompatActivity {
             }
         }));
 
-        if (ContextCompat.checkSelfPermission(ActivityBuscarInstituciones.this,
+        if (ContextCompat.checkSelfPermission(ActivityBuscarReporte.this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             revisarActivacionGPS();
         }else{
-            requestPermission(ActivityBuscarInstituciones.this, PERMISSIONS[0], "Acceso " +
+            requestPermission(ActivityBuscarReporte.this, PERMISSIONS[0], "Acceso " +
                     "a localización necesario para listar animales", MY_PERMISSIONS_REQUEST_LOCATION);
         }
+
     }
 
     private void startLocationUpdates() {
@@ -206,7 +209,7 @@ public class ActivityBuscarInstituciones extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(ActivityBuscarInstituciones.this, ActivityMenuAdoptante.class);
+        Intent intent = new Intent(ActivityBuscarReporte.this, ActivityMenuAdoptante.class);
         startActivity(intent);
         finish();
     }
@@ -232,7 +235,7 @@ public class ActivityBuscarInstituciones extends AppCompatActivity {
         if (currentUser == null) {
             mAuth.signOut();
         }
-        Intent intent = new Intent(ActivityBuscarInstituciones.this, MainActivity.class);
+        Intent intent = new Intent(ActivityBuscarReporte.this, MainActivity.class);
         startActivity(intent);
         finish();
     }
@@ -291,7 +294,7 @@ public class ActivityBuscarInstituciones extends AppCompatActivity {
                             try {// Show the dialog by calling startResolutionForResult(),
                                 // and check the result in onActivityResult().
                                 ResolvableApiException resolvable = (ResolvableApiException) e;
-                                resolvable.startResolutionForResult(ActivityBuscarInstituciones.this,
+                                resolvable.startResolutionForResult(ActivityBuscarReporte.this,
                                         REQUEST_CHECK_SETTINGS);
                             } catch (IntentSender.SendIntentException sendEx) {
                                 // Ignore the error.
@@ -352,54 +355,51 @@ public class ActivityBuscarInstituciones extends AppCompatActivity {
         }
     }
 
-    public void mostrarListaInstituciones() {
-        if (arrayListInstituciones.size() > 0){
+    public void mostrarListaReportes() {
+        if (arrayListReportes.size() > 0){
             //mAdapter = new AdapterAnimales(arrayAnimales);
             //customAdapter = new CustomAdapter(this, arrayAnimales);
             //listViewAnimales.setAdapter(customAdapter);
             //progressBarCargarLista.setVisibility(View.GONE);
-            mAdapter = new AdapterInstituciones(arrayListInstituciones);
+            mAdapter = new AdapterReportes(arrayListReportes);
             recyclerViewInstituciones.setAdapter(mAdapter);
             //mAdapter.notifyDataSetChanged();
             textViewCargando.setText("");
             constraintLayoutSuperior.setVisibility(View.GONE);
         }else{
             textViewCargando.setText(R.string.resultadosNoEncontrados);
-            Toast.makeText(ActivityBuscarInstituciones.this, "La búsqueda no " +
+            Toast.makeText(ActivityBuscarReporte.this, "La búsqueda no " +
                     "ha encontrado resultados", Toast.LENGTH_SHORT).show();
         }
         progressBarCargarLista.setVisibility(View.GONE);
         //imageButtonFiltrar.setEnabled(true);
     }
 
-    public void leerListaInstituciones() {
+    public void leerListaReportes() {
 
-        db.collection("instituciones")
+        db.collection("reportes")
                 /*.whereEqualTo("Estado", "Espera")*/
-                .orderBy("Nombre", Query.Direction.ASCENDING)
+                .orderBy("fecha", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Institucion institucion = new Institucion();
-                                institucion.setId(document.getId());
-                                institucion.setNombre( document.getString("Nombre") );
-                                institucion.setEmail( document.getString("Email") );
-                                institucion.setEncargado( document.getString("Encargado") );
-                                institucion.setImagenPrincipal( document.getString("ImagenPrincipal") );
-                                institucion.setMunicipio( document.getString("Municipio") );
-                                institucion.setTelefono( document.getLong("Telefono"));
-                                institucion.setDescripcion( document.getString("Descripcion") );
-                                GeoPoint ubicacion = document.getGeoPoint("Ubicacion");
-                                institucion.setUbicacion( ubicacion );
-                                institucion.setDistancia( calcularDistancia(latitudActual, longitudActual,
+                                ReporteRapido reporte = new ReporteRapido();
+                                reporte.setDescripcion( document.getString("descripcion") );
+                                reporte.setDireccionFoto( document.getString("direccionFoto") );
+                                reporte.setFecha( document.getDate("fecha") );
+                                reporte.setIdResponsable( document.getString("idResponsable") );
+                                reporte.setNombreResponsable( document.getString("nombreResponsable") );
+                                GeoPoint ubicacion = document.getGeoPoint("ubicacion");
+                                reporte.setUbicacion( ubicacion );
+                                reporte.setDistancia( calcularDistancia(latitudActual, longitudActual,
                                         ubicacion.getLatitude(),ubicacion.getLongitude()) );
-                                arrayListInstituciones.add(institucion);
+                                arrayListReportes.add(reporte);
                             }
                             /*arrayListReportes = new ArrayList<>(arrayListAnimales);*/
-                            mostrarListaInstituciones();
+                            mostrarListaReportes();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
