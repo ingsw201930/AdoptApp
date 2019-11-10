@@ -18,6 +18,7 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
 
     ConstraintLayout constraintLayoutBuscarAnimales;
     ConstraintLayout constraintLayoutBuscarInstituciones;
+    ConstraintLayout constraintLayoutReporteRapido;
 
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
@@ -29,13 +30,14 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_adoptante);
 
+        constraintLayoutBuscarAnimales = findViewById(R.id.ConstraintLayoutBuscarAnimales);
+        constraintLayoutBuscarInstituciones = findViewById(R.id.ConstraintLayoutBuscarInstituciones);
+        constraintLayoutReporteRapido = findViewById(R.id.ConstraintLayoutReporteRapido);
+
         //sesionCerrada = false;
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-
-        constraintLayoutBuscarAnimales = findViewById(R.id.ConstraintLayoutBuscarAnimales);
-        constraintLayoutBuscarInstituciones = findViewById(R.id.ConstraintLayoutBuscarInstituciones);
 
         constraintLayoutBuscarAnimales.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +51,14 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ActivityBuscarInstituciones.class);
+                startActivity(intent);
+            }
+        });
+
+        constraintLayoutReporteRapido.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ActivityReporteRapido.class);
                 startActivity(intent);
             }
         });

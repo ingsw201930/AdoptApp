@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">AdoptApp</string>
+    <string name="api_key">AIzaSyCkSVbfyFl9Nju56fwaAM4vct0pTwSc_ss</string>
     <string name="botonIngresar">Ingresar</string>
     <string name="botonRegistrarse">Crear cuenta</string>
     <string name="descripcionImagenLogo">Logo de AdoptApp</string>
@@ -84,9 +85,19 @@
         <item>Años</item>
         <item>Meses</item>
     </string-array>
+
     <string name="nombre_item_institucion">Nombre de la institución</string>
     <string name="imagen_item_institucion">Foto de la institución</string>
     <string name="detallesInstitucion">Ciudad, Departamento\nEncargado</string>
     <string name="voluntariado">Ofrecer voluntariado</string>
     <string name="iniciar_chat">Iniciar chat</string>
+
+    <string name="reporte_rapido">Reporte rápido</string>
+    <string name="hacer_reporte_rapido">Registrar reporte</string>
+    <string name="CargarFoto">Cargar foto</string>
+    <string name="TomarFoto">Tomar foto</string>
+    <string name="foto_reporte_rapido">Foto reporte</string>
+    <string name="descripcion_reporte_rapido">Descripción</string>
+    <string name="ubicacion_reporte_rapido">Ubicación</string>
+    <string name="campo_obligatorio">Campo obligatorio</string>
 </resources>
