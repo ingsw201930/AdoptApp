@@ -1,4 +1,4 @@
-package com.example.adoptapp;
+package com.example.adoptapp.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +11,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.adoptapp.R;
 
 import java.util.ArrayList;
 
@@ -81,7 +83,7 @@ public class ActivityFiltro extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Boolean pasoValido = true;
+                boolean pasoValido = true;
 
                 if( !editTextFiltroEdad.getText().toString().equals("") &&
                         spinnerCategoriaEdad.getSelectedItem().toString().equals("Categoría edad")){
@@ -114,7 +116,7 @@ public class ActivityFiltro extends AppCompatActivity {
                     }
                 }
 
-                if(pasoValido == true) {
+                if(pasoValido) {
 
                     Intent returnIntent = new Intent();
                     int numeroFiltrosAplicados = 0;

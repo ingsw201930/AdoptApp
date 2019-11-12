@@ -1,4 +1,4 @@
-package com.example.adoptapp;
+package com.example.adoptapp.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -9,13 +9,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import com.example.adoptapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class ActivityMenuKeeper extends AppCompatActivity {
+public class ActivityInicioPersona extends AppCompatActivity {
 
-    ConstraintLayout constraintLayoutRegistrarAnimal;
+    ConstraintLayout constraintLayoutAdoptante;
+    ConstraintLayout constraintLayoutHogarPaso;
 
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
@@ -25,23 +28,39 @@ public class ActivityMenuKeeper extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_keeper);
+        setContentView(R.layout.activity_inicio_persona);
 
         //sesionCerrada = false;
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
-        constraintLayoutRegistrarAnimal = findViewById(R.id.ConstraintLayoutRegistrarAnimal);
+        constraintLayoutAdoptante = findViewById(R.id.ConstraintLayoutAdoptante);
+        constraintLayoutHogarPaso = findViewById(R.id.ConstraintLayoutHogarPaso);
 
-        constraintLayoutRegistrarAnimal.setOnClickListener(new View.OnClickListener() {
+        constraintLayoutAdoptante.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), ActivityRegistrarAnimal.class);
+                Intent intent = new Intent(view.getContext(), ActivityMenuAdoptante.class);
                 startActivity(intent);
             }
         });
 
+        constraintLayoutHogarPaso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        //moveTaskToBack(true);
+        Toast.makeText(this,
+                "Acción no disponible",
+                Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -58,8 +77,9 @@ public class ActivityMenuKeeper extends AppCompatActivity {
             case R.id.MenuCerrarSesion:
                 cerrarSesion();
                 return true;
-            default:
-                return true;
+
+                default:
+                    return false;
         }
     }
 
@@ -68,7 +88,7 @@ public class ActivityMenuKeeper extends AppCompatActivity {
             mAuth.signOut();
         }
         //sesionCerrada = true;
-        Intent intent = new Intent(ActivityMenuKeeper.this, MainActivity.class);
+        Intent intent = new Intent(ActivityInicioPersona.this, MainActivity.class);
         startActivity(intent);
     }
 
@@ -80,9 +100,4 @@ public class ActivityMenuKeeper extends AppCompatActivity {
         //}
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(ActivityMenuKeeper.this, ActivityLogin.class);
-        startActivity(intent);
-    }
 }

@@ -1,4 +1,4 @@
-package com.example.adoptapp;
+package com.example.adoptapp.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.adoptapp.R;
+import com.example.adoptapp.utils.FirebaseUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -68,10 +70,9 @@ public class ActivityPerfilAnimal extends AppCompatActivity {
             public void run() {
                 // a potentially time consuming task
 
-                if(!fotoPrincipal.equals("") ) {
-                    try {
-                        String imageUrl = fotoPrincipal;
-                        InputStream URLcontent = (InputStream) new URL(imageUrl).getContent();
+                if (fotoPrincipal != null && !fotoPrincipal.equals("")) {
+                    /*try {
+                        InputStream URLcontent = (InputStream) new URL(fotoPrincipal).getContent();
                         final Drawable image = Drawable.createFromStream(URLcontent, "your source link");
 
                         imageViewFotoPrincipal.post(new Runnable() {
@@ -83,7 +84,9 @@ public class ActivityPerfilAnimal extends AppCompatActivity {
                         //holder.imageViewFoto.setImageDrawable(image);
                     } catch (Exception e) {
                         e.printStackTrace();
-                    }
+                    }*/
+                    //descargar la imagen
+                    FirebaseUtils.descargarFotoImageView(fotoPrincipal, imageViewFotoPrincipal);
                 }
 
             }

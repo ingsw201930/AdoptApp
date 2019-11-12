@@ -1,4 +1,4 @@
-package com.example.adoptapp;
+package com.example.adoptapp.views;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +17,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -25,11 +24,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.adoptapp.R;
+import com.example.adoptapp.adapters.AdapterAnimales;
+import com.example.adoptapp.adapters.RecyclerTouchListener;
+import com.example.adoptapp.model.Animal;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -46,7 +48,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -57,7 +58,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class ActivityBuscarAnimales extends AppCompatActivity {
 
@@ -828,10 +828,10 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         stopLocationUpdates();
-        if (deseoRegresar == true){
+        if (deseoRegresar){
             finish();
         }
-        if (sesionCerrada == true){
+        if (sesionCerrada){
             finish();
         }
     }
