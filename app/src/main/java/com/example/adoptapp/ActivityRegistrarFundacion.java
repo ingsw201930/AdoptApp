@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,18 +26,31 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.adoptapp.model.Institucion;
+import com.example.adoptapp.views.ActivityMenuKeeper;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.model.value.GeoPointValue;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Objects;
 
 public class ActivityRegistrarFundacion extends AppCompatActivity {
 
@@ -47,7 +61,6 @@ public class ActivityRegistrarFundacion extends AppCompatActivity {
     private EditText et_confirmarContrasena;
     private EditText et_telefono;
     private EditText et_municipio;
-    private EditText et_direccion;
     private EditText et_descripcion;
     private Button button_registrarse;
     private ImageButton imageButton_galeria;
@@ -56,7 +69,6 @@ public class ActivityRegistrarFundacion extends AppCompatActivity {
 
     //------------------------------------------------------------------
 
-    private FirebaseStorage storage;
     private StorageReference storageReference;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -69,9 +81,6 @@ public class ActivityRegistrarFundacion extends AppCompatActivity {
     private static final int MY_PERMISSIONS_READ_EXTERNAL_STORAGE = 1;
     private static final int IMAGE_PICKER_REQUEST = 2;
     private static final int REQUEST_IMAGE_CAPTURE = 3;
-    private static final int MY_PERMISSIONS_REQUEST_LOCATION = 4;
-    private static final int REQUEST_CHECK_SETTINGS = 5;
-    public final static int ADDRESS_PICKER = 6;
 
     //----------------------LOCATION--------------------------------------
 
@@ -86,7 +95,7 @@ public class ActivityRegistrarFundacion extends AppCompatActivity {
 
     };
 
-    private Fundacion fundacion;
+    private Institucion fundacion;
     private String idUser;
 
     private GeoPoint ubicacionFundacion;
@@ -95,14 +104,11 @@ public class ActivityRegistrarFundacion extends AppCompatActivity {
 
     private FirebaseFirestoreSettings settings;
 
-    private boolean IngresoActividadMapas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar_fundacion);
-
-        IngresoActividadMapas = false;
 
          et_nombre = findViewById(R.id.editTextNombre);
          et_nombreEncargado = findViewById(R.id.editTextNombreEncargado);
@@ -111,7 +117,6 @@ public class ActivityRegistrarFundacion extends AppCompatActivity {
          et_confirmarContrasena = findViewById(R.id.editTextConfirmarContrasena);
          et_telefono = findViewById(R.id.editTextTelefono);
          et_municipio = findViewById(R.id.editTextCiudad);
-         et_direccion = findViewById(R.id.editTextDireccion);
          et_descripcion = findViewById(R.id.editTextDescripcion);
          button_registrarse = findViewById(R.id.buttonRegistrarse);
          imageButton_galeria = findViewById(R.id.imageButtonGallery);
@@ -158,33 +163,15 @@ public class ActivityRegistrarFundacion extends AppCompatActivity {
             }
         });
 
-        et_direccion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(ActivityRegistrarFundacion.this,
-                        Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
-
-                    Intent i = new Intent(ActivityRegistrarFundacion.this, MapsActivity.class);
-                    startActivityForResult(i, Permisos.ADDRESS_PICKER);
-
-                }else{
-                    requestPermission(ActivityRegistrarFundacion.this, PERMISSIONS[2], "Acceso a GPS necesario",
-                            MY_PERMISSIONS_REQUEST_LOCATION);
-                }
-
-            }
-        });
-
         button_registrarse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fundacion = registrarFundacion();
+                if(fundacion != null){
+                    registrar();
+                }
             }
         });
-
-
-
     }
 
     private void requestPermission(Activity context, String permiso, String justificacion, int idCode){
@@ -207,7 +194,7 @@ public class ActivityRegistrarFundacion extends AppCompatActivity {
         }
     }
 
-    private Fundacion registrarFundacion(){
+    private Institucion registrarFundacion(){
         boolean retornar = true;
 
         String nombre = et_nombre.getText().toString();
@@ -217,7 +204,6 @@ public class ActivityRegistrarFundacion extends AppCompatActivity {
         String confirmar_contrasena = et_confirmarContrasena.getText().toString();
         String telefono = et_telefono.getText().toString();
         String municipio = et_municipio.getText().toString();
-        String direccion = et_direccion.getText().toString();
         String descripcion = et_descripcion.getText().toString();
 
         if(imageView_foto.getDrawable() == null){
@@ -252,7 +238,7 @@ public class ActivityRegistrarFundacion extends AppCompatActivity {
         }
 
         else{
-            if(contrasena.length() < 6){
+            if(contrasena.length() < 8){
                 et_contrasena.setError("Debe tener minimo 6 caracteres");
                 retornar = false;
             }
@@ -275,11 +261,11 @@ public class ActivityRegistrarFundacion extends AppCompatActivity {
             }
         }
 
-        if(retornar == false){
+        if(!retornar){
             return null;
         }
 
-        return new Fundacion(nombre,nombreEncargado,email,contrasena, Integer.parseInt(telefono),null,null,0,0,descripcion);
+        return new Institucion(email,nombreEncargado,municipio,nombre,Long.parseLong(telefono),null,descripcion);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -316,23 +302,8 @@ public class ActivityRegistrarFundacion extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                return;
 
-            case Permisos.ADDRESS_PICKER:
-                if (resultCode == RESULT_OK) {
 
-                    IngresoActividadMapas = true;
-
-                    Bundle extras = data.getExtras();
-                    address = (Address) extras.get("address");
-                    et_direccion.setText(extras.get("direccion").toString());
-
-                    ubicacionFundacion = new GeoPoint(address.getLatitude(), address.getLongitude());
-
-                    Log.i(TAG, String.valueOf(address.getLatitude()));
-                    Log.i(TAG, String.valueOf(address.getLongitude()));
-                }
-                return;
         }
     }
 
@@ -360,22 +331,6 @@ public class ActivityRegistrarFundacion extends AppCompatActivity {
             }
             break;
 
-            case MY_PERMISSIONS_REQUEST_LOCATION:
-            {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, continue with task related to permission
-                    //revisarActivacionGPS();
-                    Intent i = new Intent(ActivityRegistrarFundacion.this, MapsActivity.class);
-                    startActivityForResult(i, Permisos.ADDRESS_PICKER);
-                }else{
-                    //button_register.setEnabled(false);
-                    Toast.makeText(this,
-                            "Sin acceso a localización, permiso denegado!",
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-            break;
         }
     }
 
@@ -396,5 +351,95 @@ public class ActivityRegistrarFundacion extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    private void registrar(){
+
+        mAuth.createUserWithEmailAndPassword(et_email.getText().toString(), et_contrasena.getText().toString())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if(user!=null){ //Update user Info
+                                fundacion.setId(user.getUid());
+                                UserProfileChangeRequest.Builder upcrb = new UserProfileChangeRequest.Builder();
+                                upcrb.setDisplayName(et_nombre.getText().toString());
+                                upcrb.setPhotoUri(Uri.parse("clientes/photo_"+user.getUid()+".jpg"));
+                                user.updateProfile(upcrb.build());
+
+                                Toast.makeText(ActivityRegistrarFundacion.this, "Usuario creado con éxito",
+                                        Toast.LENGTH_SHORT).show();
+
+                                idUser = user.getUid();
+                                crearCliente(user);
+                            }
+                        }
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(ActivityRegistrarFundacion.this, "Fallo la creación de usuario: "
+                                            + Objects.requireNonNull(task.getException()).toString(),
+                                    Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, Objects.requireNonNull(task.getException().getMessage()));
+                            button_registrarse.setEnabled(true);
+                        }
+                    }
+                });
+
+    }
+
+    private void crearCliente(final FirebaseUser user){
+        fundacion.setImagenPrincipal( "clientes/photo_"+user.getUid()+".jpg" );
+        db.collection("instituciones").document(user.getUid())
+                .set(fundacion)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                        subirFoto("clientes/photo_"+user.getUid()+".jpg",
+                                ((BitmapDrawable)imageView_foto.getDrawable()).getBitmap());
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                        Toast.makeText(ActivityRegistrarFundacion.this, "Fallo la creación de usuario: ",
+                                Toast.LENGTH_SHORT).show();
+                        button_registrarse.setEnabled(true);
+                    }
+                });
+
+    }
+
+    public void subirFoto(String ruta, Bitmap photo){
+        db.setFirestoreSettings(settings);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        photo.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+        UploadTask uploadTask = storageReference.child("images").child(ruta).putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.i("ERROR", "No se pudo subir la foto");
+                button_registrarse.setEnabled(true);
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.i(TAG, "Foto subida");
+                Intent i = new Intent(getApplicationContext() , ActivityMenuKeeper.class);
+
+                i.putExtra("nombre", fundacion.getNombre() );
+                i.putExtra("uid", idUser);
+                i.putExtra("Latitud", fundacion.getUbicacion().getLatitude() );
+                i.putExtra("Longitud",   fundacion.getUbicacion().getLongitude() );
+                i.putExtra("PathPhoto",  fundacion.getImagenPrincipal() );
+
+                startActivity(i);
+                finish();
+            }
+        });
     }
 }

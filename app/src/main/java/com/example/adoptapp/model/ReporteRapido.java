@@ -4,6 +4,7 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.util.Date;
 
+
 public class ReporteRapido {
 
     private String descripcion;
@@ -76,5 +77,9 @@ public class ReporteRapido {
 
     public void setDistancia(double distancia) {
         this.distancia = distancia;
+    }
+
+    public static class Persona {
+        private String nombre;
     }
 }

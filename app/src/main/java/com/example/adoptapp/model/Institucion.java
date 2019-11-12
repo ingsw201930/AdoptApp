@@ -15,7 +15,16 @@ public class Institucion {
     private double distancia;
     private String descripcion;
 
-    public Institucion() {
+    public Institucion() {}
+
+    public Institucion(String email, String encargado, String municipio, String nombre, long telefono, GeoPoint ubicacion, String descripcion) {
+        this.email = email;
+        this.encargado = encargado;
+        this.municipio = municipio;
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.ubicacion = ubicacion;
+        this.descripcion = descripcion;
     }
 
     public Institucion(String id, String email, String encargado, String imagenPrincipal,
