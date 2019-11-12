@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +26,7 @@ public class ActivityLogin extends AppCompatActivity {
     Button botonIngresar;
     EditText editTextEmail;
     EditText editTextContrasena;
+    Button botonRegistrarse;
 
     private FirebaseAuth mAuth;
     FirebaseUser currentUser;
@@ -49,6 +49,7 @@ public class ActivityLogin extends AppCompatActivity {
         botonIngresar = findViewById(R.id.buttonIngresarLogin);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextContrasena = findViewById(R.id.editTextContrasena);
+        botonRegistrarse = findViewById(R.id.buttonRegistrarse);
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -85,6 +86,15 @@ public class ActivityLogin extends AppCompatActivity {
                         }
                     }*/
                 }
+
+            }
+        });
+
+        botonRegistrarse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ActivityLogin.this, ActivityTipoRegistro.class);
+                ActivityLogin.this.startActivity(intent);
 
             }
         });

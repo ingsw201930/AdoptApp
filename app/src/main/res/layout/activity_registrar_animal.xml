@@ -1,174 +1,441 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    android:paddingStart="10dp"
-    android:paddingLeft="10dp"
-    android:paddingTop="10dp"
-    android:paddingEnd="10dp"
-    android:paddingRight="10dp"
-    android:paddingBottom="10dp"
-    tools:context=".ActivityRegistrarAnimal">
+    android:layout_margin="10dp"
+    android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/editTextNombreAnimal"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/textRegistroAnimal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/nombreAnimal"
-        android:inputType="textPersonName"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="Autofill"
-        android:layout_marginTop="20dp"/>
+        android:text="@string/registrarAnimal1"
+        android:textAlignment="center"
+        android:layout_marginBottom="20dp"
+        android:textSize="24sp"
+        android:background="@drawable/roundcornercolorprimario"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:textStyle="bold"/>
 
-    <Spinner
-        android:id="@+id/spinnerTipoAnimal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:entries="@array/TipoAnimal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextNombreAnimal"
-        app:layout_constraintBottom_toTopOf="@id/editTextEdad"
-        android:layout_marginTop="20dp"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/editTextEdad"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/hintEdad"
-        android:inputType="number"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spinnerTipoAnimal"
-        app:layout_constraintBottom_toTopOf="@id/editTextPeso"
-        tools:ignore="Autofill"
-        android:layout_marginTop="20dp"/>
-
-    <EditText
-        android:id="@+id/editTextPeso"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/hintPeso"
-        android:inputType="number"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextEdad"
-        app:layout_constraintBottom_toTopOf="@id/spinnerTipoAnimal"
-        tools:ignore="Autofill"
-        android:layout_marginTop="20dp"/>
-
-    <Spinner
-        android:id="@+id/spinnerTamano"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:entries="@array/TamanoAnimal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextPeso"
-        app:layout_constraintBottom_toTopOf="@id/spinnerSexo"
-        android:layout_marginTop="20dp"/>
-
-    <Spinner
-        android:id="@+id/spinnerSexo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:entries="@array/SexoAnimal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spinnerTamano"
-        android:layout_marginTop="20dp"/>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ConstraintLayoutImagenes"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:padding="10dp"
-        android:paddingStart="10dp"
-        android:paddingLeft="10dp"
-        android:paddingTop="10dp"
-        android:paddingEnd="10dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="10dp"
-        app:layout_constraintBottom_toTopOf="@id/buttonContinuarRegistroAnimal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spinnerSexo">
-
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageButton
-                    android:id="@+id/imageButtonImagenAnimal1"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:contentDescription="@string/descripcionImagenAnimal"
-                    android:scaleType="fitCenter"
-                    app:layout_constraintBottom_toTopOf="@id/imageButtonImagenAnimal3"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/imageButtonImagenAnimal2"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@tools:sample/avatars[2]" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/imageButtonImagenAnimal2"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:contentDescription="@string/descripcionImagenAnimal"
-                    app:layout_constraintLeft_toRightOf="@id/imageButtonImagenAnimal1"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/imageButtonImagenAnimal4"
-                    tools:srcCompat="@tools:sample/avatars[2]" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                <ImageButton
-                    android:id="@+id/imageButtonImagenAnimal3"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:contentDescription="@string/descripcionImagenAnimal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/imageButtonImagenAnimal4"
-                    app:layout_constraintTop_toBottomOf="@id/imageButtonImagenAnimal1"
-                    tools:srcCompat="@tools:sample/avatars[2]" />
+                        <TextView
+                            android:id="@+id/textCargarFoto1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="48dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="@string/cargarFoto"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.11" />
 
-                <ImageButton
-                    android:id="@+id/imageButtonImagenAnimal4"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:contentDescription="@string/descripcionImagenAnimal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/imageButtonImagenAnimal3"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/imageButtonImagenAnimal2"
-                    tools:srcCompat="@tools:sample/avatars[2]" />
+                        <ImageButton
+                            android:id="@+id/imageButtonCamera1"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="80dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="30dp"
+                            android:layout_marginBottom="8dp"
+                            android:clickable="true"
+                            android:contentDescription="@string/descripcionBotonCamara"
+                            android:focusable="true"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/imageButtonGallery1"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toEndOf="@+id/textCargarFoto1"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.081"
+                            app:srcCompat="@drawable/camera" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
+                        <ImageButton
+                            android:id="@+id/imageButtonGallery1"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="28dp"
+                            android:layout_marginBottom="8dp"
+                            android:contentDescription="@string/descripcionBotonGaleria"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.081"
+                            app:srcCompat="@drawable/gallery" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                        <ImageView
+                            android:id="@+id/imageViewPredefinida1"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="88dp"
+                            android:layout_marginTop="100dp"
+                            android:layout_marginEnd="88dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="#3C3F41"
+                            android:contentDescription="@string/descripcionImagenPredefinida"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:srcCompat="@tools:sample/avatars[0]" />
 
-    <Button
-        android:id="@+id/buttonContinuarRegistroAnimal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/roundcornercolorprimario"
-        android:text="@string/botonContinuar"
-        android:textColor="@color/common_google_signin_btn_text_dark_default"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/textCargarFoto2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="48dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="@string/cargarFoto"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.11" />
+
+                        <ImageButton
+                            android:id="@+id/imageButtonCamera2"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="80dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="30dp"
+                            android:layout_marginBottom="8dp"
+                            android:clickable="true"
+                            android:contentDescription="@string/descripcionBotonCamara"
+                            android:focusable="true"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/imageButtonGallery2"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toEndOf="@+id/textCargarFoto2"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.081"
+                            app:srcCompat="@drawable/camera" />
+
+                        <ImageButton
+                            android:id="@+id/imageButtonGallery2"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="28dp"
+                            android:layout_marginBottom="8dp"
+                            android:contentDescription="@string/descripcionBotonGaleria"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.081"
+                            app:srcCompat="@drawable/gallery" />
+
+                        <ImageView
+                            android:id="@+id/imageViewPredefinida2"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="88dp"
+                            android:layout_marginTop="100dp"
+                            android:layout_marginEnd="88dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="#3C3F41"
+                            android:contentDescription="@string/descripcionImagenPredefinida"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:srcCompat="@tools:sample/avatars[0]" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/textCargarFoto3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="48dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="@string/cargarFoto"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.11" />
+
+                        <ImageButton
+                            android:id="@+id/imageButtonCamera3"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="80dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="30dp"
+                            android:layout_marginBottom="8dp"
+                            android:clickable="true"
+                            android:contentDescription="@string/descripcionBotonCamara"
+                            android:focusable="true"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/imageButtonGallery3"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toEndOf="@+id/textCargarFoto3"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.081"
+                            app:srcCompat="@drawable/camera" />
+
+                        <ImageButton
+                            android:id="@+id/imageButtonGallery3"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="28dp"
+                            android:layout_marginBottom="8dp"
+                            android:contentDescription="@string/descripcionBotonGaleria"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.081"
+                            app:srcCompat="@drawable/gallery" />
+
+                        <ImageView
+                            android:id="@+id/imageViewPredefinida3"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="88dp"
+                            android:layout_marginTop="100dp"
+                            android:layout_marginEnd="88dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="#3C3F41"
+                            android:contentDescription="@string/descripcionImagenPredefinida"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:srcCompat="@tools:sample/avatars[0]" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <EditText
+                android:id="@+id/editTextNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="@string/nombreAnimalPerfil"
+                android:importantForAutofill="no" />
+
+            <Spinner
+                android:id="@+id/spinnerTipoAnimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/TipoAnimal"
+                android:hint="@string/hintTipoAnimal"/>
+
+            <Spinner
+                android:id="@+id/spinnerTamano"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/TamanoAnimal" />
+
+            <Spinner
+                android:id="@+id/spinnerSexo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/SexoAnimal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editTextEdad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/hintEdad"
+                    android:importantForAutofill="no"
+                    android:inputType="number" />
+
+                <Spinner
+                    android:id="@+id/spinnerCategoriaEdad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/CategoriaEdad" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/checkBoxNecesidadesEspeciales"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Con necesidades físicas especiales (p.ej. discapacidad)"/>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/textDescriptores"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
+
+            <CheckBox
+                android:id="@+id/checkBoxAlegre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Alegre" />
+
+            <CheckBox
+                android:id="@+id/checkBoxCalmado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Calmado" />
+
+            <CheckBox
+                android:id="@+id/checkBoxJugueton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Jugueton" />
+
+            <CheckBox
+                android:id="@+id/checkBoxComelon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Comelon" />
+
+            <CheckBox
+                android:id="@+id/checkBoxTimido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Timido" />
+
+            <CheckBox
+                android:id="@+id/checkBoxAnsioso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Ansioso" />
+
+            <CheckBox
+                android:id="@+id/checkBoxEnergetico"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Energetico" />
+
+            <CheckBox
+                android:id="@+id/checkBoxFuerte"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Fuerte" />
+
+            <CheckBox
+                android:id="@+id/checkBoxEmpatico"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Empatico" />
+
+            <CheckBox
+                android:id="@+id/checkBoxNinos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Ninos" />
+
+            <CheckBox
+                android:id="@+id/checkBoxDestructivo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Destructivo" />
+
+            <CheckBox
+                android:id="@+id/checkBoxAgresivo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Agresivo" />
+
+            <CheckBox
+                android:id="@+id/checkBoxAmoroso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Amoroso" />
+
+            <CheckBox
+                android:id="@+id/checkBoxIndependiente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Independiente" />
+
+            <CheckBox
+                android:id="@+id/checkBoxNervioso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Nervioso" />
+
+            <CheckBox
+                android:id="@+id/checkBoxDominante"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Dominante" />
+
+            <CheckBox
+                android:id="@+id/checkBoxLeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Leal" />
+
+            <Button
+                android:id="@+id/buttonContinuarRegistroAnimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundcornercolorprimario"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                android:textStyle="bold"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                android:text="@string/botonRegistrarAnimal"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

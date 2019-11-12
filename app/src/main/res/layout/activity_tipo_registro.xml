@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:paddingStart="10dp"
+    android:paddingLeft="10dp"
+    android:paddingTop="10dp"
+    android:paddingEnd="10dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="10dp"
+    tools:context=".ActivityInicioPersona">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ConstraintLayoutAdoptante"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundcornercolorprimario"
+        app:layout_constraintBottom_toTopOf="@id/ConstraintLayoutHogarPaso"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewAdoptante"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_margin="5dp"
+            android:contentDescription="@string/descripcionImagenAdoptante"
+            android:scaleType="fitCenter"
+            android:tint="@color/common_google_signin_btn_text_dark_default"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icono_adoptante" />
+
+        <TextView
+            android:id="@+id/textViewAdoptante"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/registrarComoAdoptante"
+            android:textAlignment="center"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imageViewAdoptante"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ConstraintLayoutHogarPaso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundcornercolorprimario"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ConstraintLayoutAdoptante">
+
+        <ImageView
+            android:id="@+id/imageViewHogarPaso"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_margin="5dp"
+            android:contentDescription="@string/descripcionImagenHogarPaso"
+            android:scaleType="fitCenter"
+            android:tint="@color/common_google_signin_btn_text_dark_default"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icono_hogar_paso" />
+
+        <TextView
+            android:id="@+id/textViewHogarPaso"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/registrarComoHogarPaso"
+            android:textAlignment="center"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imageViewHogarPaso"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

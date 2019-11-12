@@ -84,4 +84,36 @@
         <item>Años</item>
         <item>Meses</item>
     </string-array>
+    <string-array name="TipoDocumento">
+        <item>Cedula de ciudadanía</item>
+        <item>Tarjeta de identidad</item>
+        <item>Cedula de extranjería</item>
+    </string-array>
+    <string name="registroPersona">Registro de persona</string>
+    <string name="cargarFoto">Cargar foto</string>
+    <string name="descripcionBotonCamara">Permite acceder a la camara</string>
+    <string name="descripcionBotonGaleria">Permite acceder a la galeria</string>
+    <string name="descripcionImagenPredefinida">Imagen predefinida</string>
+    <string name="nombres">Nombres</string>
+    <string name="apellidos">Apellidos</string>
+    <string name="hintConfirmarContraseña">Confirmar contraseña</string>
+    <string name="hintTipoDocumento">Tipo de documento</string>
+    <string name="hintNumeroDocumento">Numero de documento</string>
+    <string name="hintTelefono">Teléfono</string>
+    <string name="hintCiudad">Ciudad, Departamento</string>
+    <string name="hintDireccion">Dirección</string>
+    <string name="genero">Género</string>
+    <string name="hombre">Hombre</string>
+    <string name="mujer">Mujer</string>
+    <string name="botonRegistrarsePersona">Registrarse</string>
+    <string name="registrarFundacion">Registrar fundación</string>
+    <string name="nombreFundacion">Nombre de la fundación</string>
+    <string name="descripcion">Descripción</string>
+    <string name="botonregistrarFundacion">Registrar</string>
+    <string name="descripcionFundacion">Agregue una descripción de su fundación (misión, visión)</string>
+    <string name="registrarAnimal1">Datos básicos del animal</string>
+    <string name="hintTipoAnimal">Tipo de animal</string>
+    <string name="registrarComoAdoptante">Registrarse como adoptante/patrocinador/donante/voluntario</string>
+    <string name="registrarComoHogarPaso">Registrarse como hogar de paso</string>
+
 </resources>
