@@ -57,7 +57,7 @@
     <string name="resultadosNoEncontrados">No hay resultados</string>
     <string name="botonAdoptar">Adoptar</string>
     <string name="botonApadrinar">Apadrinar</string>
-    <string name="botonHacerDonacion">Realizar donación</string>
+    <string name="botonHacerDonacion">Ofrecer donación</string>
     <string name="nombreAnimalPerfil">Nombre animal</string>
     <string name="AvisoNoConexion">No hay conexión</string>
     <string name="textDescriptores">Descriptores de comportamiento</string>
@@ -102,4 +102,10 @@
 
     <string name="ver_reportes">Ver reportes</string>
     <string name="title_activity_maps">Map</string>
+
+    <string name="hacer_solicitud">Realizar solicitud</string>
+    <string name="descripcion_solicitud">Descripción de la solicitud</string>
+    <string name="monto_apadrinamiento">Monto apadrinamiento</string>
+    <string name="monto_apadrinamiento2">Monto ofrecido para apadrinamiento</string>
+
 </resources>

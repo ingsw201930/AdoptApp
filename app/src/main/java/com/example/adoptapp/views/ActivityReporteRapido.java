@@ -535,7 +535,7 @@ public class ActivityReporteRapido extends AppCompatActivity implements OnMapRea
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Log.i(TAG, "Foto subida");
-                Toast.makeText(ActivityReporteRapido.this, "Reporte registrado con éxito",
+                Toast.makeText(ActivityReporteRapido.this, "Solicitud registrado con éxito",
                         Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(ActivityReporteRapido.this, ActivityMenuAdoptante.class);
                 startActivity(intent);

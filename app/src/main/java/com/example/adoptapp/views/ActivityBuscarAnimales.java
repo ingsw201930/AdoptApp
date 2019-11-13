@@ -259,6 +259,9 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
                 intent.putStringArrayListExtra("descriptores", animal.getDescriptores());
 
+                intent.putExtra("id_animal",animal.getId());
+                intent.putExtra("id_institucion",animal.getIdResponsable());
+
                 startActivity(intent);
             }
 
@@ -319,6 +322,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
                                 Animal animal = new Animal();
                                 animal.setId(document.getId());
+                                animal.setIdResponsable( document.getString("IdResponsable") );
                                 animal.setNombre( document.getString("Nombre") );
                                 animal.setTipo( document.getString("Tipo") );
                                 animal.setEdad( Integer.parseInt(document.get("Edad").toString()) );

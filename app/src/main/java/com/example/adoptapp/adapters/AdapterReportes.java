@@ -54,7 +54,7 @@ public class AdapterReportes extends RecyclerView.Adapter<AdapterReportes.MyView
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         final ReporteRapido reporte = listaReportes.get(position);
-        holder.textViewNombre.setText("Reporte rápido");
+        holder.textViewNombre.setText("Solicitud rápido");
         String datosReporte = "Descripcion:\n" + reporte.getDescripcion()+"\n"+
                 "Fecha :" + reporte.getFecha()+"\n"+
                 "Nombre responsable :" + reporte.getNombreResponsable();
