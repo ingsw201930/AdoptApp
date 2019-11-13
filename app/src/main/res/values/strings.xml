@@ -57,7 +57,7 @@
     <string name="resultadosNoEncontrados">No hay resultados</string>
     <string name="botonAdoptar">Adoptar</string>
     <string name="botonApadrinar">Apadrinar</string>
-    <string name="botonHacerDonacion">Realizar donación</string>
+    <string name="botonHacerDonacion">Ofrecer donación</string>
     <string name="nombreAnimalPerfil">Nombre animal</string>
     <string name="AvisoNoConexion">No hay conexión</string>
     <string name="textDescriptores">Descriptores de comportamiento</string>
@@ -84,4 +84,28 @@
         <item>Años</item>
         <item>Meses</item>
     </string-array>
+
+    <string name="nombre_item_institucion">Nombre de la institución</string>
+    <string name="imagen_item_institucion">Foto de la institución</string>
+    <string name="detallesInstitucion">Ciudad, Departamento\nEncargado</string>
+    <string name="voluntariado">Ofrecer voluntariado</string>
+    <string name="iniciar_chat">Iniciar chat</string>
+
+    <string name="reporte_rapido">Reporte rápido</string>
+    <string name="hacer_reporte_rapido">Registrar reporte</string>
+    <string name="CargarFoto">Cargar foto</string>
+    <string name="TomarFoto">Tomar foto</string>
+    <string name="foto_reporte_rapido">Foto reporte</string>
+    <string name="descripcion_reporte_rapido">Descripción</string>
+    <string name="ubicacion_reporte_rapido">Ubicación</string>
+    <string name="campo_obligatorio">Campo obligatorio</string>
+
+    <string name="ver_reportes">Ver reportes</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string name="hacer_solicitud">Realizar solicitud</string>
+    <string name="descripcion_solicitud">Descripción de la solicitud</string>
+    <string name="monto_apadrinamiento">Monto apadrinamiento</string>
+    <string name="monto_apadrinamiento2">Monto ofrecido para apadrinamiento</string>
+
 </resources>

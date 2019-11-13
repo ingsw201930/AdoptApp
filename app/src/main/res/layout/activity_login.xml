@@ -11,7 +11,7 @@
     android:paddingEnd="10dp"
     android:paddingRight="10dp"
     android:paddingBottom="10dp"
-    tools:context=".ActivityLogin">
+    tools:context=".views.ActivityLogin">
 
     <EditText
         android:id="@+id/editTextEmail"
@@ -73,6 +73,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/roundcornercolorprimario"
 
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/ConstraintLayoutIngresarTwitter"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -111,6 +112,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/roundcornercolorprimario"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/ConstraintLayoutIngresarGoogle"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -148,6 +150,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/roundcornercolorprimario"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -186,6 +189,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:scrollbarSize="4dp"
-        app:layout_constraintGuide_percent="0.60" />
+        app:layout_constraintGuide_percent="0.80" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
