@@ -389,14 +389,14 @@ public class ActivityRegistrarFundacion extends AppCompatActivity {
     }
 
     private void crearCliente(final FirebaseUser user){
-        fundacion.setImagenPrincipal( "clientes/photo_"+user.getUid()+".jpg" );
+        fundacion.setImagenPrincipal("instituciones/"+ user.getUid()+"/logo.jpg" );
         db.collection("instituciones").document(user.getUid())
                 .set(fundacion)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "DocumentSnapshot successfully written!");
-                        subirFoto("clientes/photo_"+user.getUid()+".jpg",
+                        subirFoto(user.getUid()+"/logo.jpg",
                                 ((BitmapDrawable)imageView_foto.getDrawable()).getBitmap());
 
                     }
@@ -418,7 +418,7 @@ public class ActivityRegistrarFundacion extends AppCompatActivity {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         photo.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
-        UploadTask uploadTask = storageReference.child("images").child(ruta).putBytes(data);
+        UploadTask uploadTask = storageReference.child("instituciones").child(ruta).putBytes(data);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
