@@ -45,6 +45,9 @@ public class ActivityPerfilAnimal extends AppCompatActivity {
 
     private String id_animal;
     private String id_institucion;
+    private String nombre_institucion;
+    private String nombre_animal;
+    private String foto_url;
 
     private String tipo_solicitud;
 
@@ -72,6 +75,9 @@ public class ActivityPerfilAnimal extends AppCompatActivity {
 
         id_animal = intent.getStringExtra("id_animal");
         id_institucion = intent.getStringExtra("id_institucion");
+        nombre_institucion = intent.getStringExtra("nombre_institucion");
+        nombre_animal = nombre;
+        foto_url = fotoPrincipal;
 
         textViewNombre = findViewById(R.id.textViewNombrePerfilAnimal);
         textViewDescripcion = findViewById(R.id.textViewDatosPerfilAnimal);
@@ -208,6 +214,9 @@ public class ActivityPerfilAnimal extends AppCompatActivity {
 
         intent.putExtra("id_animal", id_animal);
         intent.putExtra("id_institucion", id_institucion);
+        intent.putExtra("nombre_institucion", nombre_institucion);
+        intent.putExtra("nombre_animal", nombre_animal);
+        intent.putExtra("foto_url", foto_url);
 
         startActivity(intent);
     }
@@ -218,6 +227,9 @@ public class ActivityPerfilAnimal extends AppCompatActivity {
 
         intent.putExtra("id_animal", id_animal);
         intent.putExtra("id_institucion", id_institucion);
+        intent.putExtra("nombre_institucion", nombre_institucion);
+        intent.putExtra("nombre_animal", nombre_animal);
+        intent.putExtra("foto_url", foto_url);
 
         startActivity(intent);
     }
@@ -228,6 +240,9 @@ public class ActivityPerfilAnimal extends AppCompatActivity {
 
         intent.putExtra("id_animal", id_animal);
         intent.putExtra("id_institucion", id_institucion);
+        intent.putExtra("nombre_institucion", nombre_institucion);
+        intent.putExtra("nombre_animal", nombre_animal);
+        intent.putExtra("foto_url", foto_url);
 
         startActivity(intent);
     }

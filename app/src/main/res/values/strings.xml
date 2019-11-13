@@ -25,7 +25,7 @@
     <string name="descripcionImagenFiltro">Filtro</string>
     <string name="botonRegistrarAnimal">Registrar animal</string>
     <string name="botonVerMisAnimales">Ver mis animales</string>
-    <string name="botonVerPeticiones">Ver peticiones</string>
+    <string name="botonVerPeticiones">Ver solicitudes</string>
     <string name="botonEventos">Eventos</string>
     <string name="hintEdad">Edad</string>
     <string-array name="TipoAnimal">

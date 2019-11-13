@@ -14,6 +14,10 @@ public class Solicitud {
     private String tipo;
     private boolean estado;
     private boolean aceptada;
+    private String nombreInstitucion;
+    private String nombreAnimal;
+    private String fotoUrl;
+    private String nombrePersona;
 
     public Solicitud() {
     }
@@ -96,5 +100,37 @@ public class Solicitud {
 
     public void setAceptada(boolean aceptada) {
         this.aceptada = aceptada;
+    }
+
+    public String getNombreInstitucion() {
+        return nombreInstitucion;
+    }
+
+    public void setNombreInstitucion(String nombreInstitucion) {
+        this.nombreInstitucion = nombreInstitucion;
+    }
+
+    public String getNombreAnimal() {
+        return nombreAnimal;
+    }
+
+    public void setNombreAnimal(String nombreAnimal) {
+        this.nombreAnimal = nombreAnimal;
+    }
+
+    public String getFotoUrl() {
+        return fotoUrl;
+    }
+
+    public void setFotoUrl(String fotoUrl) {
+        this.fotoUrl = fotoUrl;
+    }
+
+    public String getNombrePersona() {
+        return nombrePersona;
+    }
+
+    public void setNombrePersona(String nombrePersona) {
+        this.nombrePersona = nombrePersona;
     }
 }

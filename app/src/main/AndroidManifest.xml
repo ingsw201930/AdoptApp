@@ -22,9 +22,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.ActivityHacerSolicitud"
+        <activity android:name=".views.ActivityVerSolicitudesInstitucion"></activity>
+        <activity
+            android:name=".views.ActivityHacerSolicitud"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -59,7 +61,7 @@
         <activity
             android:name=".views.ActivityRegistrarAnimal"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".views.ActivityMenuKeeper"
             android:screenOrientation="portrait" />
@@ -75,7 +77,7 @@
         <activity
             android:name=".views.ActivityLogin"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".views.MainActivity"
             android:screenOrientation="portrait">
