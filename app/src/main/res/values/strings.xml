@@ -108,4 +108,7 @@
     <string name="monto_apadrinamiento">Monto apadrinamiento</string>
     <string name="monto_apadrinamiento2">Monto ofrecido para apadrinamiento</string>
 
+    <string name="rechazar_solicitud">Rechazar</string>
+    <string name="aceptar_solicitud">Aceptar</string>
+
 </resources>

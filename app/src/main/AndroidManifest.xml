@@ -22,7 +22,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.ActivityVerSolicitudesInstitucion"></activity>
+        <activity android:name=".views.ActivityDetalleSolicitud"></activity>
+        <activity android:name=".views.ActivityVerSolicitudesInstitucion" />
         <activity
             android:name=".views.ActivityHacerSolicitud"
             android:screenOrientation="portrait"

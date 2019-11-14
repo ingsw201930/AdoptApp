@@ -1,6 +1,7 @@
 package com.example.adoptapp.views;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -24,19 +25,30 @@ import android.widget.Toast;
 import com.example.adoptapp.R;
 import com.example.adoptapp.adapters.AdapterInstituciones;
 import com.example.adoptapp.adapters.AdapterSolicitudes;
+import com.example.adoptapp.adapters.RecyclerTouchListener;
 import com.example.adoptapp.model.Institucion;
 import com.example.adoptapp.model.Solicitud;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Map;
+
+import javax.xml.transform.SourceLocator;
 
 public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
 
@@ -53,6 +65,8 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
     private ArrayList<Solicitud> arrayListItems;
 
     private AdapterSolicitudes mAdapter;
+
+    private ListenerRegistration listenerLista;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +108,27 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
         //recyclerViewAnimales.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerViewItems.setAdapter(mAdapter);
 
-        leerListaInstituciones();
+        recyclerViewItems.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext()
+                , recyclerViewItems, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
 
+                Solicitud solicitud = arrayListItems.get(position);
+                Intent intent = new Intent(view.getContext(), ActivityDetalleSolicitud.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("solicitud",solicitud);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+
+        //leerListaInstituciones();
+        listenerCambiosLista();
     }
 
     public void mostrarListaItems() {
@@ -110,6 +143,8 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
             textViewCargando.setText("");
             constraintLayoutSuperior.setVisibility(View.GONE);
         }else{
+            mAdapter = new AdapterSolicitudes(arrayListItems);
+            recyclerViewItems.setAdapter(mAdapter);
             textViewCargando.setText(R.string.resultadosNoEncontrados);
             Toast.makeText(ActivityVerSolicitudesInstitucion.this, "La búsqueda no " +
                     "ha encontrado resultados", Toast.LENGTH_SHORT).show();
@@ -118,7 +153,59 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
         //imageButtonFiltrar.setEnabled(true);
     }
 
-    public void leerListaInstituciones() {
+    public void listenerCambiosLista(){
+
+        Query query = db.collection("solicitudes")
+                .whereEqualTo("idInstitucion", currentUser.getUid())
+                .whereEqualTo("estado", true)
+                .orderBy("fecha", Query.Direction.ASCENDING);
+
+        listenerLista = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot snapshots,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "listen:error", e);
+                            return;
+                        }
+                        Solicitud solicitud;
+                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                            switch (dc.getType()) {
+                                case ADDED:
+                                    Log.d(TAG, "New solicitud: " + dc.getDocument().getData());
+
+                                    solicitud = dc.getDocument().toObject(Solicitud.class);
+                                    arrayListItems.add(solicitud);
+                                    break;
+
+                                case MODIFIED:
+                                    Log.d(TAG, "Modified solicitud: " + dc.getDocument().getData());
+                                    break;
+
+                                case REMOVED:
+                                    Log.d(TAG, "Removed solicitud: " + dc.getDocument().getData());
+
+                                    solicitud = dc.getDocument().toObject(Solicitud.class);
+                                    int indice_borrar = 0;
+                                    Solicitud temporal;
+                                    for (int i = 0; i < arrayListItems.size(); i++) {
+                                        temporal = arrayListItems.get(i);
+                                        indice_borrar = i;
+                                        if(  temporal.getId() == solicitud.getId() ){
+                                            indice_borrar = i;
+                                            break;
+                                        }
+                                    }
+                                    arrayListItems.remove(indice_borrar);
+                                    break;
+                            }
+                        }
+                        mostrarListaItems();
+                    }
+                });
+    }
+
+    /*public void leerListaInstituciones() {
 
         db.collection("solicitudes")
                 .whereEqualTo("idInstitucion", currentUser.getUid())
@@ -139,7 +226,7 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
                         }
                     }
                 });
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -161,6 +248,8 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
     }
 
     private void cerrarSesion(){
+        // Stop listening to changes
+        listenerLista.remove();
         if (currentUser == null) {
             mAuth.signOut();
         }
@@ -171,8 +260,23 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        // Stop listening to changes
+        listenerLista.remove();
         Intent intent = new Intent(ActivityVerSolicitudesInstitucion.this, ActivityMenuKeeper.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // Stop listening to changes
+        //listenerLista.remove();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //listenerCambiosLista();
     }
 }

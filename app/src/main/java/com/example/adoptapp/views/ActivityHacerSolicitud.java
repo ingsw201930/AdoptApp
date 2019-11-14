@@ -195,6 +195,7 @@ public class ActivityHacerSolicitud extends AppCompatActivity {
 
         //buscar un nuevo id en FireStore
         DocumentReference referencia = db.collection("solicitudes").document();
+        nuevaSolicitud.setId(referencia.getId());
 
         referencia
                 .set(nuevaSolicitud)
