@@ -198,7 +198,9 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
                                             break;
                                         }
                                     }
-                                    arrayListItems.remove(indice_borrar);
+                                    if(arrayListItems.size()>0) {
+                                        arrayListItems.remove(indice_borrar);
+                                    }
                                     //arrayListItems.add(indice_borrar, solicitud);
 
                                     break;
@@ -216,7 +218,9 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
                                             break;
                                         }
                                     }
-                                    arrayListItems.remove(indice_borrar);
+                                    if(arrayListItems.size()>0) {
+                                        arrayListItems.remove(indice_borrar);
+                                    }
                                     break;
                             }
                         }

@@ -16,14 +16,21 @@ import android.widget.Toast;
 import com.example.adoptapp.R;
 import com.example.adoptapp.model.Solicitud;
 import com.example.adoptapp.utils.FirebaseUtils;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class ActivityDetalleSolicitud extends AppCompatActivity {
 
@@ -43,6 +50,8 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
     private String decision;
 
     private String TAG = "Detalle solicitud";
+
+    private ArrayList<String> documentosActualizar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +163,120 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
 
     private void aceptarSolicitud(){
 
+        DocumentReference referencia = db.collection("solicitudes").document(solicitud.getId());
+
+        referencia
+                .update("aceptada", true)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+
+                        aceptarSolicitud2();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error updating document", e);
+                        Toast.makeText(ActivityDetalleSolicitud.this, "Ocurrió un problema" +
+                                "intentando aceptar la solicitud. Intentalo de nuevo", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+
+    private void aceptarSolicitud2(){
+
+        DocumentReference referencia = db.collection("solicitudes").document(solicitud.getId());
+
+        referencia
+                .update("estado", false)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+
+                        buscarOtrasSolicitudes();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error updating document", e);
+                        Toast.makeText(ActivityDetalleSolicitud.this, "Ocurrió un problema" +
+                                "intentando aceptar la solicitud. Intentalo de nuevo", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+
+    private void buscarOtrasSolicitudes(){
+
+        documentosActualizar = new ArrayList<>();
+
+        Query query = db.collection("solicitudes")
+                .whereEqualTo("idInstitucion", currentUser.getUid())
+                .whereEqualTo("estado", true)
+                .whereEqualTo("tipo", solicitud.getTipo())
+                .whereEqualTo("idAnimal", solicitud.getIdAnimal());
+
+        query
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Solicitud solicitud = document.toObject(Solicitud.class);
+                                documentosActualizar.add(solicitud.getId());
+                            }
+                            actualizarOtrasSolicitudes();
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private void actualizarOtrasSolicitudes(){
+
+        if (documentosActualizar.size()>0) {
+
+            // Get a new write batch
+            WriteBatch batch = db.batch();
+
+            String aux;
+            for (int i = 0; i < documentosActualizar.size(); i++) {
+
+                aux = documentosActualizar.get(i);
+
+                DocumentReference sfRef = db.collection("solicitudes").document(aux);
+                batch.update(sfRef, "estado", false);
+
+            }
+
+            // Commit the batch
+
+            batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(ActivityDetalleSolicitud.this, "Solicitud aceptada " +
+                                "con éxito", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }else{
+                        Toast.makeText(ActivityDetalleSolicitud.this, "Ocurrió un problema, " +
+                                "vuelve a intentarlo", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+        }else{
+            Toast.makeText(ActivityDetalleSolicitud.this, "Solicitud aceptada " +
+                    "con éxito", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
     private void rechazarSolicitud(){
