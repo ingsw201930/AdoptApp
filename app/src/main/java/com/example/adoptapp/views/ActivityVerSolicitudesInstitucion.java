@@ -2,12 +2,14 @@ package com.example.adoptapp.views;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -143,6 +145,7 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
             textViewCargando.setText("");
             constraintLayoutSuperior.setVisibility(View.GONE);
         }else{
+            constraintLayoutSuperior.setVisibility(View.VISIBLE);
             mAdapter = new AdapterSolicitudes(arrayListItems);
             recyclerViewItems.setAdapter(mAdapter);
             textViewCargando.setText(R.string.resultadosNoEncontrados);
@@ -168,7 +171,11 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
                             Log.w(TAG, "listen:error", e);
                             return;
                         }
+
                         Solicitud solicitud;
+                        int indice_borrar;
+                        Solicitud temporal;
+
                         for (DocumentChange dc : snapshots.getDocumentChanges()) {
                             switch (dc.getType()) {
                                 case ADDED:
@@ -180,14 +187,27 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
 
                                 case MODIFIED:
                                     Log.d(TAG, "Modified solicitud: " + dc.getDocument().getData());
+
+                                    solicitud = dc.getDocument().toObject(Solicitud.class);
+                                    indice_borrar = 0;
+                                    for (int i = 0; i < arrayListItems.size(); i++) {
+                                        temporal = arrayListItems.get(i);
+                                        indice_borrar = i;
+                                        if(  temporal.getId() == solicitud.getId() ){
+                                            indice_borrar = i;
+                                            break;
+                                        }
+                                    }
+                                    arrayListItems.remove(indice_borrar);
+                                    //arrayListItems.add(indice_borrar, solicitud);
+
                                     break;
 
                                 case REMOVED:
                                     Log.d(TAG, "Removed solicitud: " + dc.getDocument().getData());
 
                                     solicitud = dc.getDocument().toObject(Solicitud.class);
-                                    int indice_borrar = 0;
-                                    Solicitud temporal;
+                                    indice_borrar = 0;
                                     for (int i = 0; i < arrayListItems.size(); i++) {
                                         temporal = arrayListItems.get(i);
                                         indice_borrar = i;

@@ -1,17 +1,27 @@
 package com.example.adoptapp.views;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.adoptapp.R;
 import com.example.adoptapp.model.Solicitud;
 import com.example.adoptapp.utils.FirebaseUtils;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 
@@ -28,6 +38,12 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
 
+    private FirebaseFirestore db;
+
+    private String decision;
+
+    private String TAG = "Detalle solicitud";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +59,7 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        db = FirebaseFirestore.getInstance();
 
         String fechaPublicacion = new SimpleDateFormat("dd/MM/yyyy").
                 format(solicitud.getFecha());
@@ -55,6 +72,7 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
         if(solicitud.getTipo().equals("Apadrinamiento")){
             datosSolicitud = datosSolicitud+"\nMonto mensual ofrecido: "+solicitud.getMonto();
         }
+        datosSolicitud = datosSolicitud + "\n\nDescripción:\n"+solicitud.getDescripcion();
 
         textViewNombre.setText("Solicitud de "+solicitud.getTipo());
         textViewDescripcion.setText(datosSolicitud);
@@ -69,5 +87,98 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
             }
         }).start();
 
+        btn_aceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btn_aceptar.setEnabled(false);
+                btn_rechazar.setEnabled(false);
+                decision = "aceptar";
+                lanzarDialogo();
+            }
+        });
+
+        btn_rechazar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btn_aceptar.setEnabled(false);
+                btn_rechazar.setEnabled(false);
+                decision = "rechazar";
+                lanzarDialogo();
+            }
+        });
+
     }
+
+    private void lanzarDialogo(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Confirmar");
+        if (decision.equals("aceptar")){
+            builder.setMessage("¿Estás seguro de aceptar la solicitud?");
+        }else{
+            builder.setMessage("¿Estás seguro de rechazar la solicitud?");
+        }
+
+        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+
+                if (decision.equals("aceptar")){
+                    aceptarSolicitud();
+                }else{
+                    rechazarSolicitud();
+                }
+
+                // Do nothing, but close the dialog
+                dialog.dismiss();
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                btn_aceptar.setEnabled(true);
+                btn_rechazar.setEnabled(true);
+                // Do nothing
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+
+    }
+
+    private void aceptarSolicitud(){
+
+    }
+
+    private void rechazarSolicitud(){
+
+        DocumentReference referencia = db.collection("solicitudes").document(solicitud.getId());
+
+        referencia
+                .update("estado", false)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                        Toast.makeText(ActivityDetalleSolicitud.this, "Solicitud rechazada" +
+                                "con éxito", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error updating document", e);
+                        Toast.makeText(ActivityDetalleSolicitud.this, "Ocurrió un problema" +
+                                "intentando rechazar la solicitud. Intentalo de nuevo", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
 }
