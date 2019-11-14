@@ -106,7 +106,7 @@
     <string name="hacer_solicitud">Realizar solicitud</string>
     <string name="descripcion_solicitud">Descripción de la solicitud</string>
     <string name="monto_apadrinamiento">Monto apadrinamiento</string>
-    <string name="monto_apadrinamiento2">Monto ofrecido para apadrinamiento</string>
+    <string name="monto_apadrinamiento2">Monto mensual ofrecido</string>
 
     <string name="rechazar_solicitud">Rechazar</string>
     <string name="aceptar_solicitud">Aceptar</string>

@@ -22,6 +22,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -134,7 +136,7 @@ public class ActivityPerfilAnimal extends AppCompatActivity {
 
                 tipo_solicitud = "Adopción";
 
-                revisarSolicitudesActivas();
+                comprobarEstadoAdopcion();
             }
         });
 
@@ -155,6 +157,37 @@ public class ActivityPerfilAnimal extends AppCompatActivity {
                 tipo_solicitud = "Donación";
 
                 revisarSolicitudesActivas();
+            }
+        });
+
+    }
+
+    private void comprobarEstadoAdopcion(){
+
+        DocumentReference referencia = db.collection("animales").document(id_animal);
+
+        referencia.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        String estado;
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        estado = (String)document.getData().get("Estado");
+                        if( estado.equals("Espera") ){
+                            revisarSolicitudesActivas();
+                        }else{
+                            Toast.makeText(ActivityPerfilAnimal.this, "Este animalito ya " +
+                                            "no se encuentra en adopción",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
             }
         });
 

@@ -197,7 +197,7 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "DocumentSnapshot successfully updated!");
 
-                        buscarOtrasSolicitudes();
+                        actualizarEstadoAnimal();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -208,7 +208,36 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
                                 "intentando aceptar la solicitud. Intentalo de nuevo", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
 
+    private void actualizarEstadoAnimal(){
+
+        if(solicitud.getTipo().equals("Adopción")){
+
+            DocumentReference referencia = db.collection("animales").document(solicitud.getIdAnimal());
+
+            referencia
+                    .update("Estado", "En proceso")
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "DocumentSnapshot successfully updated!");
+
+                            buscarOtrasSolicitudes();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error updating document", e);
+                            Toast.makeText(ActivityDetalleSolicitud.this, "Ocurrió un problema" +
+                                    "intentando aceptar la solicitud. Intentalo de nuevo", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+        }else{
+            buscarOtrasSolicitudes();
+        }
     }
 
     private void buscarOtrasSolicitudes(){
@@ -227,6 +256,7 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            Log.d(TAG, "Bien buscando documentos");
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Solicitud solicitud = document.toObject(Solicitud.class);
                                 documentosActualizar.add(solicitud.getId());

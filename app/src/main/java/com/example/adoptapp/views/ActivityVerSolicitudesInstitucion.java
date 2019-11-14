@@ -80,6 +80,8 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
         recyclerViewItems = findViewById(R.id.rv_lista_solicitudes);
         progressBarCargarLista = findViewById(R.id.pb_lista_solicitudes);
 
+        progressBarCargarLista.setVisibility(View.GONE);
+
         ConnectivityManager cm = (ConnectivityManager)ActivityVerSolicitudesInstitucion.this.getSystemService
                 (CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -87,7 +89,7 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
                 activeNetwork.isConnectedOrConnecting();
 
         if(!isConnected) {
-            progressBarCargarLista.setVisibility(View.GONE);
+            //progressBarCargarLista.setVisibility(View.GONE);
             textViewCargando.setText(R.string.AvisoNoConexion);
             Toast.makeText(ActivityVerSolicitudesInstitucion.this, "No hay conexión a internet",
                     Toast.LENGTH_SHORT).show();
@@ -130,29 +132,30 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
         }));
 
         //leerListaInstituciones();
+
+        mAdapter = new AdapterSolicitudes(arrayListItems);
+        recyclerViewItems.setAdapter(mAdapter);
+
         listenerCambiosLista();
     }
 
     public void mostrarListaItems() {
+        mAdapter.notifyDataSetChanged();
         if (arrayListItems.size() > 0){
-            //mAdapter = new AdapterAnimales(arrayAnimales);
-            //customAdapter = new CustomAdapter(this, arrayAnimales);
-            //listViewAnimales.setAdapter(customAdapter);
-            //progressBarCargarLista.setVisibility(View.GONE);
-            mAdapter = new AdapterSolicitudes(arrayListItems);
-            recyclerViewItems.setAdapter(mAdapter);
+            //mAdapter = new AdapterSolicitudes(arrayListItems);
+            //recyclerViewItems.setAdapter(mAdapter);
             //mAdapter.notifyDataSetChanged();
             textViewCargando.setText("");
             constraintLayoutSuperior.setVisibility(View.GONE);
         }else{
             constraintLayoutSuperior.setVisibility(View.VISIBLE);
-            mAdapter = new AdapterSolicitudes(arrayListItems);
-            recyclerViewItems.setAdapter(mAdapter);
+            //mAdapter = new AdapterSolicitudes(arrayListItems);
+            //recyclerViewItems.setAdapter(mAdapter);
             textViewCargando.setText(R.string.resultadosNoEncontrados);
-            Toast.makeText(ActivityVerSolicitudesInstitucion.this, "La búsqueda no " +
-                    "ha encontrado resultados", Toast.LENGTH_SHORT).show();
+            /*Toast.makeText(ActivityVerSolicitudesInstitucion.this, "La búsqueda no " +
+                    "ha encontrado resultados", Toast.LENGTH_SHORT).show();*/
         }
-        progressBarCargarLista.setVisibility(View.GONE);
+        //progressBarCargarLista.setVisibility(View.GONE);
         //imageButtonFiltrar.setEnabled(true);
     }
 
@@ -183,9 +186,10 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
 
                                     solicitud = dc.getDocument().toObject(Solicitud.class);
                                     arrayListItems.add(solicitud);
+
                                     break;
 
-                                case MODIFIED:
+                                /*case MODIFIED:
                                     Log.d(TAG, "Modified solicitud: " + dc.getDocument().getData());
 
                                     solicitud = dc.getDocument().toObject(Solicitud.class);
@@ -198,27 +202,28 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
                                             break;
                                         }
                                     }
+                                    Log.d(TAG, "Indice a borrar: " + indice_borrar);
                                     if(arrayListItems.size()>0) {
                                         arrayListItems.remove(indice_borrar);
                                     }
                                     //arrayListItems.add(indice_borrar, solicitud);
 
-                                    break;
+                                    break;*/
 
                                 case REMOVED:
                                     Log.d(TAG, "Removed solicitud: " + dc.getDocument().getData());
 
                                     solicitud = dc.getDocument().toObject(Solicitud.class);
-                                    indice_borrar = 0;
+                                    indice_borrar = -1;
                                     for (int i = 0; i < arrayListItems.size(); i++) {
                                         temporal = arrayListItems.get(i);
-                                        indice_borrar = i;
-                                        if(  temporal.getId() == solicitud.getId() ){
+                                        if(  temporal.getId().equals(solicitud.getId()) ){
                                             indice_borrar = i;
+                                            Log.d(TAG, "Indice a borrar: " + temporal.getNombreAnimal());
                                             break;
                                         }
                                     }
-                                    if(arrayListItems.size()>0) {
+                                    if( indice_borrar != -1) {
                                         arrayListItems.remove(indice_borrar);
                                     }
                                     break;
