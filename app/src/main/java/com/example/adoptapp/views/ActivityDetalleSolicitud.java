@@ -235,9 +235,9 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
                         }
                     });
 
-        }else{
+        }/*else{
             buscarOtrasSolicitudes();
-        }
+        }*/
     }
 
     private void buscarOtrasSolicitudes(){
