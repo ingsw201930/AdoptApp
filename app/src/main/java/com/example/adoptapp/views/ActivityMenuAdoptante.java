@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.adoptapp.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -110,8 +111,9 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(ActivityMenuAdoptante.this, ActivityInicioPersona.class);
-        startActivity(intent);
+        Toast.makeText(this,
+                "Acción no disponible",
+                Toast.LENGTH_LONG).show();
     }
 
 }

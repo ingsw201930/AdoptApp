@@ -22,6 +22,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -45,6 +47,9 @@ public class ActivityPerfilAnimal extends AppCompatActivity {
 
     private String id_animal;
     private String id_institucion;
+    private String nombre_institucion;
+    private String nombre_animal;
+    private String foto_url;
 
     private String tipo_solicitud;
 
@@ -72,6 +77,9 @@ public class ActivityPerfilAnimal extends AppCompatActivity {
 
         id_animal = intent.getStringExtra("id_animal");
         id_institucion = intent.getStringExtra("id_institucion");
+        nombre_institucion = intent.getStringExtra("nombre_institucion");
+        nombre_animal = nombre;
+        foto_url = fotoPrincipal;
 
         textViewNombre = findViewById(R.id.textViewNombrePerfilAnimal);
         textViewDescripcion = findViewById(R.id.textViewDatosPerfilAnimal);
@@ -128,7 +136,7 @@ public class ActivityPerfilAnimal extends AppCompatActivity {
 
                 tipo_solicitud = "Adopción";
 
-                revisarSolicitudesActivas();
+                comprobarEstadoAdopcion();
             }
         });
 
@@ -149,6 +157,37 @@ public class ActivityPerfilAnimal extends AppCompatActivity {
                 tipo_solicitud = "Donación";
 
                 revisarSolicitudesActivas();
+            }
+        });
+
+    }
+
+    private void comprobarEstadoAdopcion(){
+
+        DocumentReference referencia = db.collection("animales").document(id_animal);
+
+        referencia.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        String estado;
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        estado = (String)document.getData().get("Estado");
+                        if( estado.equals("Espera") ){
+                            revisarSolicitudesActivas();
+                        }else{
+                            Toast.makeText(ActivityPerfilAnimal.this, "Este animalito ya " +
+                                            "no se encuentra en adopción",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
             }
         });
 
@@ -208,6 +247,9 @@ public class ActivityPerfilAnimal extends AppCompatActivity {
 
         intent.putExtra("id_animal", id_animal);
         intent.putExtra("id_institucion", id_institucion);
+        intent.putExtra("nombre_institucion", nombre_institucion);
+        intent.putExtra("nombre_animal", nombre_animal);
+        intent.putExtra("foto_url", foto_url);
 
         startActivity(intent);
     }
@@ -218,6 +260,9 @@ public class ActivityPerfilAnimal extends AppCompatActivity {
 
         intent.putExtra("id_animal", id_animal);
         intent.putExtra("id_institucion", id_institucion);
+        intent.putExtra("nombre_institucion", nombre_institucion);
+        intent.putExtra("nombre_animal", nombre_animal);
+        intent.putExtra("foto_url", foto_url);
 
         startActivity(intent);
     }
@@ -228,6 +273,9 @@ public class ActivityPerfilAnimal extends AppCompatActivity {
 
         intent.putExtra("id_animal", id_animal);
         intent.putExtra("id_institucion", id_institucion);
+        intent.putExtra("nombre_institucion", nombre_institucion);
+        intent.putExtra("nombre_animal", nombre_animal);
+        intent.putExtra("foto_url", foto_url);
 
         startActivity(intent);
     }

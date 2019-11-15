@@ -261,6 +261,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
                 intent.putExtra("id_animal",animal.getId());
                 intent.putExtra("id_institucion",animal.getIdResponsable());
+                intent.putExtra("nombre_institucion", animal.getNombreResponsable());
 
                 startActivity(intent);
             }

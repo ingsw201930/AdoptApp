@@ -48,6 +48,9 @@ public class ActivityHacerSolicitud extends AppCompatActivity {
     private String id_institucion;
     private String id_solicitante;
     private String tipo_solicitud;
+    private String nombre_institucion;
+    private String nombre_animal;
+    private String foto_url;
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -74,6 +77,9 @@ public class ActivityHacerSolicitud extends AppCompatActivity {
         id_animal = intent.getStringExtra("id_animal");
         id_institucion = intent.getStringExtra("id_institucion");
         id_solicitante = currentUser.getUid();
+        nombre_institucion = intent.getStringExtra("nombre_institucion");
+        nombre_animal = intent.getStringExtra("nombre_animal");
+        foto_url = intent.getStringExtra("foto_url");
 
         tipo_solicitud = intent.getStringExtra("tipo_solicitud");
 
@@ -182,9 +188,14 @@ public class ActivityHacerSolicitud extends AppCompatActivity {
             nuevaSolicitud.setMonto( Long.parseLong( et_monto.getText().toString() ) );
         }
         nuevaSolicitud.setAceptada(false);
+        nuevaSolicitud.setNombreAnimal(nombre_animal);
+        nuevaSolicitud.setNombreInstitucion(nombre_institucion);
+        nuevaSolicitud.setFotoUrl(foto_url);
+        nuevaSolicitud.setNombrePersona(currentUser.getDisplayName());
 
         //buscar un nuevo id en FireStore
         DocumentReference referencia = db.collection("solicitudes").document();
+        nuevaSolicitud.setId(referencia.getId());
 
         referencia
                 .set(nuevaSolicitud)
@@ -206,7 +217,5 @@ public class ActivityHacerSolicitud extends AppCompatActivity {
                         btn_hacer_solicitud.setEnabled(true);
                     }
                 });
-
-
     }
 }
