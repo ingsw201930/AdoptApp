@@ -57,6 +57,8 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
     private int numeroNotificacion;
     public static String ID_CANAL = "adoptapp";
 
+    private String proveniente;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +75,8 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
         if(currentUser==null){
             finish();
         }
+
+        proveniente = getIntent().getStringExtra("proveniente");
 
         db = FirebaseFirestore.getInstance();
 
@@ -108,9 +112,11 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
             }
         });
 
-        createNotificationChannel();
-        numeroNotificacion = 1;
-        listenerCambiosLista();
+        if(proveniente != null) {
+            createNotificationChannel();
+            numeroNotificacion = 1;
+            listenerCambiosLista();
+        }
     }
 
     private void createNotificationChannel() {
@@ -226,7 +232,9 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
         if (currentUser != null) {
             mAuth.signOut();
         }
-        listenerLista.remove();
+        if(proveniente != null) {
+            listenerLista.remove();
+        }
         Intent intent = new Intent(ActivityMenuAdoptante.this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -235,7 +243,9 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        listenerLista.remove();
+        if(proveniente != null) {
+            listenerLista.remove();
+        }
         finish();
     }
 

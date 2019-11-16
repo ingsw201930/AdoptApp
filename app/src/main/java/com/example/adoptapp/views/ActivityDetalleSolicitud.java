@@ -3,6 +3,7 @@ package com.example.adoptapp.views;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.Guideline;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -44,6 +45,8 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
     private Button btn_aceptar;
     private Button btn_rechazar;
     private Button btn_perfil_solicitante;
+    private Button btn_proceder_formalizacion;
+    private Guideline guidelineBotones;
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -56,6 +59,8 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
 
     private ArrayList<String> documentosActualizar;
 
+    private String tipoSolicitud;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,8 +72,24 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
         btn_aceptar = findViewById(R.id.btn_aceptar_solicitud);
         btn_rechazar = findViewById(R.id.btn_rechazar_solicitud);
         btn_perfil_solicitante = findViewById(R.id.btn_perfil_solicitante);
+        btn_proceder_formalizacion = findViewById(R.id.btn_proceder_formalizacion);
+        guidelineBotones = findViewById(R.id.guideline3);
+
+        btn_proceder_formalizacion.setVisibility(View.GONE);
 
         solicitud = (Solicitud) getIntent().getSerializableExtra("solicitud");
+
+        Intent intent = getIntent();
+        tipoSolicitud = intent.getStringExtra("tipoSolicitud");
+
+        if(tipoSolicitud.equals("aceptada")){
+            btn_aceptar.setVisibility(View.GONE);
+            btn_rechazar.setVisibility(View.GONE);
+            guidelineBotones.setGuidelinePercent(1);
+            if( solicitud.getTipo().equals("Adopción") ){
+                btn_proceder_formalizacion.setVisibility(View.VISIBLE);
+            }
+        }
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -117,6 +138,13 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
                 btn_rechazar.setEnabled(false);
                 decision = "rechazar";
                 lanzarDialogo();
+            }
+        });
+
+        btn_proceder_formalizacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                confirmarFormalizacionAdopcion();
             }
         });
 
@@ -380,7 +408,39 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
                         }
                     }
                 });
+    }
 
+    private void confirmarFormalizacionAdopcion(){
+        Query query = db.collection("adopciones")
+                .whereEqualTo("idSolicitud", solicitud.getId());
+
+        query
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            int contadorDocumentos = 0;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                contadorDocumentos = contadorDocumentos+1;
+                                Log.d(TAG, "Encontrado documento: "+document.getData().toString());
+                            }
+                            if(contadorDocumentos > 0){
+                                Toast.makeText(ActivityDetalleSolicitud.this, "Esta " +
+                                        "adopción ya fue formalizada", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Intent intent = new Intent(ActivityDetalleSolicitud.this,
+                                        ActivityFormalizarAdopcion.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("solicitud", solicitud);
+                                intent.putExtras(bundle);
+                                startActivity(intent);
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 
 }

@@ -18,6 +18,7 @@ public class ActivityMenuKeeper extends AppCompatActivity {
 
     ConstraintLayout constraintLayoutRegistrarAnimal;
     ConstraintLayout constraintLayoutVerSolicitudes;
+    ConstraintLayout constraintLayoutVerSolicitudesAceptadas;
 
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
@@ -36,6 +37,7 @@ public class ActivityMenuKeeper extends AppCompatActivity {
 
         constraintLayoutRegistrarAnimal = findViewById(R.id.ConstraintLayoutRegistrarAnimal);
         constraintLayoutVerSolicitudes = findViewById(R.id.ConstraintLayoutVerPeticiones);
+        constraintLayoutVerSolicitudesAceptadas = findViewById(R.id.cl_ver_solicitudes_aceptadas);
 
         constraintLayoutRegistrarAnimal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,6 +52,17 @@ public class ActivityMenuKeeper extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ActivityVerSolicitudesInstitucion.class);
+                intent.putExtra("solicitudes", "a_revisar");
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        constraintLayoutVerSolicitudesAceptadas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ActivityVerSolicitudesInstitucion.class);
+                intent.putExtra("solicitudes", "aceptadas");
                 startActivity(intent);
                 finish();
             }

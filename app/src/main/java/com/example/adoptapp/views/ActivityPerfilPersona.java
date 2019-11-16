@@ -3,6 +3,8 @@ package com.example.adoptapp.views;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +16,7 @@ public class ActivityPerfilPersona extends AppCompatActivity {
     private TextView textViewNombre;
     private TextView textViewDescripcion;
     private ImageView imageViewFoto;
+    private Button btn_iniciar_chat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +26,7 @@ public class ActivityPerfilPersona extends AppCompatActivity {
         textViewNombre = findViewById(R.id.tv_perfil_nombre_persona);
         textViewDescripcion = findViewById(R.id.tv_perfil_datos_persona);
         imageViewFoto = findViewById(R.id.iv_perfil_foto_persona);
+        btn_iniciar_chat = findViewById(R.id.btn_chat_con_persona);
 
         String nombre = getIntent().getStringExtra("nombre");
         String descripcion = getIntent().getStringExtra("descripcion");
@@ -49,5 +53,12 @@ public class ActivityPerfilPersona extends AppCompatActivity {
                 }
             }
         }).start();
+
+        btn_iniciar_chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 }
