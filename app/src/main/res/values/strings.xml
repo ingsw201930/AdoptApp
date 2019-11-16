@@ -112,4 +112,7 @@
     <string name="aceptar_solicitud">Aceptar</string>
     <string name="recoger_animal">Ve por tu adoptado</string>
 
+    <string name="ver_datos_solicitante">Ver perfil solicitante</string>
+    <string name="nombre_persona">Nombre de la persona</string>
+
 </resources>

@@ -59,6 +59,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:text="@string/descripcion_solicitud" />
+
+            <Button
+                android:id="@+id/btn_perfil_solicitante"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ver_datos_solicitante"
+                android:layout_marginTop="10dp"/>
         </LinearLayout>
     </ScrollView>
 

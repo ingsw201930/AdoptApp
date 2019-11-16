@@ -137,7 +137,7 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
         mBuilder.setSmallIcon(R.drawable.icono_adoptante);
         mBuilder.setContentTitle("Tu solicitud de adopción fue aceptada");
         mBuilder.setContentText(solicitud.getNombreAnimal()+" está esperándote.\n"+
-                "Clic aquí para ver a dónde digirte por "+solicitud.getNombreAnimal());
+                "Clic aquí.");
         mBuilder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         //Acción asociada a la notificación

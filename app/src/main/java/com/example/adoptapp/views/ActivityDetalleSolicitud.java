@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -41,6 +43,7 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
     private ImageView imageViewFotoPrincipal;
     private Button btn_aceptar;
     private Button btn_rechazar;
+    private Button btn_perfil_solicitante;
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -63,6 +66,7 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
         imageViewFotoPrincipal = findViewById(R.id.iv_perfil_foto_solicitud);
         btn_aceptar = findViewById(R.id.btn_aceptar_solicitud);
         btn_rechazar = findViewById(R.id.btn_rechazar_solicitud);
+        btn_perfil_solicitante = findViewById(R.id.btn_perfil_solicitante);
 
         solicitud = (Solicitud) getIntent().getSerializableExtra("solicitud");
 
@@ -113,6 +117,13 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
                 btn_rechazar.setEnabled(false);
                 decision = "rechazar";
                 lanzarDialogo();
+            }
+        });
+
+        btn_perfil_solicitante.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hacerBusquedaSolicitante();
             }
         });
 
@@ -332,6 +343,44 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
                                 "intentando rechazar la solicitud. Intentalo de nuevo", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void hacerBusquedaSolicitante(){
+
+        db.collection("personas").document(solicitud.getIdPersona())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+
+                                String nombre = document.getString("Nombre");
+                                String descripcion = document.getString("Descripcion");
+                                Long telefono = document.getLong("Telefono");
+                                String direccion = document.getString("Direccion");
+                                String ciudad = document.getString("Ciudad");
+                                String genero = document.getString("Genero");
+                                String fotoUrl = document.getString("fotoUrl");
+
+                                Log.d("TAG", "Se obtuvo documento de "+document.getString("Nombre"));
+
+                                Intent intent = new Intent(ActivityDetalleSolicitud.this, ActivityPerfilPersona.class);
+                                intent.putExtra("nombre", nombre);
+                                intent.putExtra("descripcion", descripcion);
+                                intent.putExtra("telefono", telefono);
+                                intent.putExtra("direccion", direccion);
+                                intent.putExtra("ciudad", ciudad);
+                                intent.putExtra("genero", genero);
+                                intent.putExtra("fotoUrl", fotoUrl);
+
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                });
+
     }
 
 }
