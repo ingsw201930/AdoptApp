@@ -94,6 +94,9 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
             guidelineBotones.setGuidelinePercent(1);
             if( solicitud.getTipo().equals("Adopción") ){
                 confirmarFormalizacionAdopcion();
+            }else{
+                btn_proceder_formalizacion.setText(R.string.marcar_hecho);
+                confirmarFormalizacionOtras();
             }
         }
 
@@ -146,12 +149,17 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //confirmarFormalizacionAdopcion();
-                Intent intent = new Intent(ActivityDetalleSolicitud.this,
-                        ActivityFormalizarAdopcion.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("solicitud", solicitud);
-                intent.putExtras(bundle);
-                startActivity(intent);
+
+                if( solicitud.getTipo().equals("Adopción") ) {
+                    Intent intent = new Intent(ActivityDetalleSolicitud.this,
+                            ActivityFormalizarAdopcion.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("solicitud", solicitud);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }else{
+                    actualizarEstadoOtras();
+                }
             }
         });
 
@@ -281,9 +289,9 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
                         }
                     });
 
-        }/*else{
-            buscarOtrasSolicitudes();
-        }*/
+        }else{
+            finish();
+        }
     }
 
     private void buscarOtrasSolicitudes(){
@@ -441,6 +449,60 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
+                    }
+                });
+    }
+
+    private void confirmarFormalizacionOtras(){
+        Query query = db.collection("solicitudes")
+                .whereEqualTo("id", solicitud.getId())
+                .whereEqualTo("formalizada", true);
+
+        query
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            int contadorDocumentos = 0;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                contadorDocumentos = contadorDocumentos+1;
+                                Log.d(TAG, "Encontrado documento: "+document.getData().toString());
+                            }
+                            if(contadorDocumentos == 0){
+                                textViewNombre.setText("Solicitud de "+solicitud.getTipo()+" no confirmada");
+                                btn_proceder_formalizacion.setVisibility(View.VISIBLE);
+                            }else{
+                                textViewNombre.setText("Solicitud de "+solicitud.getTipo()+" ya confirmada");
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private void actualizarEstadoOtras(){
+
+        DocumentReference referencia = db.collection("solicitudes").document(solicitud.getId());
+
+        referencia
+                .update("formalizada", true)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                        Toast.makeText(ActivityDetalleSolicitud.this, "Solicitud actualizada" +
+                                "con éxito", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error updating document", e);
+                        Toast.makeText(ActivityDetalleSolicitud.this, "Ocurrió un problema" +
+                                "intentando rechazar la solicitud. Intentalo de nuevo", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

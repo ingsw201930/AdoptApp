@@ -130,7 +130,7 @@ public class ActivityFormalizarAdopcion extends AppCompatActivity {
             public void onClick(View view) {
                 if ( revisarFormulario() ){
                     btn_formalizar.setEnabled(false);
-                    registrarAdopcion();
+                    cambiarFormalizacionSolicitud();
                 }
             }
         });
@@ -310,5 +310,31 @@ public class ActivityFormalizarAdopcion extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void cambiarFormalizacionSolicitud(){
+
+        DocumentReference referencia = db.collection("solicitudes").document(solicitud.getId());
+
+        referencia
+                .update("formalizada", true)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                        Toast.makeText(ActivityFormalizarAdopcion.this, "Solicitud actualizada " +
+                                "con éxito", Toast.LENGTH_SHORT).show();
+                        registrarAdopcion();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error updating document", e);
+                        Toast.makeText(ActivityFormalizarAdopcion.this, "Ocurrió un problema" +
+                                "intentando rechazar la solicitud. Intentalo de nuevo", Toast.LENGTH_SHORT).show();
+                        btn_formalizar.setEnabled(true);
+                    }
+                });
     }
 }
