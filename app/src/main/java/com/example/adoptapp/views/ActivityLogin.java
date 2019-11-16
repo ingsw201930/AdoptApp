@@ -205,6 +205,7 @@ public class ActivityLogin extends AppCompatActivity {
         if (tipoUsuario.equals("Persona")){
             //Intent intent = new Intent(ActivityLogin.this, ActivityInicioPersona.class);
             Intent intent = new Intent(ActivityLogin.this, ActivityMenuAdoptante.class);
+            intent.putExtra("proveniente", "login");
             startActivity(intent);
         }else{
             Intent intent = new Intent(ActivityLogin.this, ActivityMenuKeeper.class);

@@ -127,6 +127,41 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_ver_solicitudes_aceptadas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/roundcornercolorprimario">
+
+                <ImageView
+                    android:id="@+id/imageViewBuscarOtrasInstituciones"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="5dp"
+                    android:background="@color/common_google_signin_btn_text_dark_default"
+                    android:contentDescription="@string/botonBuscarInstituciones"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@tools:sample/avatars[2]" />
+
+                <TextView
+                    android:id="@+id/textViewBuscarOtrasInstituciones"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/solicitudes_aceptadas"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageViewBuscarOtrasInstituciones"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ConstraintLayoutEventos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -157,41 +192,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageViewEventos"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/ConstraintLayoutBuscarOtrasInstituciones"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/roundcornercolorprimario">
-
-                <ImageView
-                    android:id="@+id/imageViewBuscarOtrasInstituciones"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_margin="5dp"
-                    android:background="@color/common_google_signin_btn_text_dark_default"
-                    android:contentDescription="@string/botonBuscarInstituciones"
-                    android:scaleType="fitCenter"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@tools:sample/avatars[2]" />
-
-                <TextView
-                    android:id="@+id/textViewBuscarOtrasInstituciones"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/botonBuscarInstituciones"
-                    android:textColor="@color/common_google_signin_btn_text_dark_default"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageViewBuscarOtrasInstituciones"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

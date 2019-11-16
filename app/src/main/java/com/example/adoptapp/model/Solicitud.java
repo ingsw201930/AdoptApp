@@ -19,6 +19,7 @@ public class Solicitud implements Serializable {
     private String nombreAnimal;
     private String fotoUrl;
     private String nombrePersona;
+    private boolean formalizada;
 
     public Solicitud() {
     }
@@ -133,5 +134,13 @@ public class Solicitud implements Serializable {
 
     public void setNombrePersona(String nombrePersona) {
         this.nombrePersona = nombrePersona;
+    }
+
+    public boolean isFormalizada() {
+        return formalizada;
+    }
+
+    public void setFormalizada(boolean formalizada) {
+        this.formalizada = formalizada;
     }
 }

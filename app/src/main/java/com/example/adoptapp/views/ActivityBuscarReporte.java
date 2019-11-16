@@ -232,7 +232,7 @@ public class ActivityBuscarReporte extends AppCompatActivity {
     }
 
     private void cerrarSesion(){
-        if (currentUser == null) {
+        if (currentUser != null) {
             mAuth.signOut();
         }
         Intent intent = new Intent(ActivityBuscarReporte.this, MainActivity.class);

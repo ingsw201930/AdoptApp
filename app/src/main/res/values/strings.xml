@@ -110,5 +110,13 @@
 
     <string name="rechazar_solicitud">Rechazar</string>
     <string name="aceptar_solicitud">Aceptar</string>
+    <string name="recoger_animal">Ve por tu adoptado</string>
+
+    <string name="ver_datos_solicitante">Ver perfil solicitante</string>
+    <string name="nombre_persona">Nombre de la persona</string>
+    <string name="formalizacion_adopcion">Formaliza la adopción</string>
+    <string name="btn_formalizacion_adopcion">Formalizar</string>
+
+    <string name="solicitudes_aceptadas">Ver solicitudes aceptadas</string>
 
 </resources>

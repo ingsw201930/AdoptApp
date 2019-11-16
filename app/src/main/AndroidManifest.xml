@@ -22,8 +22,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.ActivityDetalleSolicitud"></activity>
-        <activity android:name=".views.ActivityVerSolicitudesInstitucion" />
+        <activity android:name=".views.ActivityFormalizarAdopcion"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".views.ActivityPerfilPersona"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity
+            android:name=".views.ActivityRecogerAdoptado"
+            android:parentActivityName=".views.ActivityMenuAdoptante"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ActivityDetalleSolicitud"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ActivityVerSolicitudesInstitucion"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".views.ActivityHacerSolicitud"
             android:screenOrientation="portrait"
@@ -40,8 +54,12 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".views.ActivityDetalleReporte" />
-        <activity android:name=".views.ActivityBuscarReporte" />
+        <activity
+            android:name=".views.ActivityDetalleReporte"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ActivityBuscarReporte"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".views.ActivityReporteRapido"
             android:screenOrientation="portrait"

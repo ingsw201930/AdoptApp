@@ -70,6 +70,8 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
 
     private ListenerRegistration listenerLista;
 
+    private String tipoSolicitudes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +83,9 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
         progressBarCargarLista = findViewById(R.id.pb_lista_solicitudes);
 
         progressBarCargarLista.setVisibility(View.GONE);
+
+        Intent intent = getIntent();
+        tipoSolicitudes = intent.getStringExtra("solicitudes");
 
         ConnectivityManager cm = (ConnectivityManager)ActivityVerSolicitudesInstitucion.this.getSystemService
                 (CONNECTIVITY_SERVICE);
@@ -120,8 +125,16 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
                 Solicitud solicitud = arrayListItems.get(position);
                 Intent intent = new Intent(view.getContext(), ActivityDetalleSolicitud.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("solicitud",solicitud);
+                bundle.putSerializable("solicitud", solicitud);
                 intent.putExtras(bundle);
+
+                if(tipoSolicitudes.equals("a_revisar")) {
+                    intent.putExtra("tipoSolicitud", "a_revisar");
+                }
+
+                if(tipoSolicitudes.equals("aceptadas")) {
+                    intent.putExtra("tipoSolicitud", "aceptada");
+                }
                 startActivity(intent);
             }
 
@@ -161,10 +174,20 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
 
     public void listenerCambiosLista(){
 
-        Query query = db.collection("solicitudes")
-                .whereEqualTo("idInstitucion", currentUser.getUid())
-                .whereEqualTo("estado", true)
-                .orderBy("fecha", Query.Direction.ASCENDING);
+        Query query;
+
+        if(tipoSolicitudes.equals("a_revisar")) {
+
+            query = db.collection("solicitudes")
+                    .whereEqualTo("idInstitucion", currentUser.getUid())
+                    .whereEqualTo("estado", true)
+                    .orderBy("fecha", Query.Direction.ASCENDING);
+        }else{
+            query = db.collection("solicitudes")
+                    .whereEqualTo("idInstitucion", currentUser.getUid())
+                    .whereEqualTo("aceptada", true)
+                    .orderBy("fecha", Query.Direction.DESCENDING);
+        }
 
         listenerLista = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -279,7 +302,7 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
     private void cerrarSesion(){
         // Stop listening to changes
         listenerLista.remove();
-        if (currentUser == null) {
+        if (currentUser != null) {
             mAuth.signOut();
         }
         Intent intent = new Intent(ActivityVerSolicitudesInstitucion.this, MainActivity.class);

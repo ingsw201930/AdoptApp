@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".views.ActivityFormalizarAdopcion">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tv_formalizacion_titutlo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundcornercolorprimario"
+                android:gravity="center_horizontal"
+                android:text="@string/formalizacion_adopcion"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_subir_foto_adopcion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/CargarFoto"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/ib_subir_imagen_adopcion"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/ib_subir_imagen_adopcion"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:contentDescription="@string/TomarFoto"
+                    android:padding="10dp"
+
+                    android:scaleType="fitCenter"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/tv_subir_foto_adopcion"
+                    app:layout_constraintRight_toLeftOf="@id/ib_subir_imagen_galeria_adopcion"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/camera" />
+
+                <ImageButton
+                    android:id="@+id/ib_subir_imagen_galeria_adopcion"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:contentDescription="@string/CargarFoto"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/ib_subir_imagen_adopcion"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_gallery" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:id="@+id/iv_entrega"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/common_google_signin_btn_text_light_disabled"
+                android:contentDescription="@string/TomarFoto"
+                android:scaleType="fitCenter"
+                android:layout_marginTop="10dp"/>
+
+            <EditText
+                android:id="@+id/et_descripcion_entrega"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@color/common_google_signin_btn_text_light_disabled"
+                android:ems="10"
+                android:gravity="end|start"
+                android:hint="@string/descripcion_reporte_rapido"
+                android:inputType="textMultiLine"
+                android:lines="5"
+                android:overScrollMode="always"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"
+                tools:ignore="Autofill" />
+
+            <Button
+                android:id="@+id/btn_formalizar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundcornercolorprimario"
+                android:text="@string/btn_formalizacion_adopcion"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"/>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

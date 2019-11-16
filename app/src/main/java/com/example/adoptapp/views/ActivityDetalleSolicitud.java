@@ -3,8 +3,10 @@ package com.example.adoptapp.views;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.Guideline;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +25,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -41,6 +44,9 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
     private ImageView imageViewFotoPrincipal;
     private Button btn_aceptar;
     private Button btn_rechazar;
+    private Button btn_perfil_solicitante;
+    private Button btn_proceder_formalizacion;
+    private Guideline guidelineBotones;
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -53,6 +59,8 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
 
     private ArrayList<String> documentosActualizar;
 
+    private String tipoSolicitud;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,12 +71,31 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
         imageViewFotoPrincipal = findViewById(R.id.iv_perfil_foto_solicitud);
         btn_aceptar = findViewById(R.id.btn_aceptar_solicitud);
         btn_rechazar = findViewById(R.id.btn_rechazar_solicitud);
+        btn_perfil_solicitante = findViewById(R.id.btn_perfil_solicitante);
+        btn_proceder_formalizacion = findViewById(R.id.btn_proceder_formalizacion);
+        guidelineBotones = findViewById(R.id.guideline3);
+
+        btn_proceder_formalizacion.setVisibility(View.GONE);
 
         solicitud = (Solicitud) getIntent().getSerializableExtra("solicitud");
+
+        Intent intent = getIntent();
+        tipoSolicitud = intent.getStringExtra("tipoSolicitud");
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
+
+        textViewNombre.setText("Solicitud de "+solicitud.getTipo());
+
+        if(tipoSolicitud.equals("aceptada")){
+            btn_aceptar.setVisibility(View.GONE);
+            btn_rechazar.setVisibility(View.GONE);
+            guidelineBotones.setGuidelinePercent(1);
+            if( solicitud.getTipo().equals("Adopción") ){
+                confirmarFormalizacionAdopcion();
+            }
+        }
 
         String fechaPublicacion = new SimpleDateFormat("dd/MM/yyyy").
                 format(solicitud.getFecha());
@@ -83,7 +110,6 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
         }
         datosSolicitud = datosSolicitud + "\n\nDescripción:\n"+solicitud.getDescripcion();
 
-        textViewNombre.setText("Solicitud de "+solicitud.getTipo());
         textViewDescripcion.setText(datosSolicitud);
 
         new Thread(new Runnable() {
@@ -113,6 +139,26 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
                 btn_rechazar.setEnabled(false);
                 decision = "rechazar";
                 lanzarDialogo();
+            }
+        });
+
+        btn_proceder_formalizacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //confirmarFormalizacionAdopcion();
+                Intent intent = new Intent(ActivityDetalleSolicitud.this,
+                        ActivityFormalizarAdopcion.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("solicitud", solicitud);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
+        btn_perfil_solicitante.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hacerBusquedaSolicitante();
             }
         });
 
@@ -330,6 +376,71 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
                         Log.w(TAG, "Error updating document", e);
                         Toast.makeText(ActivityDetalleSolicitud.this, "Ocurrió un problema" +
                                 "intentando rechazar la solicitud. Intentalo de nuevo", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void hacerBusquedaSolicitante(){
+
+        db.collection("personas").document(solicitud.getIdPersona())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+
+                                String nombre = document.getString("Nombre");
+                                String descripcion = document.getString("Descripcion");
+                                Long telefono = document.getLong("Telefono");
+                                String direccion = document.getString("Direccion");
+                                String ciudad = document.getString("Ciudad");
+                                String genero = document.getString("Genero");
+                                String fotoUrl = document.getString("fotoUrl");
+
+                                Log.d("TAG", "Se obtuvo documento de "+document.getString("Nombre"));
+
+                                Intent intent = new Intent(ActivityDetalleSolicitud.this, ActivityPerfilPersona.class);
+                                intent.putExtra("nombre", nombre);
+                                intent.putExtra("descripcion", descripcion);
+                                intent.putExtra("telefono", telefono);
+                                intent.putExtra("direccion", direccion);
+                                intent.putExtra("ciudad", ciudad);
+                                intent.putExtra("genero", genero);
+                                intent.putExtra("fotoUrl", fotoUrl);
+
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void confirmarFormalizacionAdopcion(){
+        Query query = db.collection("adopciones")
+                .whereEqualTo("idSolicitud", solicitud.getId());
+
+        query
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            int contadorDocumentos = 0;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                contadorDocumentos = contadorDocumentos+1;
+                                Log.d(TAG, "Encontrado documento: "+document.getData().toString());
+                            }
+                            if(contadorDocumentos == 0){
+                                textViewNombre.setText("Solicitud de "+solicitud.getTipo()+" no formalizada");
+                                btn_proceder_formalizacion.setVisibility(View.VISIBLE);
+                            }else{
+                                textViewNombre.setText("Solicitud de "+solicitud.getTipo()+" ya formalizada");
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
                     }
                 });
     }
