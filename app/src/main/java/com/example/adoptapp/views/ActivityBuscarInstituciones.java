@@ -229,7 +229,7 @@ public class ActivityBuscarInstituciones extends AppCompatActivity {
     }
 
     private void cerrarSesion(){
-        if (currentUser == null) {
+        if (currentUser != null) {
             mAuth.signOut();
         }
         Intent intent = new Intent(ActivityBuscarInstituciones.this, MainActivity.class);

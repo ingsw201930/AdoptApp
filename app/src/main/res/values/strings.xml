@@ -110,5 +110,6 @@
 
     <string name="rechazar_solicitud">Rechazar</string>
     <string name="aceptar_solicitud">Aceptar</string>
+    <string name="recoger_animal">Ve por tu adoptado</string>
 
 </resources>

@@ -192,6 +192,7 @@ public class ActivityHacerSolicitud extends AppCompatActivity {
         nuevaSolicitud.setNombreInstitucion(nombre_institucion);
         nuevaSolicitud.setFotoUrl(foto_url);
         nuevaSolicitud.setNombrePersona(currentUser.getDisplayName());
+        nuevaSolicitud.setFormalizada(false);
 
         //buscar un nuevo id en FireStore
         DocumentReference referencia = db.collection("solicitudes").document();

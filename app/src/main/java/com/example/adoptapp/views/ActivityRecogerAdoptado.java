@@ -10,8 +10,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.location.Geocoder;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.adoptapp.R;
+import com.example.adoptapp.model.Solicitud;
 import com.example.adoptapp.utils.FirebaseUtils;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -40,32 +43,38 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
-public class ActivityDetalleReporte extends AppCompatActivity implements OnMapReadyCallback {
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
-    private TextView textViewNombre;
+public class ActivityRecogerAdoptado extends AppCompatActivity implements OnMapReadyCallback {
+
+    private Solicitud solicitud;
+
     private TextView textViewDescripcion;
-    private ImageView imageViewFotoPrincipal;
-
-    private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
-
-    private Geocoder mGeocoder;
-    private Long latitud, longitud;
-    private LatLng latLng1, latLng2;
-
+    private ImageView imageViewFoto;
     private SupportMapFragment mapFragment;
-
-    private GeoPoint ubicacionCliente;
 
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 4;
     private static final int REQUEST_CHECK_SETTINGS = 5;
+
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private FirebaseFirestore db;
+
+    private String TAG = "Recoger adoptado";
 
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest mLocationRequest;
@@ -75,105 +84,9 @@ public class ActivityDetalleReporte extends AppCompatActivity implements OnMapRe
             android.Manifest.permission.ACCESS_FINE_LOCATION
     };
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detalle_reporte);
+    private LatLng latLng1, latLng2;
 
-        textViewNombre = findViewById(R.id.tv_perfil_reporte);
-        textViewDescripcion = findViewById(R.id.tv_detalles_reporte);
-        imageViewFotoPrincipal = findViewById(R.id.iv_detalle_reporte);
-        mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(this);
-        }
-
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
-
-        mGeocoder = new Geocoder( getBaseContext());
-
-        ubicacionCliente = new GeoPoint(0,0);
-
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        mLocationRequest = createLocationRequest();
-
-        Intent intent = getIntent();
-        String nombre = intent.getStringExtra("Nombre");
-        final String fotoPrincipal = intent.getStringExtra("Foto_principal");
-        String descripcion = intent.getStringExtra("Descripcion");
-        Double latitud = intent.getDoubleExtra("Latitud",0.0);
-        Double longitud = intent.getDoubleExtra("Longitud",0.0);
-        latLng2 = new LatLng(latitud, longitud);
-
-        textViewNombre.setText(nombre);
-        textViewDescripcion.setText(descripcion);
-
-        mLocationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                final Location location = locationResult.getLastLocation();
-                Log.i("LOCATION", "Location update in the callback: " + location);
-                if (location != null) {
-                    ubicacionCliente = new GeoPoint(location.getLatitude(), location.getLongitude());
-                    stopLocationUpdates();
-
-                    mapFragment.getMapAsync(new OnMapReadyCallback() {
-                        @Override
-                        public void onMapReady(GoogleMap googleMap) {
-
-                            latLng1 = new LatLng(location.getLatitude(), location.getLongitude());
-                            float zoom = 13;
-
-                            Marker inicio = googleMap.addMarker(new MarkerOptions()
-                                    .position(latLng1)
-                                    .title("Tu ubicación")
-                                    .icon(BitmapDescriptorFactory
-                                            .defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng1, zoom));
-
-                            Marker ubicacionReporte = googleMap.addMarker(new MarkerOptions()
-                                    .position(latLng2)
-                                    .title("Ubicación del reporte")
-                                    .icon(BitmapDescriptorFactory
-                                            .defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-
-                            googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-                            googleMap.getUiSettings().setCompassEnabled(true);
-                            googleMap.getUiSettings().setZoomGesturesEnabled(true);
-                            googleMap.getUiSettings().setZoomControlsEnabled(true);
-
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng2, zoom));
-
-                            stopLocationUpdates();
-                        }
-                    });
-                }
-            }
-        };
-
-        new Thread(new Runnable() {
-            public void run() {
-                // a potentially time consuming task
-                if (fotoPrincipal != null && !fotoPrincipal.equals("")) {
-                    //descargar la imagen
-                    FirebaseUtils.descargarFotoImageView(fotoPrincipal, imageViewFotoPrincipal);
-                }
-            }
-        }).start();
-
-        if (ContextCompat.checkSelfPermission(ActivityDetalleReporte.this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            revisarActivacionGPS();
-        }else{
-            requestPermission(ActivityDetalleReporte.this, PERMISSIONS[0], "Acceso a GPS necesario",
-                    MY_PERMISSIONS_REQUEST_LOCATION);
-        }
-
-    }
+    private GeoPoint ubicacionCliente;
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -184,36 +97,80 @@ public class ActivityDetalleReporte extends AppCompatActivity implements OnMapRe
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 
-    protected LocationRequest createLocationRequest() {
-        LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000); //tasa de refresco en milisegundos
-        mLocationRequest.setFastestInterval(1000); //máxima tasa de refresco
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        return mLocationRequest;
-    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
 
-    private void stopLocationUpdates(){
-        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
-    }
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_recoger_adoptado);
 
-    private void startLocationUpdates() {
-        //Verificación de permiso!!
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+
+        if(currentUser==null){
+            Toast.makeText(this,
+                    "Debes iniciar sesión en AdoptApp para ver esta información",
+                    Toast.LENGTH_LONG).show();
+            finishAffinity();
         }
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        startLocationUpdates();
-    }
+        db = FirebaseFirestore.getInstance();
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        stopLocationUpdates();
+        solicitud = (Solicitud) getIntent().getSerializableExtra("solicitud");
+
+        textViewDescripcion = findViewById(R.id.tv_informacion_adopcion);
+        imageViewFoto = findViewById(R.id.iv_foto_ir_adoptado);
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map_recoger_animal);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mLocationRequest = createLocationRequest();
+
+        String descripcion = "Ya puedes ir a recoger a "+solicitud.getNombreAnimal()+".\n\n"+
+                solicitud.getNombreInstitucion()+" ha aceptado tu solicitud de adopción después " +
+                "de que has cumplido con sus requisitos. Felicitaciones!!!\n"+
+                solicitud.getNombreAnimal()+" te agradecerá por darle una segunda oportunidad en la " +
+                "vida.";
+        textViewDescripcion.setText(descripcion);
+
+        new Thread(new Runnable() {
+            public void run() {
+                // a potentially time consuming task
+                if (solicitud.getFotoUrl() != null && !solicitud.getFotoUrl().equals("")) {
+                    //descargar la imagen
+                    FirebaseUtils.descargarFotoImageView(solicitud.getFotoUrl(), imageViewFoto);
+                }
+            }
+        }).start();
+
+        ubicacionCliente = null;
+        latLng2 = null;
+
+        hacerBusquedaLocalizacion();
+
+        mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                final Location location = locationResult.getLastLocation();
+                Log.i("LOCATION", "Location update in the callback: " + location);
+                if (location != null) {
+                    ubicacionCliente = new GeoPoint(location.getLatitude(), location.getLongitude());
+                    stopLocationUpdates();
+                }
+            }
+        };
+
+        if (ContextCompat.checkSelfPermission(ActivityRecogerAdoptado.this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            revisarActivacionGPS();
+        }else{
+            requestPermission(ActivityRecogerAdoptado.this, PERMISSIONS[0], "Acceso a GPS necesario",
+                    MY_PERMISSIONS_REQUEST_LOCATION);
+        }
+
     }
 
     private void requestPermission(Activity context, String permiso, String justificacion, int idCode){
@@ -270,6 +227,26 @@ public class ActivityDetalleReporte extends AppCompatActivity implements OnMapRe
         }
     }
 
+    protected LocationRequest createLocationRequest() {
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(1000); //tasa de refresco en milisegundos
+        mLocationRequest.setFastestInterval(1000); //máxima tasa de refresco
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        return mLocationRequest;
+    }
+
+    private void stopLocationUpdates(){
+        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+    }
+
+    private void startLocationUpdates() {
+        //Verificación de permiso!!
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+        }
+    }
+
     private void revisarActivacionGPS(){
 
         if (ContextCompat.checkSelfPermission(this,
@@ -297,7 +274,7 @@ public class ActivityDetalleReporte extends AppCompatActivity implements OnMapRe
                             try {// Show the dialog by calling startResolutionForResult(),
                                 // and check the result in onActivityResult().
                                 ResolvableApiException resolvable = (ResolvableApiException) e;
-                                resolvable.startResolutionForResult(ActivityDetalleReporte.this,
+                                resolvable.startResolutionForResult(ActivityRecogerAdoptado.this,
                                         REQUEST_CHECK_SETTINGS);
                             } catch (IntentSender.SendIntentException sendEx) {
                                 // Ignore the error.
@@ -314,5 +291,77 @@ public class ActivityDetalleReporte extends AppCompatActivity implements OnMapRe
                     "Sin acceso a localización, permiso denegado!",
                     Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startLocationUpdates();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopLocationUpdates();
+    }
+
+    private void hacerBusquedaLocalizacion(){
+
+        db.collection("animales").document(solicitud.getIdAnimal())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        GeoPoint ubicacion = document.getGeoPoint("Ubicacion");
+                        latLng2 = new LatLng(ubicacion.getLatitude(), ubicacion.getLongitude());
+                        Log.d("TAG", "Se obtuvo documento de "+document.getString("Nombre"));
+                        while(ubicacionCliente == null) {
+                            ;
+                        }
+                        actualizarMapa();
+                    }
+                }
+            }
+        });
+
+    }
+
+    private void actualizarMapa(){
+
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+
+                latLng1 = new LatLng(ubicacionCliente.getLatitude(), ubicacionCliente.getLongitude());
+                float zoom = 13;
+
+                Marker inicio = googleMap.addMarker(new MarkerOptions()
+                        .position(latLng1)
+                        .title("Tu ubicación")
+                        .icon(BitmapDescriptorFactory
+                                .defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng1, zoom));
+
+                Marker ubicacionReporte = googleMap.addMarker(new MarkerOptions()
+                        .position(latLng2)
+                        .title("Ubicación de "+solicitud.getNombreAnimal())
+                        .icon(BitmapDescriptorFactory
+                                .defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+
+                googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+                googleMap.getUiSettings().setCompassEnabled(true);
+                googleMap.getUiSettings().setZoomGesturesEnabled(true);
+                googleMap.getUiSettings().setZoomControlsEnabled(true);
+
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng2, zoom));
+
+                stopLocationUpdates();
+            }
+        });
+
     }
 }

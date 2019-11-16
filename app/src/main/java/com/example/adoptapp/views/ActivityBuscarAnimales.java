@@ -888,7 +888,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     }
 
     private void cerrarSesion(){
-        if (currentUser == null) {
+        if (currentUser != null) {
             mAuth.signOut();
         }
         sesionCerrada = true;

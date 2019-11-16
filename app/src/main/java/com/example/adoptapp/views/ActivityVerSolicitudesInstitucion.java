@@ -279,7 +279,7 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
     private void cerrarSesion(){
         // Stop listening to changes
         listenerLista.remove();
-        if (currentUser == null) {
+        if (currentUser != null) {
             mAuth.signOut();
         }
         Intent intent = new Intent(ActivityVerSolicitudesInstitucion.this, MainActivity.class);
