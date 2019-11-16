@@ -67,6 +67,14 @@ public class AdapterSolicitudes extends RecyclerView.Adapter<AdapterSolicitudes.
             datosSolicitud = datosSolicitud+"\nMonto mensual ofrecido: "+solicitud.getMonto();
         }
 
+        if( !solicitud.isEstado() ){
+            if( solicitud.isFormalizada()){
+                datosSolicitud = datosSolicitud + "\n\nYa confirmada";
+            }else{
+                datosSolicitud = datosSolicitud + "\n\nNo confirmada";
+            }
+        }
+
         holder.textViewDatos.setText(datosSolicitud);
 
         new Thread(new Runnable() {

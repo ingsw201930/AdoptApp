@@ -40,10 +40,10 @@
                 android:layout_width="300dp"
                 android:layout_height="300dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
                 android:contentDescription="@string/nombre_persona"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/icono_adoptante"
-                android:layout_marginTop="20dp"/>
+                app:srcCompat="@drawable/cargando_imagen" />
 
             <TextView
                 android:id="@+id/tv_perfil_datos_persona"

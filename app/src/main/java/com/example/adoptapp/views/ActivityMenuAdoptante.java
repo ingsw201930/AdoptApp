@@ -44,6 +44,7 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
     private ConstraintLayout constraintLayoutBuscarInstituciones;
     private ConstraintLayout constraintLayoutReporteRapido;
     private ConstraintLayout constraintLayoutVerReportes;
+    private ConstraintLayout constraintLayoutVerHistorias;
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -51,6 +52,7 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
     private FirebaseFirestore db;
 
     private ListenerRegistration listenerLista;
+    private ListenerRegistration listenerListaOtrasSolicitudes;
 
     private String TAG = "Menu adoptante";
 
@@ -68,6 +70,7 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
         constraintLayoutBuscarInstituciones = findViewById(R.id.ConstraintLayoutBuscarInstituciones);
         constraintLayoutReporteRapido = findViewById(R.id.ConstraintLayoutReporteRapido);
         constraintLayoutVerReportes = findViewById(R.id.ConstraintLayoutVerReportes);
+        constraintLayoutVerHistorias = findViewById(R.id.cl_ver_historias);
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -112,10 +115,19 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
             }
         });
 
+        constraintLayoutVerHistorias.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ActivityVerHistorias.class);
+                startActivity(intent);
+            }
+        });
+
         if(proveniente != null) {
             createNotificationChannel();
             numeroNotificacion = 1;
             listenerCambiosLista();
+            listenerCambiosListaOtrasSolicitudes();
         }
     }
 
@@ -177,6 +189,23 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
 
     }
 
+    private void crearNotificacionOtrasSolicitudes(Solicitud solicitud){
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, ID_CANAL);
+        mBuilder.setSmallIcon(R.drawable.icono_adoptante);
+        mBuilder.setContentTitle("Tu solicitud de "+solicitud.getTipo()+" fue aceptada");
+        mBuilder.setContentText("Pronto "+solicitud.getNombreInstitucion()+" se contactará contigo");
+        mBuilder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        int notificationId = numeroNotificacion;
+        numeroNotificacion = numeroNotificacion+1;
+        NotificationManagerCompat notificationManager =
+                NotificationManagerCompat.from(this);
+        // notificationId es un entero unico definido para cada notificacion que se lanza
+        notificationManager.notify(notificationId, mBuilder.build());
+
+    }
+
     public void listenerCambiosLista(){
 
         Query query = db.collection("solicitudes")
@@ -209,6 +238,39 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
         });
     }
 
+    public void listenerCambiosListaOtrasSolicitudes(){
+
+        Query query = db.collection("solicitudes")
+                .whereEqualTo("idPersona", currentUser.getUid())
+                .whereEqualTo("aceptada", true)
+                .whereEqualTo("formalizada", false);
+
+        listenerListaOtrasSolicitudes = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot snapshots,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "listen:error", e);
+                    return;
+                }
+
+                Solicitud solicitud;
+
+                for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                    switch (dc.getType()) {
+                        case ADDED:
+                            Log.d(TAG, "New solicitud: " + dc.getDocument().getData());
+                            solicitud = dc.getDocument().toObject(Solicitud.class);
+                            if( !solicitud.getTipo().equals("Adopción") ){
+                                crearNotificacionOtrasSolicitudes(solicitud);
+                            }
+                            break;
+                    }
+                }
+            }
+        });
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -234,6 +296,7 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
         }
         if(proveniente != null) {
             listenerLista.remove();
+            listenerListaOtrasSolicitudes.remove();
         }
         Intent intent = new Intent(ActivityMenuAdoptante.this, MainActivity.class);
         startActivity(intent);
@@ -245,6 +308,7 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
         super.onPause();
         if(proveniente != null) {
             listenerLista.remove();
+            listenerListaOtrasSolicitudes.remove();
         }
         finish();
     }

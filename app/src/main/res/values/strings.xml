@@ -118,5 +118,14 @@
     <string name="btn_formalizacion_adopcion">Formalizar</string>
 
     <string name="solicitudes_aceptadas">Ver solicitudes aceptadas</string>
+    <string name="titulo_evento">Registro de evento</string>
+    <string name="fecha_evento">Fecha del evento (dd/mm/aaaa)</string>
+    <string name="formato_fecha">dd/mm/aaaa</string>
+    <string name="titulo_evento1">Título del evento</string>
+    <string name="direccion_evento">Dirección del evento</string>
+    <string name="registrar_evento">Registrar evento</string>
+    <string name="eventos">Registrar evento</string>
+
+    <string name="marcar_hecho">Confirmar entrega/participación</string>
 
 </resources>
