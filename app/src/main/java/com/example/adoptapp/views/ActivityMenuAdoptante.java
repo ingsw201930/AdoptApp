@@ -1,5 +1,6 @@
 package com.example.adoptapp.views;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -22,12 +23,17 @@ import android.widget.Toast;
 
 import com.example.adoptapp.R;
 import com.example.adoptapp.model.Solicitud;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -49,6 +55,7 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
     private String TAG = "Menu adoptante";
 
     private int numeroNotificacion;
+    public static String ID_CANAL = "adoptapp";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,9 +120,9 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "channel";
             String description = "Notificacion solicitud adopcion";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
             //IMPORTANCE_MAX MUESTRA LA NOTIFICACIÓN ANIMADA
-            NotificationChannel channel = new NotificationChannel(NotificationChannel.DEFAULT_CHANNEL_ID, name, importance);
+            NotificationChannel channel = new NotificationChannel(ID_CANAL, name, importance);
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
@@ -124,26 +131,28 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
         }
     }
 
-    private void crearNotificacionAdopcion(Solicitud solicitud){
+    private void crearNotificacionAdopcion(Solicitud solicitud, double lat, double longi){
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, NotificationChannel.DEFAULT_CHANNEL_ID);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, ID_CANAL);
         mBuilder.setSmallIcon(R.drawable.icono_adoptante);
         mBuilder.setContentTitle("Tu solicitud de adopción fue aceptada");
         mBuilder.setContentText(solicitud.getNombreAnimal()+" está esperándote.\n"+
                 "Clic aquí para ver a dónde digirte por "+solicitud.getNombreAnimal());
-        mBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        mBuilder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         //Acción asociada a la notificación
         Intent intent = new Intent(this, ActivityRecogerAdoptado.class);
         intent.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP );
 
-        // Create the TaskStackBuilder and add the intent, which inflates the back stack
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addNextIntentWithParentStack(intent);
-
+        intent.putExtra("latitud", lat);
+        intent.putExtra("longitud", longi);
         Bundle bundle = new Bundle();
         bundle.putSerializable("solicitud",solicitud);
         intent.putExtras(bundle);
+
+        // Create the TaskStackBuilder and add the intent, which inflates the back stack
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addNextIntentWithParentStack(intent);
 
         // Get the PendingIntent containing the entire back stack
         PendingIntent pendingIntent =
@@ -186,7 +195,7 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
                         case ADDED:
                             Log.d(TAG, "New solicitud: " + dc.getDocument().getData());
                             solicitud = dc.getDocument().toObject(Solicitud.class);
-                            crearNotificacionAdopcion(solicitud);
+                            hacerBusquedaLocalizacion(solicitud);
                             break;
                     }
                 }
@@ -235,6 +244,26 @@ public class ActivityMenuAdoptante extends AppCompatActivity {
         Toast.makeText(this,
                 "Acción no disponible",
                 Toast.LENGTH_LONG).show();
+    }
+
+    private void hacerBusquedaLocalizacion(final Solicitud solicitud){
+
+        db.collection("animales").document(solicitud.getIdAnimal())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                GeoPoint ubicacion = document.getGeoPoint("Ubicacion");
+                                Log.d("TAG", "Se obtuvo documento de "+document.getString("Nombre"));
+                                crearNotificacionAdopcion(solicitud, ubicacion.getLatitude(), ubicacion.getLongitude());
+                            }
+                        }
+                    }
+                });
+
     }
 
 }

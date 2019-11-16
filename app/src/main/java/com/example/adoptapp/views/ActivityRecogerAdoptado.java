@@ -72,7 +72,6 @@ public class ActivityRecogerAdoptado extends AppCompatActivity implements OnMapR
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
-    private FirebaseFirestore db;
 
     private String TAG = "Recoger adoptado";
 
@@ -103,19 +102,28 @@ public class ActivityRecogerAdoptado extends AppCompatActivity implements OnMapR
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recoger_adoptado);
 
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
+        try {
+            mAuth = FirebaseAuth.getInstance();
+            currentUser = mAuth.getCurrentUser();
 
-        if(currentUser==null){
-            Toast.makeText(this,
-                    "Debes iniciar sesión en AdoptApp para ver esta información",
-                    Toast.LENGTH_LONG).show();
-            finishAffinity();
+            if (currentUser == null) {
+                Toast.makeText(this,
+                        "Debes iniciar sesión en AdoptApp para ver esta información",
+                        Toast.LENGTH_LONG).show();
+                finishAffinity();
+            }
+        }catch (Exception exc){
+            Log.d("TAG", "Se obtuvo "+exc.toString());
         }
 
-        db = FirebaseFirestore.getInstance();
+        //db = FirebaseFirestore.getInstance();
 
         solicitud = (Solicitud) getIntent().getSerializableExtra("solicitud");
+        double latitud, longitud;
+        latitud = getIntent().getDoubleExtra("latitud",0.0);
+        longitud = getIntent().getDoubleExtra("longitud",0.0);
+
+        latLng2 = new LatLng(latitud, longitud);
 
         textViewDescripcion = findViewById(R.id.tv_informacion_adopcion);
         imageViewFoto = findViewById(R.id.iv_foto_ir_adoptado);
@@ -145,10 +153,7 @@ public class ActivityRecogerAdoptado extends AppCompatActivity implements OnMapR
             }
         }).start();
 
-        ubicacionCliente = null;
-        latLng2 = null;
-
-        hacerBusquedaLocalizacion();
+        //hacerBusquedaLocalizacion();
 
         mLocationCallback = new LocationCallback() {
             @Override
@@ -158,6 +163,7 @@ public class ActivityRecogerAdoptado extends AppCompatActivity implements OnMapR
                 if (location != null) {
                     ubicacionCliente = new GeoPoint(location.getLatitude(), location.getLongitude());
                     stopLocationUpdates();
+                    actualizarMapa();
                 }
             }
         };
@@ -303,30 +309,6 @@ public class ActivityRecogerAdoptado extends AppCompatActivity implements OnMapR
     protected void onPause() {
         super.onPause();
         stopLocationUpdates();
-    }
-
-    private void hacerBusquedaLocalizacion(){
-
-        db.collection("animales").document(solicitud.getIdAnimal())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        GeoPoint ubicacion = document.getGeoPoint("Ubicacion");
-                        latLng2 = new LatLng(ubicacion.getLatitude(), ubicacion.getLongitude());
-                        Log.d("TAG", "Se obtuvo documento de "+document.getString("Nombre"));
-                        while(ubicacionCliente == null) {
-                            ;
-                        }
-                        actualizarMapa();
-                    }
-                }
-            }
-        });
-
     }
 
     private void actualizarMapa(){
