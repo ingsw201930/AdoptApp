@@ -186,7 +186,7 @@ public class ActivityVerSolicitudesInstitucion extends AppCompatActivity {
             query = db.collection("solicitudes")
                     .whereEqualTo("idInstitucion", currentUser.getUid())
                     .whereEqualTo("aceptada", true)
-                    .orderBy("fecha", Query.Direction.ASCENDING);
+                    .orderBy("fecha", Query.Direction.DESCENDING);
         }
 
         listenerLista = query.addSnapshotListener(new EventListener<QuerySnapshot>() {

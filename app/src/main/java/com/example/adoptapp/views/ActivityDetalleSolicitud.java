@@ -82,18 +82,20 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
         Intent intent = getIntent();
         tipoSolicitud = intent.getStringExtra("tipoSolicitud");
 
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        db = FirebaseFirestore.getInstance();
+
+        textViewNombre.setText("Solicitud de "+solicitud.getTipo());
+
         if(tipoSolicitud.equals("aceptada")){
             btn_aceptar.setVisibility(View.GONE);
             btn_rechazar.setVisibility(View.GONE);
             guidelineBotones.setGuidelinePercent(1);
             if( solicitud.getTipo().equals("Adopción") ){
-                btn_proceder_formalizacion.setVisibility(View.VISIBLE);
+                confirmarFormalizacionAdopcion();
             }
         }
-
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
-        db = FirebaseFirestore.getInstance();
 
         String fechaPublicacion = new SimpleDateFormat("dd/MM/yyyy").
                 format(solicitud.getFecha());
@@ -108,7 +110,6 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
         }
         datosSolicitud = datosSolicitud + "\n\nDescripción:\n"+solicitud.getDescripcion();
 
-        textViewNombre.setText("Solicitud de "+solicitud.getTipo());
         textViewDescripcion.setText(datosSolicitud);
 
         new Thread(new Runnable() {
@@ -144,7 +145,13 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
         btn_proceder_formalizacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                confirmarFormalizacionAdopcion();
+                //confirmarFormalizacionAdopcion();
+                Intent intent = new Intent(ActivityDetalleSolicitud.this,
+                        ActivityFormalizarAdopcion.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("solicitud", solicitud);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
 
@@ -425,16 +432,11 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
                                 contadorDocumentos = contadorDocumentos+1;
                                 Log.d(TAG, "Encontrado documento: "+document.getData().toString());
                             }
-                            if(contadorDocumentos > 0){
-                                Toast.makeText(ActivityDetalleSolicitud.this, "Esta " +
-                                        "adopción ya fue formalizada", Toast.LENGTH_SHORT).show();
+                            if(contadorDocumentos == 0){
+                                textViewNombre.setText("Solicitud de "+solicitud.getTipo()+" no formalizada");
+                                btn_proceder_formalizacion.setVisibility(View.VISIBLE);
                             }else{
-                                Intent intent = new Intent(ActivityDetalleSolicitud.this,
-                                        ActivityFormalizarAdopcion.class);
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable("solicitud", solicitud);
-                                intent.putExtras(bundle);
-                                startActivity(intent);
+                                textViewNombre.setText("Solicitud de "+solicitud.getTipo()+" ya formalizada");
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
