@@ -60,17 +60,17 @@ import java.util.ArrayList;
 
 public class ActivityBuscarInstituciones extends AppCompatActivity {
 
-    FirebaseFirestore db;
-    FirebaseAuth mAuth;
-    FirebaseUser currentUser;
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
 
-    RecyclerView recyclerViewInstituciones;
-    ProgressBar progressBarCargarLista;
-    TextView textViewCargando;
-    ConstraintLayout constraintLayoutSuperior;
+    private RecyclerView recyclerViewInstituciones;
+    private ProgressBar progressBarCargarLista;
+    private TextView textViewCargando;
+    private ConstraintLayout constraintLayoutSuperior;
 
     private static final String TAG = "Buscar instituciones";
-    ArrayList<Institucion> arrayListInstituciones;
+    private ArrayList<Institucion> arrayListInstituciones;
 
     private AdapterInstituciones mAdapter;
 
@@ -80,7 +80,7 @@ public class ActivityBuscarInstituciones extends AppCompatActivity {
     private double latitudActual;
     private double longitudActual;
 
-    String[] PERMISSIONS = {
+    private String[] PERMISSIONS = {
             android.Manifest.permission.ACCESS_FINE_LOCATION
     };
 
@@ -229,7 +229,7 @@ public class ActivityBuscarInstituciones extends AppCompatActivity {
     }
 
     private void cerrarSesion(){
-        if (currentUser == null) {
+        if (currentUser != null) {
             mAuth.signOut();
         }
         Intent intent = new Intent(ActivityBuscarInstituciones.this, MainActivity.class);

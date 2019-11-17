@@ -164,7 +164,7 @@ public class ActivityBuscarReporte extends AppCompatActivity {
 
                 Intent intent = new Intent(view.getContext(), ActivityDetalleReporte.class);
 
-                intent.putExtra("Nombre", "Reporte rápido");
+                intent.putExtra("Nombre", "Solicitud rápido");
                 intent.putExtra("Foto_principal", reporte.getDireccionFoto());
 
                 String datosReporte = "Descripcion:\n" + reporte.getDescripcion()+"\n"+
@@ -232,7 +232,7 @@ public class ActivityBuscarReporte extends AppCompatActivity {
     }
 
     private void cerrarSesion(){
-        if (currentUser == null) {
+        if (currentUser != null) {
             mAuth.signOut();
         }
         Intent intent = new Intent(ActivityBuscarReporte.this, MainActivity.class);

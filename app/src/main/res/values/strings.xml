@@ -25,7 +25,7 @@
     <string name="descripcionImagenFiltro">Filtro</string>
     <string name="botonRegistrarAnimal">Registrar animal</string>
     <string name="botonVerMisAnimales">Ver mis animales</string>
-    <string name="botonVerPeticiones">Ver peticiones</string>
+    <string name="botonVerPeticiones">Ver solicitudes</string>
     <string name="botonEventos">Eventos</string>
     <string name="hintEdad">Edad</string>
     <string-array name="TipoAnimal">
@@ -57,7 +57,7 @@
     <string name="resultadosNoEncontrados">No hay resultados</string>
     <string name="botonAdoptar">Adoptar</string>
     <string name="botonApadrinar">Apadrinar</string>
-    <string name="botonHacerDonacion">Realizar donación</string>
+    <string name="botonHacerDonacion">Ofrecer donación</string>
     <string name="nombreAnimalPerfil">Nombre animal</string>
     <string name="AvisoNoConexion">No hay conexión</string>
     <string name="textDescriptores">Descriptores de comportamiento</string>
@@ -133,4 +133,30 @@
 
     <string name="ver_reportes">Ver reportes</string>
     <string name="title_activity_maps">Map</string>
+
+    <string name="hacer_solicitud">Realizar solicitud</string>
+    <string name="descripcion_solicitud">Descripción de la solicitud</string>
+    <string name="monto_apadrinamiento">Monto apadrinamiento</string>
+    <string name="monto_apadrinamiento2">Monto mensual ofrecido</string>
+
+    <string name="rechazar_solicitud">Rechazar</string>
+    <string name="aceptar_solicitud">Aceptar</string>
+    <string name="recoger_animal">Ve por tu adoptado</string>
+
+    <string name="ver_datos_solicitante">Ver perfil solicitante</string>
+    <string name="nombre_persona">Nombre de la persona</string>
+    <string name="formalizacion_adopcion">Formaliza la adopción</string>
+    <string name="btn_formalizacion_adopcion">Formalizar</string>
+
+    <string name="solicitudes_aceptadas">Ver solicitudes aceptadas</string>
+    <string name="titulo_evento">Registro de evento</string>
+    <string name="fecha_evento">Fecha del evento (dd/mm/aaaa)</string>
+    <string name="formato_fecha">dd/mm/aaaa</string>
+    <string name="titulo_evento1">Título del evento</string>
+    <string name="direccion_evento">Dirección del evento</string>
+    <string name="registrar_evento">Registrar evento</string>
+    <string name="eventos">Registrar evento</string>
+
+    <string name="marcar_hecho">Confirmar entrega/participación</string>
+
 </resources>

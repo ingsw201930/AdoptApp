@@ -259,6 +259,10 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
                 intent.putStringArrayListExtra("descriptores", animal.getDescriptores());
 
+                intent.putExtra("id_animal",animal.getId());
+                intent.putExtra("id_institucion",animal.getIdResponsable());
+                intent.putExtra("nombre_institucion", animal.getNombreResponsable());
+
                 startActivity(intent);
             }
 
@@ -319,6 +323,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
 
                                 Animal animal = new Animal();
                                 animal.setId(document.getId());
+                                animal.setIdResponsable( document.getString("IdResponsable") );
                                 animal.setNombre( document.getString("Nombre") );
                                 animal.setTipo( document.getString("Tipo") );
                                 animal.setEdad( Integer.parseInt(document.get("Edad").toString()) );
@@ -883,7 +888,7 @@ public class ActivityBuscarAnimales extends AppCompatActivity {
     }
 
     private void cerrarSesion(){
-        if (currentUser == null) {
+        if (currentUser != null) {
             mAuth.signOut();
         }
         sesionCerrada = true;

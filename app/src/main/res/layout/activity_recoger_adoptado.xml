@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context=".views.ActivityPerfilInstitucion">
+    tools:context=".views.ActivityRecogerAdoptado">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -18,40 +18,39 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_perfil_reporte"
-                android:layout_width="match_parent"
+                android:id="@+id/tv_informacion_adopcion"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/roundcornercolorprimario"
-                android:gravity="center_horizontal"
-                android:text="@string/nombre_item_institucion"
-                android:textColor="@color/common_google_signin_btn_text_dark_default"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+                android:text="@string/descripcion_solicitud"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:textSize="18sp" />
 
             <ImageView
-                android:id="@+id/iv_detalle_reporte"
+                android:id="@+id/iv_foto_ir_adoptado"
                 android:layout_width="300dp"
                 android:layout_height="300dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:contentDescription="@string/foto_reporte_rapido"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@string/nombreAnimalPerfil"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/cargando_imagen" />
+                app:srcCompat="@drawable/icono_item_animal" />
 
             <TextView
-                android:id="@+id/tv_detalles_reporte"
+                android:id="@+id/tv_ir_por_adoptado"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/descripcion_reporte_rapido" />
+                android:layout_marginTop="15dp"
+                android:text="@string/recoger_animal"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:textSize="18sp" />
 
             <fragment
-                android:id="@+id/map"
+                android:id="@+id/map_recoger_animal"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="300dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp" />
+                android:layout_marginTop="10dp" />
         </LinearLayout>
     </ScrollView>
 

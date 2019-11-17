@@ -9,6 +9,7 @@ import java.util.Map;
 public class Animal {
 
     private String id;
+    private String IdResponsable;
     private String nombre;
     private String tamano;
     private String sexo;
@@ -128,5 +129,13 @@ public class Animal {
 
     public void setCiudad(String ciudad) {
         this.ciudad = ciudad;
+    }
+
+    public String getIdResponsable() {
+        return IdResponsable;
+    }
+
+    public void setIdResponsable(String idResponsable) {
+        IdResponsable = idResponsable;
     }
 }

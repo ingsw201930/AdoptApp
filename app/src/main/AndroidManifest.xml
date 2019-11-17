@@ -3,11 +3,6 @@
     xmlns:dist="http://schemas.android.com/apk/distribution"
     package="com.example.adoptapp">
 
-    <!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality.
-    -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -23,6 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".ActivityTipoRegistro" />
         <activity android:name=".ActivityRegistrarAnimal" />
         <activity android:name=".ActivityRegistrarFundacion" />
@@ -32,20 +28,45 @@
             android:name=".ActivityFiltro"
             android:windowSoftInputMode="stateHidden" />
 
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/.
-        -->
+
+        <activity android:name=".views.ActivityRegistrarEvento"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".views.ActivityVerHistorias"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".views.ActivityFormalizarAdopcion"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".views.ActivityPerfilPersona"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".views.ActivityRecogerAdoptado"
+            android:parentActivityName=".views.ActivityMenuAdoptante"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ActivityDetalleSolicitud"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ActivityVerSolicitudesInstitucion"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ActivityHacerSolicitud"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".views.ActivityDetalleReporte" />
-        <activity android:name=".views.ActivityBuscarReporte" />
+        <activity
+            android:name=".views.ActivityDetalleReporte"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ActivityBuscarReporte"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".views.ActivityReporteRapido"
             android:screenOrientation="portrait"
@@ -61,10 +82,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.ActivityFiltro"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".views.ActivityRegistrarAnimal"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".views.ActivityMenuKeeper"
             android:screenOrientation="portrait" />
@@ -79,7 +102,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.ActivityLogin"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".views.MainActivity"
             android:screenOrientation="portrait">

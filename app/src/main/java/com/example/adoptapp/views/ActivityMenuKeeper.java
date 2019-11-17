@@ -17,6 +17,9 @@ import com.google.firebase.auth.FirebaseUser;
 public class ActivityMenuKeeper extends AppCompatActivity {
 
     ConstraintLayout constraintLayoutRegistrarAnimal;
+    ConstraintLayout constraintLayoutVerSolicitudes;
+    ConstraintLayout constraintLayoutVerSolicitudesAceptadas;
+    ConstraintLayout constraintLayoutRegistrarEvento;
 
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
@@ -34,12 +37,45 @@ public class ActivityMenuKeeper extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
 
         constraintLayoutRegistrarAnimal = findViewById(R.id.ConstraintLayoutRegistrarAnimal);
+        constraintLayoutVerSolicitudes = findViewById(R.id.ConstraintLayoutVerPeticiones);
+        constraintLayoutVerSolicitudesAceptadas = findViewById(R.id.cl_ver_solicitudes_aceptadas);
+        constraintLayoutRegistrarEvento = findViewById(R.id.cl_registrar_evento);
 
         constraintLayoutRegistrarAnimal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ActivityRegistrarAnimal.class);
                 startActivity(intent);
+                finish();
+            }
+        });
+
+        constraintLayoutVerSolicitudes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ActivityVerSolicitudesInstitucion.class);
+                intent.putExtra("solicitudes", "a_revisar");
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        constraintLayoutVerSolicitudesAceptadas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ActivityVerSolicitudesInstitucion.class);
+                intent.putExtra("solicitudes", "aceptadas");
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        constraintLayoutRegistrarEvento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ActivityRegistrarEvento.class);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -65,25 +101,24 @@ public class ActivityMenuKeeper extends AppCompatActivity {
     }
 
     private void cerrarSesion(){
-        if (currentUser == null) {
+        if (currentUser != null) {
             mAuth.signOut();
         }
         //sesionCerrada = true;
         Intent intent = new Intent(ActivityMenuKeeper.this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        //if(sesionCerrada == true){
-        finish();
-        //}
     }
 
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(ActivityMenuKeeper.this, ActivityLogin.class);
         startActivity(intent);
+        finish();
     }
 }

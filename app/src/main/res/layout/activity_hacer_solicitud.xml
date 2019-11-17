@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".views.ActivityHacerSolicitud">
+
+    <TextView
+        android:id="@+id/tv_titulo_hacer_solicitud"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundcornercolorprimario"
+        android:gravity="center_horizontal"
+        android:text="@string/hacer_solicitud"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_descripcion_hacer_solicitud"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/descripcion_solicitud"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/et_descripcion_hacer_solicitud"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_titulo_hacer_solicitud" />
+
+    <EditText
+        android:id="@+id/et_descripcion_hacer_solicitud"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/common_google_signin_btn_text_light_disabled"
+        android:ems="10"
+        android:hint="@string/descripcion_solicitud"
+        android:inputType="textMultiLine"
+        android:lines="5"
+        android:overScrollMode="always"
+        android:scrollbarStyle="insideInset"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@id/tv_dinero_hacer_solicitud"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_descripcion_hacer_solicitud"
+        tools:ignore="Autofill"
+        android:gravity="end|start"/>
+
+    <TextView
+        android:id="@+id/tv_dinero_hacer_solicitud"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/monto_apadrinamiento2"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/et_dinero_hacer_solicitud"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_descripcion_hacer_solicitud" />
+
+    <EditText
+        android:id="@+id/et_dinero_hacer_solicitud"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/monto_apadrinamiento"
+        app:layout_constraintBottom_toTopOf="@id/btn_hacer_solicitud"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_dinero_hacer_solicitud"
+        tools:visibility="visible"
+        tools:ignore="Autofill"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/btn_hacer_solicitud"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundcornercolorprimario"
+        android:text="@string/hacer_solicitud"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

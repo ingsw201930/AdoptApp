@@ -29,6 +29,7 @@ public class ActivityLogin extends AppCompatActivity {
     private Button botonIngresar;
     private EditText editTextEmail;
     private EditText editTextContrasena;
+    private Button btn_crearCuenta;
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -51,7 +52,8 @@ public class ActivityLogin extends AppCompatActivity {
         botonIngresar = findViewById(R.id.buttonIngresarLogin);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextContrasena = findViewById(R.id.editTextContrasena);
-        botonRegistrarse = findViewById(R.id.buttonRegistrarse);
+        btn_crearCuenta = findViewById(R.id.buttonRegistrarse);
+
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -70,7 +72,12 @@ public class ActivityLogin extends AppCompatActivity {
 
                     String email = editTextEmail.getText().toString();
                     String password = editTextContrasena.getText().toString();
+
                     botonIngresar.setEnabled(false);
+                    btn_crearCuenta.setEnabled(false);
+                    editTextEmail.setEnabled(false);
+                    editTextContrasena.setEnabled(false);
+
                     Toast.makeText(ActivityLogin.this, "Procesando, por favor espera",
                             Toast.LENGTH_SHORT).show();
                     signInUser(email, password);
@@ -92,7 +99,7 @@ public class ActivityLogin extends AppCompatActivity {
             }
         });
 
-        botonRegistrarse.setOnClickListener(new View.OnClickListener() {
+        btn_crearCuenta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ActivityLogin.this, ActivityTipoRegistro.class);
@@ -176,7 +183,7 @@ public class ActivityLogin extends AppCompatActivity {
             editTextContrasena.setText("");
             verificarTipoUsuario(currentUser.getUid());
         }else{
-            botonIngresar.setEnabled(true);
+            desbloquearElementos();
         }
 
     }
@@ -197,6 +204,9 @@ public class ActivityLogin extends AppCompatActivity {
                             lanzarProximaActividad();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
+                            Toast.makeText(ActivityLogin.this, "Autenticación fallida",
+                                    Toast.LENGTH_SHORT).show();
+                            desbloquearElementos();
                         }
                     }
                 });
@@ -205,12 +215,21 @@ public class ActivityLogin extends AppCompatActivity {
 
     private void lanzarProximaActividad(){
         if (tipoUsuario.equals("Persona")){
-            Intent intent = new Intent(ActivityLogin.this, ActivityInicioPersona.class);
+            //Intent intent = new Intent(ActivityLogin.this, ActivityInicioPersona.class);
+            Intent intent = new Intent(ActivityLogin.this, ActivityMenuAdoptante.class);
+            intent.putExtra("proveniente", "login");
             startActivity(intent);
         }else{
             Intent intent = new Intent(ActivityLogin.this, ActivityMenuKeeper.class);
             startActivity(intent);
         }
+    }
+
+    private void desbloquearElementos(){
+        botonIngresar.setEnabled(true);
+        btn_crearCuenta.setEnabled(true);
+        editTextEmail.setEnabled(true);
+        editTextContrasena.setEnabled(true);
     }
 
     @Override

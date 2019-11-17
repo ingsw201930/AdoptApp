@@ -9,18 +9,19 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.adoptapp.R;
+import com.example.adoptapp.model.Adopcion;
 import com.example.adoptapp.model.Institucion;
-import com.example.adoptapp.model.ReporteRapido;
 import com.example.adoptapp.utils.FirebaseUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class AdapterReportes extends RecyclerView.Adapter<AdapterReportes.MyViewHolder> {
+public class AdapterHistorias extends RecyclerView.Adapter<AdapterHistorias.MyViewHolder> {
 
-    private ArrayList<ReporteRapido> listaReportes;
+    private ArrayList<Adopcion> listaItems;
 
-    public AdapterReportes(ArrayList<ReporteRapido> listaReportes) {
-        this.listaReportes = listaReportes;
+    public AdapterHistorias(ArrayList<Adopcion> listaItems) {
+        this.listaItems = listaItems;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -37,35 +38,42 @@ public class AdapterReportes extends RecyclerView.Adapter<AdapterReportes.MyView
             // to access the context from any ViewHolder instance.
             super(view);
 
-            textViewNombre = view.findViewById(R.id.tv_item_nombre_institucion);
-            textViewDatos = view.findViewById(R.id.tv_item_detalles_institucion);
-            imageViewFoto = view.findViewById(R.id.iv_item_institucion);
+            textViewNombre = view.findViewById(R.id.tv_titulo_historia);
+            textViewDatos = view.findViewById(R.id.tv_item_historia_detalles);
+            imageViewFoto = view.findViewById(R.id.iv_item_historia_foto);
         }
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.layout_item_institucion, parent, false);
+                .inflate(R.layout.layout_item_historia, parent, false);
 
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        final ReporteRapido reporte = listaReportes.get(position);
-        holder.textViewNombre.setText("Solicitud rápido");
-        String datosReporte = "Descripcion:\n" + reporte.getDescripcion()+"\n"+
-                "Fecha :" + reporte.getFecha()+"\n"+
-                "Nombre responsable :" + reporte.getNombreResponsable();
-        holder.textViewDatos.setText(datosReporte);
+
+        final Adopcion adopcion = listaItems.get(position);
+
+        holder.textViewNombre.setText("Historia de "+adopcion.getNombreAnimal());
+
+        String fechaPublicacion = new SimpleDateFormat("dd/MM/yyyy").
+                format(adopcion.getFecha());
+
+        String datosInstitucion = "Adoptado(a) por:"+adopcion.getNombrePersona()+"\n\n"+
+                "De: "+adopcion.getNombreInstitucion()+"\n\n"+
+                "En: "+fechaPublicacion+"\n\n"+
+                "Descripción:\n"+adopcion.getDescripcion();
+        holder.textViewDatos.setText(datosInstitucion);
 
         new Thread(new Runnable() {
             public void run() {
                 // a potentially time consuming task
 
-                if (!reporte.getDireccionFoto().equals("")) {
-                    FirebaseUtils.descargarFotoImageView(reporte.getDireccionFoto(), holder.imageViewFoto);
+                if (!adopcion.getFotoUrl().equals("")) {
+                    FirebaseUtils.descargarFotoImageView(adopcion.getFotoUrl(), holder.imageViewFoto);
                 }
             }
         }).start();
@@ -73,6 +81,6 @@ public class AdapterReportes extends RecyclerView.Adapter<AdapterReportes.MyView
 
     @Override
     public int getItemCount() {
-        return listaReportes.size();
+        return listaItems.size();
     }
 }
