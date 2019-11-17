@@ -63,6 +63,9 @@ public class AdapterSolicitudes extends RecyclerView.Adapter<AdapterSolicitudes.
                 solicitud.getTipo().equals("Donación")){
             datosSolicitud = datosSolicitud+"\nPara: "+solicitud.getNombreAnimal();
         }
+        if(solicitud.getTipo().equals("DonaciónAInstitución") || solicitud.getTipo().equals("Voluntariado") ){
+            datosSolicitud = datosSolicitud+"\nPara: "+solicitud.getNombreInstitucion();
+        }
         if(solicitud.getTipo().equals("Apadrinamiento")){
             datosSolicitud = datosSolicitud+"\nMonto mensual ofrecido: "+solicitud.getMonto();
         }
