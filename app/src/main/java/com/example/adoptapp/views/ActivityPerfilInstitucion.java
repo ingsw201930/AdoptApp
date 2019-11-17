@@ -124,7 +124,7 @@ public class ActivityPerfilInstitucion extends AppCompatActivity {
                             }else{
                                 Toast.makeText(ActivityPerfilInstitucion.this, "Ya tienes " +
                                                 "una solicitud de " + tipo_solicitud + " activa para " +
-                                                "este animalito. No se puede registrar una nueva.",
+                                                "esta institución. No se puede registrar una nueva.",
                                         Toast.LENGTH_LONG).show();
                             }
                         } else {
