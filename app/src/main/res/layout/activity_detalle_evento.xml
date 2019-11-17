@@ -8,12 +8,12 @@
     tools:context=".views.ActivityReporteRapido">
 
     <TextView
-        android:id="@+id/tv_titulo_evento_registro"
+        android:id="@+id/tv_titulo_evento_detalle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/roundcornercolorprimario"
         android:gravity="center_horizontal"
-        android:text="@string/titulo_evento"
+        android:text="@string/titulo_evento1"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -28,7 +28,7 @@
         android:layout_marginTop="30dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_titulo_evento_registro"
+        app:layout_constraintTop_toBottomOf="@id/tv_titulo_evento_detalle"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
@@ -36,61 +36,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <EditText
-                android:id="@+id/et_titulo_evento_registro"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/titulo_evento1"
-                android:inputType="text"
-                tools:ignore="Autofill"/>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/tv_subir_imagen_evento"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/CargarFoto"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/ib_tomar_evento"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageButton
-                    android:id="@+id/ib_tomar_evento"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:contentDescription="@string/TomarFoto"
-                    android:padding="10dp"
-
-                    android:scaleType="fitCenter"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/tv_subir_imagen_evento"
-                    app:layout_constraintRight_toLeftOf="@id/ib_elegir_galeria_evento"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/camera" />
-
-                <ImageButton
-                    android:id="@+id/ib_elegir_galeria_evento"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:contentDescription="@string/CargarFoto"
-                    android:scaleType="fitCenter"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/ib_tomar_evento"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_gallery" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <ImageView
-                android:id="@+id/iv_evento_registro"
+                android:id="@+id/iv_evento_detalle"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
@@ -100,49 +47,55 @@
                 android:scaleType="fitCenter" />
 
             <EditText
-                android:id="@+id/et_fecha_registro_evento"
+                android:id="@+id/et_fecha_detalle_evento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:ems="10"
+                android:enabled="false"
                 android:hint="@string/fecha_evento"
                 android:inputType="date"
-                android:layout_marginTop="20dp"
-                tools:ignore="Autofill"/>
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                tools:ignore="Autofill" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <EditText
-                    android:id="@+id/et_hora_inicio_registro"
+                    android:id="@+id/et_hora_inicio_detalle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:enabled="false"
                     android:hint="@string/hora_inicio"
                     android:inputType="time"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/et_hora_fin_registro"
+                    app:layout_constraintRight_toLeftOf="@id/et_hora_fin_detalle"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="Autofill"/>
+                    tools:ignore="Autofill" />
 
                 <EditText
-                    android:id="@+id/et_hora_fin_registro"
+                    android:id="@+id/et_hora_fin_detalle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:enabled="false"
                     android:hint="@string/hora_fin"
                     android:inputType="time"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/et_hora_inicio_registro"
+                    app:layout_constraintLeft_toRightOf="@id/et_hora_inicio_detalle"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="Autofill"/>
+                    tools:ignore="Autofill" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/tv_descripcion_evento_registro"
+                android:id="@+id/tv_descripcion_evento_detalle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -150,11 +103,13 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/et_descripcion_evento_registro"
+                android:id="@+id/et_descripcion_evento_detalle"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:layout_marginTop="10dp"
                 android:background="@color/common_google_signin_btn_text_light_disabled"
                 android:ems="10"
+                android:enabled="false"
                 android:gravity="end|start"
                 android:hint="@string/descripcion_reporte_rapido"
                 android:inputType="textMultiLine"
@@ -162,8 +117,8 @@
                 android:overScrollMode="always"
                 android:scrollbarStyle="insideInset"
                 android:scrollbars="vertical"
-                tools:ignore="Autofill"
-                android:layout_marginTop="10dp" />
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                tools:ignore="Autofill" />
 
             <TextView
                 android:id="@+id/tv_titulo_dir_evento"
@@ -174,33 +129,25 @@
                 android:layout_marginTop="20dp"/>
 
             <EditText
-                android:id="@+id/et_direccion_evento_registro"
+                android:id="@+id/et_direccion_evento_detalle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:ems="10"
+                android:enabled="false"
                 android:hint="@string/direccion_evento"
                 android:inputType="textPersonName"
-                tools:ignore="Autofill"/>
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                tools:ignore="Autofill" />
 
             <fragment
-                android:id="@+id/map_evento_registro"
+                android:id="@+id/map_evento_detalle"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"/>
 
-            <Button
-                android:id="@+id/btn_registrar_evento"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/roundcornercolorprimario"
-                android:text="@string/registrar_evento"
-                android:textColor="@color/common_google_signin_btn_text_dark_default"
-                android:textSize="18sp"
-                android:textStyle="bold" />
         </LinearLayout>
     </ScrollView>
 

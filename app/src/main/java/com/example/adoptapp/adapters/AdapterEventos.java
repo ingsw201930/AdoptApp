@@ -9,19 +9,19 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.adoptapp.R;
-import com.example.adoptapp.model.Institucion;
+import com.example.adoptapp.model.Evento;
 import com.example.adoptapp.model.ReporteRapido;
 import com.example.adoptapp.utils.FirebaseUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class AdapterReportes extends RecyclerView.Adapter<AdapterReportes.MyViewHolder> {
+public class AdapterEventos extends RecyclerView.Adapter<AdapterEventos.MyViewHolder> {
 
-    private ArrayList<ReporteRapido> listaReportes;
+    private ArrayList<Evento> listaEventos;
 
-    public AdapterReportes(ArrayList<ReporteRapido> listaReportes) {
-        this.listaReportes = listaReportes;
+    public AdapterEventos(ArrayList<Evento> listaEventos) {
+        this.listaEventos = listaEventos;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -38,39 +38,43 @@ public class AdapterReportes extends RecyclerView.Adapter<AdapterReportes.MyView
             // to access the context from any ViewHolder instance.
             super(view);
 
-            textViewNombre = view.findViewById(R.id.tv_item_nombre_institucion);
-            textViewDatos = view.findViewById(R.id.tv_item_detalles_institucion);
-            imageViewFoto = view.findViewById(R.id.iv_item_institucion);
+            textViewNombre = view.findViewById(R.id.tv_item_nombre_evento);
+            textViewDatos = view.findViewById(R.id.tv_item_detalles_evento);
+            imageViewFoto = view.findViewById(R.id.iv_item_evento);
         }
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.layout_item_institucion, parent, false);
+                .inflate(R.layout.layout_item_evento, parent, false);
 
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        final ReporteRapido reporte = listaReportes.get(position);
-        holder.textViewNombre.setText("Reporte rápido");
+
+        final Evento evento = listaEventos.get(position);
+
+        holder.textViewNombre.setText( evento.getTitulo() );
 
         String fechaPublicacion = new SimpleDateFormat("dd/MM/yyyy").
-                format(reporte.getFecha());
+                format(evento.getFecha());
 
-        String datosReporte = "Descripcion:\n" + reporte.getDescripcion()+"\n"+
-                "Fecha :" + fechaPublicacion+"\n"+
-                "Nombre responsable :" + reporte.getNombreResponsable();
+        String datosReporte = "Fecha: " + fechaPublicacion+"\n"+
+                "Horario: "+evento.getHoraInicio()+ " a "+evento.getHoraFin()+"\n"+
+                "Organizado por :" + evento.getNombreInstitucion()+"\n"+
+                "En :" + evento.getDireccion()+"\n"+
+                "A "+evento.getDistancia()+" km de tu ubicación\n";
         holder.textViewDatos.setText(datosReporte);
 
         new Thread(new Runnable() {
             public void run() {
                 // a potentially time consuming task
 
-                if (!reporte.getDireccionFoto().equals("")) {
-                    FirebaseUtils.descargarFotoImageView(reporte.getDireccionFoto(), holder.imageViewFoto);
+                if (!evento.getFotoUrl().equals("")) {
+                    FirebaseUtils.descargarFotoImageView(evento.getFotoUrl(), holder.imageViewFoto);
                 }
             }
         }).start();
@@ -78,6 +82,6 @@ public class AdapterReportes extends RecyclerView.Adapter<AdapterReportes.MyView
 
     @Override
     public int getItemCount() {
-        return listaReportes.size();
+        return listaEventos.size();
     }
 }
