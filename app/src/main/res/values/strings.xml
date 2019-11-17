@@ -125,6 +125,8 @@
     <string name="direccion_evento">Dirección del evento</string>
     <string name="registrar_evento">Registrar evento</string>
     <string name="eventos">Registrar evento</string>
+    <string name="hora_inicio">Hora inicio (hh:mm)</string>
+    <string name="hora_fin">Hora fin (hh:mm)</string>
 
     <string name="marcar_hecho">Confirmar entrega/participación</string>
 
