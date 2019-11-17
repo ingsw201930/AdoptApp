@@ -19,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+
         <activity android:name=".ActivityTipoRegistro" />
         <activity android:name=".ActivityRegistrarAnimal" />
         <activity android:name=".ActivityRegistrarFundacion" />
@@ -30,10 +31,20 @@
 
 
         <activity android:name=".views.ActivityRegistrarEvento"
+
+        <activity android:name=".views.ActivityVerEventos"
+            android:screenOrientation="portrait" />
+        <activity android:name=".views.ActivityDetalleEvento"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity
+            android:name=".views.ActivityRegistrarEvento"
+
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".views.ActivityVerHistorias"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".views.ActivityVerHistorias"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".views.ActivityFormalizarAdopcion"
             android:screenOrientation="portrait"

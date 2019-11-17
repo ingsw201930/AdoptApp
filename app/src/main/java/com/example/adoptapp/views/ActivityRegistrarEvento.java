@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -19,6 +20,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -29,6 +31,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.adoptapp.R;
@@ -43,14 +46,19 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -64,6 +72,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ActivityRegistrarEvento extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -99,9 +109,12 @@ public class ActivityRegistrarEvento extends AppCompatActivity implements OnMapR
     private EditText et_direccion;
     private EditText et_descripcion;
     private SupportMapFragment mapFragment;
+    private EditText et_hora_inicio;
+    private EditText et_hora_fin;
 
     private Calendar calendar;
     private DatePickerDialog.OnDateSetListener date;
+    private TimePickerDialog.OnTimeSetListener horaInicio, horaFin;
 
     // Limits for the geocoder search (Colombia)
     public static final double lowerLeftLatitude = 1.396967;
@@ -112,6 +125,8 @@ public class ActivityRegistrarEvento extends AppCompatActivity implements OnMapR
     private Address addressResult;
     private GoogleMap mMap;
     private GeoPoint ubicacionEvento;
+
+    private String nombreUsuario;
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -136,6 +151,8 @@ public class ActivityRegistrarEvento extends AppCompatActivity implements OnMapR
         et_fecha = findViewById(R.id.et_fecha_registro_evento);
         et_direccion = findViewById(R.id.et_direccion_evento_registro);
         et_descripcion = findViewById(R.id.et_descripcion_evento_registro);
+        et_hora_inicio = findViewById(R.id.et_hora_inicio_registro);
+        et_hora_fin = findViewById(R.id.et_hora_fin_registro);
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_evento_registro);
         if (mapFragment != null) {
@@ -164,12 +181,58 @@ public class ActivityRegistrarEvento extends AppCompatActivity implements OnMapR
             }
         };
 
+        horaInicio = new TimePickerDialog.OnTimeSetListener(){
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                calendar.set(Calendar.MINUTE, minute);
+                String format = "HH:mm";
+                SimpleDateFormat sdf = new SimpleDateFormat(format);
+                et_hora_inicio.setText(sdf.format(calendar.getTime()));
+            }
+        };
+
+        horaFin = new TimePickerDialog.OnTimeSetListener(){
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                calendar.set(Calendar.MINUTE, minute);
+                String format = "HH:mm";
+                SimpleDateFormat sdf = new SimpleDateFormat(format);
+                et_hora_fin.setText(sdf.format(calendar.getTime()));
+            }
+        };
+
         et_fecha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new DatePickerDialog(ActivityRegistrarEvento.this, date,
                         calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        et_hora_inicio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int minute = calendar.get(Calendar.MINUTE);
+
+                new TimePickerDialog(view.getContext(),horaInicio, hour, minute,
+                        DateFormat.is24HourFormat(view.getContext())).show();
+            }
+        });
+
+        et_hora_fin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int minute = calendar.get(Calendar.MINUTE);
+
+                new TimePickerDialog(view.getContext(),horaFin, hour, minute,
+                        DateFormat.is24HourFormat(view.getContext())).show();
             }
         });
 
@@ -253,7 +316,7 @@ public class ActivityRegistrarEvento extends AppCompatActivity implements OnMapR
             public void onClick(View view) {
                 if ( revisarFormulario() ){
                     btn_registrarEvento.setEnabled(false);
-                    registrarEvento();
+                    obtenerNombreUsuario();
                 }
             }
         });
@@ -390,9 +453,47 @@ public class ActivityRegistrarEvento extends AppCompatActivity implements OnMapR
         }else{
             et_descripcion.setError(null);
         }
+        if( et_hora_inicio.getText().toString().isEmpty() ){
+            et_hora_inicio.setError("Campo obligatorio");
+            b = false;
+        }else{
+            if(isTimeValid(et_hora_inicio.getText().toString())){
+                et_hora_inicio.setError(null);
+            }else{
+                et_hora_inicio.setError("Hora/formato incorrecto");
+                b = false;
+            }
+        }
+        if( et_hora_fin.getText().toString().isEmpty() ){
+            et_hora_fin.setError("Campo obligatorio");
+            b = false;
+        }else{
+            if(isTimeValid(et_hora_fin.getText().toString())){
+                et_hora_fin.setError(null);
+            }else{
+                et_hora_fin.setError("Hora/formato incorrecto");
+                b = false;
+            }
+        }
+        if( b == true){
+            Date timeInicio = null, timeFin = null;
+            try {
+                timeInicio = new SimpleDateFormat("HH:mm").parse(et_hora_inicio.getText().toString());
+                timeFin = new SimpleDateFormat("HH:mm").parse(et_hora_fin.getText().toString());
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
+            if(timeInicio != null && timeFin!= null) {
+                if (timeInicio.after(timeFin)) {
+                    Toast.makeText(ActivityRegistrarEvento.this, "Error: la hora " +
+                            "de inicio no puede ser mayor a la hora de finalización", Toast.LENGTH_SHORT).show();
+                    b = false;
+                }
+            }
+        }
         if(ubicacionEvento == null){
-            Toast toast = Toast.makeText(ActivityRegistrarEvento.this, "No se ha establecido " +
-                    "una dirección geográfica", Toast.LENGTH_SHORT);
+            Toast.makeText(ActivityRegistrarEvento.this, "No se ha establecido " +
+                    "una dirección geográfica", Toast.LENGTH_SHORT).show();
             b = false;
         }
         return b;
@@ -401,7 +502,7 @@ public class ActivityRegistrarEvento extends AppCompatActivity implements OnMapR
     private boolean isDateValid(String fecha){
         Date date = null;
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             date = sdf.parse(fecha);
             if (date != null && !fecha.equals(sdf.format(date))) {
                 date = null;
@@ -416,11 +517,27 @@ public class ActivityRegistrarEvento extends AppCompatActivity implements OnMapR
         }
     }
 
+    private boolean isTimeValid(final String time){
+
+        final String TIME24HOURS_PATTERN =
+                "([01]?[0-9]|2[0-3]):[0-5][0-9]";
+        Pattern pattern;
+        Matcher matcher;
+        pattern = Pattern.compile(TIME24HOURS_PATTERN);
+
+        matcher = pattern.matcher(time);
+        return matcher.matches();
+
+    }
+
     private void registrarEvento() {
 
         Evento evento = new Evento();
         evento.setDescripcion( et_descripcion.getText().toString() );
         evento.setDireccion( et_direccion.getText().toString() );
+        evento.setTitulo( et_titulo.getText().toString() );
+        evento.setHoraInicio( et_hora_inicio.getText().toString() );
+        evento.setHoraFin( et_hora_fin.getText().toString() );
 
         Date fechaNacimiento = null;
         try {
@@ -431,7 +548,7 @@ public class ActivityRegistrarEvento extends AppCompatActivity implements OnMapR
 
         evento.setFecha(fechaNacimiento);
         evento.setIdInstitucion( currentUser.getUid() );
-        evento.setNombreInstitucion( currentUser.getDisplayName() );
+        evento.setNombreInstitucion( nombreUsuario );
         evento.setUbicacion( ubicacionEvento );
 
         DocumentReference referencia = db.collection("eventos").document();
@@ -491,8 +608,25 @@ public class ActivityRegistrarEvento extends AppCompatActivity implements OnMapR
     }
 
     private void updateDate() {
-        String format = "dd/MM/yy";
+        String format = "dd/MM/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         et_fecha.setText(sdf.format(calendar.getTime()));
+    }
+
+    private void obtenerNombreUsuario(){
+        db.collection("instituciones").document(currentUser.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                nombreUsuario = document.getString("Nombre");
+                                registrarEvento();
+                            }
+                        }
+                    }
+                });
     }
 }

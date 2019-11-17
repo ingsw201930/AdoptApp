@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -56,6 +57,8 @@ public class ActivityHacerSolicitud extends AppCompatActivity {
     private FirebaseUser currentUser;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private String nombreUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +103,18 @@ public class ActivityHacerSolicitud extends AppCompatActivity {
                 et_monto.setVisibility(View.GONE);
                 tv_titulo_monto.setVisibility(View.GONE);
                 break;
+            case "DonaciónAInstitución":
+                tv_titulo.setText("Ofrecer donación a institución");
+                tv_titulo_descripcion.setText("Escribe en qué consiste la donación");
+                et_monto.setVisibility(View.GONE);
+                tv_titulo_monto.setVisibility(View.GONE);
+                break;
+            case "Voluntariado":
+                tv_titulo.setText("Ofrecer voluntariado a institución");
+                tv_titulo_descripcion.setText("Escribe por qué te interesa");
+                et_monto.setVisibility(View.GONE);
+                tv_titulo_monto.setVisibility(View.GONE);
+                break;
         }
 
         btn_hacer_solicitud.setOnClickListener(new View.OnClickListener() {
@@ -129,6 +144,18 @@ public class ActivityHacerSolicitud extends AppCompatActivity {
                             b = false;
                         }
                         break;
+                    case "DonaciónAInstitución":
+                        if (et_descripcion.getText().toString().isEmpty()){
+                            et_descripcion.setError("Campo obligatorio");
+                            b = false;
+                        }
+                        break;
+                    case "Voluntariado":
+                        if (et_descripcion.getText().toString().isEmpty()){
+                            et_descripcion.setError("Campo obligatorio");
+                            b = false;
+                        }
+                        break;
                 }
                 if (b == true){
                     btn_hacer_solicitud.setEnabled(false);
@@ -150,7 +177,8 @@ public class ActivityHacerSolicitud extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int which) {
 
-                registrarSolicitud();
+                //registrarSolicitud();
+                obtenerNombreUsuario();
 
                 // Do nothing, but close the dialog
                 dialog.dismiss();
@@ -191,7 +219,7 @@ public class ActivityHacerSolicitud extends AppCompatActivity {
         nuevaSolicitud.setNombreAnimal(nombre_animal);
         nuevaSolicitud.setNombreInstitucion(nombre_institucion);
         nuevaSolicitud.setFotoUrl(foto_url);
-        nuevaSolicitud.setNombrePersona(currentUser.getDisplayName());
+        nuevaSolicitud.setNombrePersona( nombreUsuario );
         nuevaSolicitud.setFormalizada(false);
 
         //buscar un nuevo id en FireStore
@@ -216,6 +244,23 @@ public class ActivityHacerSolicitud extends AppCompatActivity {
                         Toast.makeText(ActivityHacerSolicitud.this, "Falló el registro de solicitud",
                                 Toast.LENGTH_SHORT).show();
                         btn_hacer_solicitud.setEnabled(true);
+                    }
+                });
+    }
+
+    private void obtenerNombreUsuario(){
+        db.collection("personas").document(currentUser.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                nombreUsuario = document.getString("Nombre");
+                                registrarSolicitud();
+                            }
+                        }
                     }
                 });
     }

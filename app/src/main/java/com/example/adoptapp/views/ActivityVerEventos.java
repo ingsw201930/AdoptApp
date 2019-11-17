@@ -29,9 +29,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.adoptapp.R;
-import com.example.adoptapp.adapters.AdapterInstituciones;
+import com.example.adoptapp.adapters.AdapterEventos;
 import com.example.adoptapp.adapters.AdapterReportes;
 import com.example.adoptapp.adapters.RecyclerTouchListener;
+import com.example.adoptapp.model.Evento;
 import com.example.adoptapp.model.Institucion;
 import com.example.adoptapp.model.ReporteRapido;
 import com.google.android.gms.common.api.ApiException;
@@ -58,23 +59,24 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class ActivityBuscarReporte extends AppCompatActivity {
+public class ActivityVerEventos extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
 
-    private RecyclerView recyclerViewInstituciones;
+    private RecyclerView recyclerViewItems;
     private ProgressBar progressBarCargarLista;
     private TextView textViewCargando;
     private ConstraintLayout constraintLayoutSuperior;
 
-    private static final String TAG = "Ver reportes";
-    private ArrayList<ReporteRapido> arrayListReportes;
+    private static final String TAG = "Ver eventos";
+    private ArrayList<Evento> arrayListItems;
 
-    private AdapterReportes mAdapter;
+    private AdapterEventos mAdapter;
 
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 0;
     private static final int REQUEST_CHECK_SETTINGS = 1;
@@ -95,14 +97,14 @@ public class ActivityBuscarReporte extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_buscar_reportes);
+        setContentView(R.layout.activity_ver_eventos);
 
-        recyclerViewInstituciones = findViewById(R.id.rv_lista_reportes);
-        progressBarCargarLista = findViewById(R.id.pb_lista_reportes);
-        textViewCargando = findViewById(R.id.tv_cargando_lista_reportes);
-        constraintLayoutSuperior = findViewById(R.id.cl_superior_reportes);
+        recyclerViewItems = findViewById(R.id.rv_lista_eventos);
+        progressBarCargarLista = findViewById(R.id.pb_lista_eventos);
+        textViewCargando = findViewById(R.id.tv_cargando_lista_eventos);
+        constraintLayoutSuperior = findViewById(R.id.cl_superior_eventos);
 
-        ConnectivityManager cm = (ConnectivityManager)ActivityBuscarReporte.this.getSystemService
+        ConnectivityManager cm = (ConnectivityManager)ActivityVerEventos.this.getSystemService
                 (CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
@@ -111,7 +113,7 @@ public class ActivityBuscarReporte extends AppCompatActivity {
         if(!isConnected) {
             progressBarCargarLista.setVisibility(View.GONE);
             textViewCargando.setText(R.string.AvisoNoConexion);
-            Toast.makeText(ActivityBuscarReporte.this, "No hay conexión a internet",
+            Toast.makeText(ActivityVerEventos.this, "No hay conexión a internet",
                     Toast.LENGTH_SHORT).show();
         }
 
@@ -134,8 +136,8 @@ public class ActivityBuscarReporte extends AppCompatActivity {
                 if (location != null) {
                     latitudActual = location.getLatitude();
                     longitudActual = location.getLongitude();
-                    if (arrayListReportes.size() == 0) {
-                        leerListaReportes();
+                    if (arrayListItems.size() == 0) {
+                        leerListaItems();
                     }
                     stopLocationUpdates();
                     Log.i(TAG, latitudActual+" "+longitudActual);
@@ -146,34 +148,35 @@ public class ActivityBuscarReporte extends AppCompatActivity {
         latitudActual = 200; //inicializar con latitud que no existe
         longitudActual = 200; //inicializar con longitud que no existe
 
-        arrayListReportes = new ArrayList<>();
+        arrayListItems = new ArrayList<>();
 
-        mAdapter = new AdapterReportes(arrayListReportes);
+        mAdapter = new AdapterEventos(arrayListItems);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerViewInstituciones.setLayoutManager(mLayoutManager);
-        recyclerViewInstituciones.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewItems.setLayoutManager(mLayoutManager);
+        recyclerViewItems.setItemAnimator(new DefaultItemAnimator());
         //recyclerViewAnimales.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-        recyclerViewInstituciones.setAdapter(mAdapter);
+        recyclerViewItems.setAdapter(mAdapter);
 
-        recyclerViewInstituciones.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext()
-                , recyclerViewInstituciones, new RecyclerTouchListener.ClickListener() {
+        recyclerViewItems.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext()
+                , recyclerViewItems, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
 
-                ReporteRapido reporte = arrayListReportes.get(position);
+                Evento evento = arrayListItems.get(position);
 
-                Intent intent = new Intent(view.getContext(), ActivityDetalleReporte.class);
+                Intent intent = new Intent(view.getContext(), ActivityDetalleEvento.class);
 
-                intent.putExtra("Nombre", "Solicitud rápido");
-                intent.putExtra("Foto_principal", reporte.getDireccionFoto());
-
-                String datosReporte = "Descripcion:\n" + reporte.getDescripcion()+"\n"+
-                        "Fecha :" + reporte.getFecha()+"\n"+
-                        "Nombre responsable :" + reporte.getNombreResponsable();
-
-                intent.putExtra("Descripcion", datosReporte);
-                intent.putExtra("Latitud", reporte.getUbicacion().getLatitude());
-                intent.putExtra("Longitud", reporte.getUbicacion().getLongitude());
+                intent.putExtra("titulo", evento.getTitulo());
+                intent.putExtra("foto_principal", evento.getFotoUrl());
+                String fecha = new SimpleDateFormat("dd/MM/yyyy").
+                        format(evento.getFecha());
+                intent.putExtra("fecha", fecha);
+                intent.putExtra("hora_inicio", evento.getHoraInicio());
+                intent.putExtra("hora_fin", evento.getHoraFin());
+                intent.putExtra("descripcion", evento.getDescripcion());
+                intent.putExtra("direccion", evento.getDireccion());
+                intent.putExtra("latitud", evento.getUbicacion().getLatitude());
+                intent.putExtra("longitud", evento.getUbicacion().getLongitude());
 
                 startActivity(intent);
             }
@@ -184,15 +187,14 @@ public class ActivityBuscarReporte extends AppCompatActivity {
             }
         }));
 
-        if (ContextCompat.checkSelfPermission(ActivityBuscarReporte.this,
+        if (ContextCompat.checkSelfPermission(ActivityVerEventos.this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             revisarActivacionGPS();
         }else{
-            requestPermission(ActivityBuscarReporte.this, PERMISSIONS[0], "Acceso " +
+            requestPermission(ActivityVerEventos.this, PERMISSIONS[0], "Acceso " +
                     "a localización necesario para listar animales", MY_PERMISSIONS_REQUEST_LOCATION);
         }
-
     }
 
     private void startLocationUpdates() {
@@ -205,13 +207,6 @@ public class ActivityBuscarReporte extends AppCompatActivity {
 
     private void stopLocationUpdates(){
         mFusedLocationClient.removeLocationUpdates(mLocationCallback);
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(ActivityBuscarReporte.this, ActivityMenuAdoptante.class);
-        startActivity(intent);
-        finish();
     }
 
     @Override
@@ -229,15 +224,6 @@ public class ActivityBuscarReporte extends AppCompatActivity {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double result = RADIUS_OF_EARTH_KM * c;
         return Math.round(result*100.0)/100.0;
-    }
-
-    private void cerrarSesion(){
-        if (currentUser != null) {
-            mAuth.signOut();
-        }
-        Intent intent = new Intent(ActivityBuscarReporte.this, MainActivity.class);
-        startActivity(intent);
-        finish();
     }
 
     @Override
@@ -294,7 +280,7 @@ public class ActivityBuscarReporte extends AppCompatActivity {
                             try {// Show the dialog by calling startResolutionForResult(),
                                 // and check the result in onActivityResult().
                                 ResolvableApiException resolvable = (ResolvableApiException) e;
-                                resolvable.startResolutionForResult(ActivityBuscarReporte.this,
+                                resolvable.startResolutionForResult(ActivityVerEventos.this,
                                         REQUEST_CHECK_SETTINGS);
                             } catch (IntentSender.SendIntentException sendEx) {
                                 // Ignore the error.
@@ -355,30 +341,29 @@ public class ActivityBuscarReporte extends AppCompatActivity {
         }
     }
 
-    public void mostrarListaReportes() {
-        if (arrayListReportes.size() > 0){
+    public void mostrarListaItems() {
+        if (arrayListItems.size() > 0){
             //mAdapter = new AdapterAnimales(arrayAnimales);
             //customAdapter = new CustomAdapter(this, arrayAnimales);
             //listViewAnimales.setAdapter(customAdapter);
             //progressBarCargarLista.setVisibility(View.GONE);
-            mAdapter = new AdapterReportes(arrayListReportes);
-            recyclerViewInstituciones.setAdapter(mAdapter);
+            mAdapter = new AdapterEventos(arrayListItems);
+            recyclerViewItems.setAdapter(mAdapter);
             //mAdapter.notifyDataSetChanged();
             textViewCargando.setText("");
             constraintLayoutSuperior.setVisibility(View.GONE);
         }else{
             textViewCargando.setText(R.string.resultadosNoEncontrados);
-            Toast.makeText(ActivityBuscarReporte.this, "La búsqueda no " +
+            Toast.makeText(ActivityVerEventos.this, "La búsqueda no " +
                     "ha encontrado resultados", Toast.LENGTH_SHORT).show();
         }
         progressBarCargarLista.setVisibility(View.GONE);
         //imageButtonFiltrar.setEnabled(true);
     }
 
-    public void leerListaReportes() {
+    public void leerListaItems() {
 
-        db.collection("reportes")
-                /*.whereEqualTo("Estado", "Espera")*/
+        db.collection("eventos")
                 .orderBy("fecha", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -386,20 +371,13 @@ public class ActivityBuscarReporte extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                ReporteRapido reporte = new ReporteRapido();
-                                reporte.setDescripcion( document.getString("descripcion") );
-                                reporte.setDireccionFoto( document.getString("direccionFoto") );
-                                reporte.setFecha( document.getDate("fecha") );
-                                reporte.setIdResponsable( document.getString("idResponsable") );
-                                reporte.setNombreResponsable( document.getString("nombreResponsable") );
+                                Evento evento = document.toObject(Evento.class);
                                 GeoPoint ubicacion = document.getGeoPoint("ubicacion");
-                                reporte.setUbicacion( ubicacion );
-                                reporte.setDistancia( calcularDistancia(latitudActual, longitudActual,
+                                evento.setDistancia( calcularDistancia(latitudActual, longitudActual,
                                         ubicacion.getLatitude(),ubicacion.getLongitude()) );
-                                arrayListReportes.add(reporte);
+                                arrayListItems.add(evento);
                             }
-                            /*arrayListReportes = new ArrayList<>(arrayListAnimales);*/
-                            mostrarListaReportes();
+                            mostrarListaItems();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
@@ -424,5 +402,21 @@ public class ActivityBuscarReporte extends AppCompatActivity {
             default:
                 return true;
         }
+    }
+
+    private void cerrarSesion(){
+        if (currentUser != null) {
+            mAuth.signOut();
+        }
+        Intent intent = new Intent(ActivityVerEventos.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(ActivityVerEventos.this, ActivityMenuAdoptante.class);
+        startActivity(intent);
+        finish();
     }
 }

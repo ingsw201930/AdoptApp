@@ -15,6 +15,9 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,22 +66,27 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ActivityDetalleReporte extends AppCompatActivity implements OnMapReadyCallback {
+public class ActivityDetalleEvento extends AppCompatActivity implements OnMapReadyCallback {
 
-    private TextView textViewNombre;
-    private TextView textViewDescripcion;
-    private ImageView imageViewFotoPrincipal;
+    private ImageView imageViewFoto;
+    private TextView tv_titulo;
+    private EditText et_fecha;
+    private EditText et_direccion;
+    private EditText et_descripcion;
+    private SupportMapFragment mapFragment;
+    private EditText et_hora_inicio;
+    private EditText et_hora_fin;
+
+    private double latitud, longitud;
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
 
     private Geocoder mGeocoder;
-    private Double latitud, longitud;
-    private LatLng latLng1, latLng2;
-
-    private SupportMapFragment mapFragment;
 
     private GeoPoint ubicacionCliente;
+
+    private LatLng latLng1, latLng2;
 
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 4;
     private static final int REQUEST_CHECK_SETTINGS = 5;
@@ -97,19 +105,34 @@ public class ActivityDetalleReporte extends AppCompatActivity implements OnMapRe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detalle_reporte);
+        setContentView(R.layout.activity_detalle_evento);
 
-        textViewNombre = findViewById(R.id.tv_perfil_reporte);
-        textViewDescripcion = findViewById(R.id.tv_detalles_reporte);
-        imageViewFotoPrincipal = findViewById(R.id.iv_detalle_reporte);
+        imageViewFoto = findViewById(R.id.iv_evento_detalle);
+        tv_titulo = findViewById(R.id.tv_titulo_evento_detalle);
+        et_fecha = findViewById(R.id.et_fecha_detalle_evento);
+        et_direccion = findViewById(R.id.et_direccion_evento_detalle);
+        et_descripcion = findViewById(R.id.et_descripcion_evento_detalle);
+        et_hora_inicio = findViewById(R.id.et_hora_inicio_detalle);
+        et_hora_fin = findViewById(R.id.et_hora_fin_detalle);
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.map_evento_detalle);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+
+        Intent intent = getIntent();
+        String titulo = intent.getStringExtra("titulo");
+        final String foto_principal = intent.getStringExtra("foto_principal");
+        String fecha = intent.getStringExtra("fecha");
+        String hora_inicio = intent.getStringExtra("hora_inicio");
+        String hora_fin = intent.getStringExtra("hora_fin");
+        String descripcion = intent.getStringExtra("descripcion");
+        String direccion = intent.getStringExtra("direccion");
+        latitud = intent.getDoubleExtra("latitud", 0.0);
+        longitud = intent.getDoubleExtra("longitud", 0.0);
 
         mGeocoder = new Geocoder( getBaseContext());
 
@@ -118,16 +141,14 @@ public class ActivityDetalleReporte extends AppCompatActivity implements OnMapRe
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mLocationRequest = createLocationRequest();
 
-        Intent intent = getIntent();
-        String nombre = intent.getStringExtra("Nombre");
-        final String fotoPrincipal = intent.getStringExtra("Foto_principal");
-        String descripcion = intent.getStringExtra("Descripcion");
-        Double latitud = intent.getDoubleExtra("Latitud",0.0);
-        Double longitud = intent.getDoubleExtra("Longitud",0.0);
         latLng2 = new LatLng(latitud, longitud);
 
-        textViewNombre.setText(nombre);
-        textViewDescripcion.setText(descripcion);
+        tv_titulo.setText(titulo);
+        et_fecha.setText(fecha);
+        et_direccion.setText(direccion);
+        et_descripcion.setText(descripcion);
+        et_hora_inicio.setText(hora_inicio);
+        et_hora_fin.setText(hora_fin);
 
         mLocationCallback = new LocationCallback() {
             @Override
@@ -155,7 +176,7 @@ public class ActivityDetalleReporte extends AppCompatActivity implements OnMapRe
 
                             Marker ubicacionReporte = googleMap.addMarker(new MarkerOptions()
                                     .position(latLng2)
-                                    .title("Ubicación del reporte")
+                                    .title("Lugar del evento")
                                     .icon(BitmapDescriptorFactory
                                             .defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
@@ -167,6 +188,7 @@ public class ActivityDetalleReporte extends AppCompatActivity implements OnMapRe
                             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng2, zoom));
 
                             stopLocationUpdates();
+
                             consumeRESTVolley();
                         }
                     });
@@ -177,19 +199,19 @@ public class ActivityDetalleReporte extends AppCompatActivity implements OnMapRe
         new Thread(new Runnable() {
             public void run() {
                 // a potentially time consuming task
-                if (fotoPrincipal != null && !fotoPrincipal.equals("")) {
+                if (foto_principal != null && !foto_principal.equals("")) {
                     //descargar la imagen
-                    FirebaseUtils.descargarFotoImageView(fotoPrincipal, imageViewFotoPrincipal);
+                    FirebaseUtils.descargarFotoImageView(foto_principal, imageViewFoto);
                 }
             }
         }).start();
 
-        if (ContextCompat.checkSelfPermission(ActivityDetalleReporte.this,
+        if (ContextCompat.checkSelfPermission(ActivityDetalleEvento.this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             revisarActivacionGPS();
         }else{
-            requestPermission(ActivityDetalleReporte.this, PERMISSIONS[0], "Acceso a GPS necesario",
+            requestPermission(ActivityDetalleEvento.this, PERMISSIONS[0], "Acceso a GPS necesario",
                     MY_PERMISSIONS_REQUEST_LOCATION);
         }
 
@@ -318,7 +340,7 @@ public class ActivityDetalleReporte extends AppCompatActivity implements OnMapRe
                             try {// Show the dialog by calling startResolutionForResult(),
                                 // and check the result in onActivityResult().
                                 ResolvableApiException resolvable = (ResolvableApiException) e;
-                                resolvable.startResolutionForResult(ActivityDetalleReporte.this,
+                                resolvable.startResolutionForResult(ActivityDetalleEvento.this,
                                         REQUEST_CHECK_SETTINGS);
                             } catch (IntentSender.SendIntentException sendEx) {
                                 // Ignore the error.
@@ -403,4 +425,5 @@ public class ActivityDetalleReporte extends AppCompatActivity implements OnMapRe
         //mMap.moveCamera(CameraUpdateFactory.newLatLng( midPoint() ) );
         CameraUpdateFactory.zoomBy(0.5f);
     }
+
 }
