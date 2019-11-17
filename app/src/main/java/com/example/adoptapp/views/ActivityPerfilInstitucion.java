@@ -97,7 +97,7 @@ public class ActivityPerfilInstitucion extends AppCompatActivity {
     private void revisarSolicitudesActivas(){
 
         db.collection("solicitudes")
-                .whereEqualTo("idInstitucion", currentUser.getUid())
+                .whereEqualTo("idInstitucion", idInstitucion )
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
