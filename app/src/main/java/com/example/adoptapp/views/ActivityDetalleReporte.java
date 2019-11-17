@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
@@ -18,6 +19,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.adoptapp.R;
 import com.example.adoptapp.utils.FirebaseUtils;
 import com.google.android.gms.common.api.ApiException;
@@ -37,15 +44,24 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.GeoPoint;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class ActivityDetalleReporte extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -74,6 +90,9 @@ public class ActivityDetalleReporte extends AppCompatActivity implements OnMapRe
     private static String[] PERMISSIONS = {
             android.Manifest.permission.ACCESS_FINE_LOCATION
     };
+
+    private GoogleMap mMap;
+    private Polyline mLine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +167,7 @@ public class ActivityDetalleReporte extends AppCompatActivity implements OnMapRe
                             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng2, zoom));
 
                             stopLocationUpdates();
+                            consumeRESTVolley();
                         }
                     });
                 }
@@ -177,6 +197,7 @@ public class ActivityDetalleReporte extends AppCompatActivity implements OnMapRe
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
         LatLng latLng = new LatLng(4.657777, -74.093353);
 
         float zoom = 13; // Un zoom mayor que 13 hace que el emulador falle, pero un valor deseado para
@@ -314,5 +335,72 @@ public class ActivityDetalleReporte extends AppCompatActivity implements OnMapRe
                     "Sin acceso a localización, permiso denegado!",
                     Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void consumeRESTVolley(){
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "https://maps.googleapis.com/maps/api/directions/json?";
+        String origin = "origin="+latLng1.latitude+","+latLng1.longitude;
+        String destination = "destination="+latLng2.latitude+","+latLng2.longitude;
+        String mode = "mode=walking";
+        String key = "key="+getResources().getString(R.string.direcciones_llave);
+        StringRequest req = new StringRequest(Request.Method.GET, url+origin+"&"+destination+"&"+mode+"&"+key,
+                new Response.Listener() {
+                    @Override
+                    public void onResponse(Object response) {
+                        String data = (String)response;
+                        parseJSON(data);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("TAG", "Error handling rest invocation"+error.getCause());
+                    } }
+        );
+        queue.add(req);
+    }
+
+    private void parseJSON(String data) {
+        ArrayList<LatLng> result = new ArrayList<>();
+        String distance="";
+        Double d=0.0;
+
+        try {
+            JSONObject jsonObject = new JSONObject(data);
+            JSONArray steps = jsonObject.getJSONArray("routes");
+            steps = steps.getJSONObject(0).getJSONArray("legs");
+            d = steps.getJSONObject(0).getJSONObject("distance").getDouble("value");
+            steps = steps.getJSONObject(0).getJSONArray("steps");
+
+            result.add(new LatLng(((JSONObject)((JSONObject)steps.get(0)).get("start_location")).getDouble("lat"), ((JSONObject)((JSONObject)steps.get(0)).get("start_location")).getDouble("lng")));
+            for(int i=0;i<steps.length();++i) {
+                JSONObject punto = steps.getJSONObject(i);
+                result.add(new LatLng(((JSONObject)punto.get("end_location")).getDouble("lat"), ((JSONObject)punto.get("end_location")).getDouble("lng")));
+                Log.i("LATLNG", result.get(i).toString());
+            }
+
+            //distance = "La distancia es: " + d/1000.0 + " Km a su objetivo";
+            //mMap.moveCamera(CameraUpdateFactory.zoomTo(11));
+
+            //Toast.makeText(getApplicationContext(),  distance ,Toast.LENGTH_LONG).show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        drawRoute(result);
+    }
+
+    private void drawRoute(ArrayList<LatLng> result) {
+        if(mLine!=null)
+            mLine.remove();
+        PolylineOptions line = new PolylineOptions();
+        line.addAll(result);
+        line.width(10);
+        line.color(Color.BLUE);
+        line.jointType(JointType.ROUND);
+        mLine = mMap.addPolyline(line);
+
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng( midPoint() ) );
+        CameraUpdateFactory.zoomBy(0.5f);
     }
 }
