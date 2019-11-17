@@ -173,6 +173,8 @@ public class ActivityBuscarInstituciones extends AppCompatActivity {
                         "Descripción:\n"+institucion.getDescripcion()+"";
                 intent.putExtra("Descripcion", datosInstitucion);
 
+                intent.putExtra("idInstitucion", institucion.getId());
+
                 startActivity(intent);
             }
 

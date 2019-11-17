@@ -49,12 +49,14 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.GeoPoint;
@@ -116,6 +118,8 @@ public class ActivityReporteRapido extends AppCompatActivity implements OnMapRea
     private Geocoder mGeocoder;
 
     private ReporteRapido reporte;
+
+    private String nombreUsuario;
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -233,7 +237,8 @@ public class ActivityReporteRapido extends AppCompatActivity implements OnMapRea
                 if (reporte != null && ubicacionCliente.getLatitude()!=0 && ubicacionCliente.getLongitude() != 0) {
                     reporte.setUbicacion(ubicacionCliente);
                     buttonReportar.setEnabled(false);
-                    registrarReporte();
+                    //registrarReporte();
+                    obtenerNombreUsuario();
                 }else{
                     if( ubicacionCliente.getLatitude()==0 && ubicacionCliente.getLongitude() == 0 ){
                         Toast toast = Toast.makeText(ActivityReporteRapido.this, "No se ha encontrado " +
@@ -495,6 +500,8 @@ public class ActivityReporteRapido extends AppCompatActivity implements OnMapRea
         DocumentReference referencia = db.collection("reportes").document();
 
         reporte.setDireccionFoto( "reportes/"+referencia.getId()+"/photo_1.jpg" );
+        reporte.setNombreResponsable( nombreUsuario );
+
         referencia
                 .set(reporte)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -542,5 +549,22 @@ public class ActivityReporteRapido extends AppCompatActivity implements OnMapRea
                 finish();
             }
         });
+    }
+
+    private void obtenerNombreUsuario(){
+        db.collection("personas").document(currentUser.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                nombreUsuario = document.getString("Nombre");
+                                registrarReporte();
+                            }
+                        }
+                    }
+                });
     }
 }
