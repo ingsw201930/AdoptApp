@@ -55,6 +55,7 @@
                 android:enabled="false"
                 android:hint="@string/fecha_evento"
                 android:inputType="date"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 tools:ignore="Autofill" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -63,12 +64,13 @@
 
                 <EditText
                     android:id="@+id/et_hora_inicio_detalle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:enabled="false"
                     android:hint="@string/hora_inicio"
                     android:inputType="time"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/et_hora_fin_detalle"
@@ -77,12 +79,13 @@
 
                 <EditText
                     android:id="@+id/et_hora_fin_detalle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:enabled="false"
                     android:hint="@string/hora_fin"
                     android:inputType="time"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/et_hora_inicio_detalle"
                     app:layout_constraintRight_toRightOf="parent"
@@ -114,6 +117,7 @@
                 android:overScrollMode="always"
                 android:scrollbarStyle="insideInset"
                 android:scrollbars="vertical"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 tools:ignore="Autofill" />
 
             <TextView
@@ -133,6 +137,7 @@
                 android:enabled="false"
                 android:hint="@string/direccion_evento"
                 android:inputType="textPersonName"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 tools:ignore="Autofill" />
 
             <fragment

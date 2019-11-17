@@ -31,7 +31,9 @@ import android.widget.Toast;
 import com.example.adoptapp.R;
 import com.example.adoptapp.adapters.AdapterEventos;
 import com.example.adoptapp.adapters.AdapterReportes;
+import com.example.adoptapp.adapters.RecyclerTouchListener;
 import com.example.adoptapp.model.Evento;
+import com.example.adoptapp.model.Institucion;
 import com.example.adoptapp.model.ReporteRapido;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -57,6 +59,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class ActivityVerEventos extends AppCompatActivity {
@@ -153,6 +156,36 @@ public class ActivityVerEventos extends AppCompatActivity {
         recyclerViewItems.setItemAnimator(new DefaultItemAnimator());
         //recyclerViewAnimales.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerViewItems.setAdapter(mAdapter);
+
+        recyclerViewItems.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext()
+                , recyclerViewItems, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+                Evento evento = arrayListItems.get(position);
+
+                Intent intent = new Intent(view.getContext(), ActivityDetalleEvento.class);
+
+                intent.putExtra("titulo", evento.getTitulo());
+                intent.putExtra("foto_principal", evento.getFotoUrl());
+                String fecha = new SimpleDateFormat("dd/MM/yyyy").
+                        format(evento.getFecha());
+                intent.putExtra("fecha", fecha);
+                intent.putExtra("hora_inicio", evento.getHoraInicio());
+                intent.putExtra("hora_fin", evento.getHoraFin());
+                intent.putExtra("descripcion", evento.getDescripcion());
+                intent.putExtra("direccion", evento.getDireccion());
+                intent.putExtra("latitud", evento.getUbicacion().getLatitude());
+                intent.putExtra("longitud", evento.getUbicacion().getLongitude());
+
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
 
         if (ContextCompat.checkSelfPermission(ActivityVerEventos.this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -339,6 +372,9 @@ public class ActivityVerEventos extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Evento evento = document.toObject(Evento.class);
+                                GeoPoint ubicacion = document.getGeoPoint("ubicacion");
+                                evento.setDistancia( calcularDistancia(latitudActual, longitudActual,
+                                        ubicacion.getLatitude(),ubicacion.getLongitude()) );
                                 arrayListItems.add(evento);
                             }
                             mostrarListaItems();

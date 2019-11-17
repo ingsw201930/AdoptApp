@@ -62,7 +62,7 @@ public class AdapterEventos extends RecyclerView.Adapter<AdapterEventos.MyViewHo
         String fechaPublicacion = new SimpleDateFormat("dd/MM/yyyy").
                 format(evento.getFecha());
 
-        String datosReporte = "Fecha:\n" + fechaPublicacion+"\n"+
+        String datosReporte = "Fecha: " + fechaPublicacion+"\n"+
                 "Horario: "+evento.getHoraInicio()+ " a "+evento.getHoraFin()+"\n"+
                 "Organizado por :" + evento.getNombreInstitucion()+"\n"+
                 "En :" + evento.getDireccion()+"\n"+

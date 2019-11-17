@@ -57,7 +57,7 @@ public class ActivityDetalleReporte extends AppCompatActivity implements OnMapRe
     private FirebaseUser currentUser;
 
     private Geocoder mGeocoder;
-    private Long latitud, longitud;
+    private Double latitud, longitud;
     private LatLng latLng1, latLng2;
 
     private SupportMapFragment mapFragment;
