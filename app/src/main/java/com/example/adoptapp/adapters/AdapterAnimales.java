@@ -1,6 +1,5 @@
-package com.example.adoptapp;
+package com.example.adoptapp.adapters;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.adoptapp.R;
+import com.example.adoptapp.model.Animal;
+import com.example.adoptapp.utils.FirebaseUtils;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -99,7 +101,7 @@ public class AdapterAnimales extends RecyclerView.Adapter<AdapterAnimales.MyView
                 // a potentially time consuming task
 
                 if(!animal.getUrlFotoPrincipal().equals("") ) {
-                    try {
+                    /*try {
                         String imageUrl = animal.getUrlFotoPrincipal();
                         InputStream URLcontent = (InputStream) new URL(imageUrl).getContent();
                         final Drawable image = Drawable.createFromStream(URLcontent, "your source link");
@@ -113,7 +115,9 @@ public class AdapterAnimales extends RecyclerView.Adapter<AdapterAnimales.MyView
                         //holder.imageViewFoto.setImageDrawable(image);
                     } catch (Exception e) {
                         e.printStackTrace();
-                    }
+                    }*/
+                    //descargar la imagen
+                    FirebaseUtils.descargarFotoImageView(animal.getUrlFotoPrincipal(), holder.imageViewFoto);
                 }
 
             }

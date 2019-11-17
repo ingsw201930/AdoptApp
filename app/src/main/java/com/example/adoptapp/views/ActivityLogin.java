@@ -1,11 +1,10 @@
-package com.example.adoptapp;
+package com.example.adoptapp.views;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.adoptapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -24,18 +24,19 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class ActivityLogin extends AppCompatActivity {
 
-    Button botonIngresar;
-    EditText editTextEmail;
-    EditText editTextContrasena;
+    private Button botonIngresar;
+    private EditText editTextEmail;
+    private EditText editTextContrasena;
+    private Button btn_crearCuenta;
 
     private FirebaseAuth mAuth;
-    FirebaseUser currentUser;
+    private FirebaseUser currentUser;
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private static final String TAG = "ActivityLogin";
 
-    String tipoUsuario;
+    private String tipoUsuario;
 
     //Boolean loginExitoso;
 
@@ -49,6 +50,7 @@ public class ActivityLogin extends AppCompatActivity {
         botonIngresar = findViewById(R.id.buttonIngresarLogin);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextContrasena = findViewById(R.id.editTextContrasena);
+        btn_crearCuenta = findViewById(R.id.buttonRegistrarse);
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -67,7 +69,12 @@ public class ActivityLogin extends AppCompatActivity {
 
                     String email = editTextEmail.getText().toString();
                     String password = editTextContrasena.getText().toString();
+
                     botonIngresar.setEnabled(false);
+                    btn_crearCuenta.setEnabled(false);
+                    editTextEmail.setEnabled(false);
+                    editTextContrasena.setEnabled(false);
+
                     Toast.makeText(ActivityLogin.this, "Procesando, por favor espera",
                             Toast.LENGTH_SHORT).show();
                     signInUser(email, password);
@@ -164,7 +171,7 @@ public class ActivityLogin extends AppCompatActivity {
             editTextContrasena.setText("");
             verificarTipoUsuario(currentUser.getUid());
         }else{
-            botonIngresar.setEnabled(true);
+            desbloquearElementos();
         }
 
     }
@@ -185,6 +192,9 @@ public class ActivityLogin extends AppCompatActivity {
                             lanzarProximaActividad();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
+                            Toast.makeText(ActivityLogin.this, "Autenticación fallida",
+                                    Toast.LENGTH_SHORT).show();
+                            desbloquearElementos();
                         }
                     }
                 });
@@ -193,12 +203,21 @@ public class ActivityLogin extends AppCompatActivity {
 
     private void lanzarProximaActividad(){
         if (tipoUsuario.equals("Persona")){
-            Intent intent = new Intent(ActivityLogin.this, ActivityInicioPersona.class);
+            //Intent intent = new Intent(ActivityLogin.this, ActivityInicioPersona.class);
+            Intent intent = new Intent(ActivityLogin.this, ActivityMenuAdoptante.class);
+            intent.putExtra("proveniente", "login");
             startActivity(intent);
         }else{
             Intent intent = new Intent(ActivityLogin.this, ActivityMenuKeeper.class);
             startActivity(intent);
         }
+    }
+
+    private void desbloquearElementos(){
+        botonIngresar.setEnabled(true);
+        btn_crearCuenta.setEnabled(true);
+        editTextEmail.setEnabled(true);
+        editTextContrasena.setEnabled(true);
     }
 
     @Override

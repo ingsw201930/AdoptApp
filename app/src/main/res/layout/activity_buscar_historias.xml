@@ -4,59 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    android:paddingStart="10dp"
-    android:paddingLeft="10dp"
-    android:paddingTop="10dp"
-    android:paddingEnd="10dp"
-    android:paddingRight="10dp"
-    android:paddingBottom="10dp"
-    tools:context=".views.ActivityBuscarAnimales">
+    tools:context=".views.ActivityBuscarInstituciones"
+    android:padding="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ConstraintLayoutFiltro"
+        android:id="@+id/cl_superior_historias"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/roundcornercolorprimario"
-        app:layout_constraintBottom_toTopOf="@id/progressBarListaAnimales"
+        app:layout_constraintBottom_toTopOf="@id/pb_lista_historias"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textViewCargaListaAnimales"
+            android:id="@+id/tv_cargando_lista_historias"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/mostrarCargando"
             android:textAlignment="center"
-            android:textColor="@color/common_google_signin_btn_text_dark_default"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ProgressBar
-        android:id="@+id/progressBarListaAnimales"
-        style="@android:style/Widget.DeviceDefault.Light.ProgressBar"
+        android:id="@+id/pb_lista_historias"
+        style="?android:attr/progressBarStyle"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/RecyclerViewAnimales"
+        app:layout_constraintBottom_toTopOf="@id/rv_lista_historias"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ConstraintLayoutFiltro" />
+        app:layout_constraintTop_toBottomOf="@id/cl_superior_historias"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/RecyclerViewAnimales"
+        android:id="@+id/rv_lista_historias"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/progressBarListaAnimales" />
-
+        app:layout_constraintTop_toBottomOf="@id/pb_lista_historias" />
 </androidx.constraintlayout.widget.ConstraintLayout>

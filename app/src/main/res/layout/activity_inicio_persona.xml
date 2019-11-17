@@ -11,7 +11,7 @@
     android:paddingEnd="10dp"
     android:paddingRight="10dp"
     android:paddingBottom="10dp"
-    tools:context=".ActivityInicioPersona">
+    tools:context=".views.ActivityInicioPersona">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ConstraintLayoutAdoptante"

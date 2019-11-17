@@ -1,9 +1,11 @@
-package com.example.adoptapp;
+package com.example.adoptapp.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.ImageButton;
+
+import com.example.adoptapp.R;
 
 public class ActivityRegistrarAnimal extends AppCompatActivity {
 
