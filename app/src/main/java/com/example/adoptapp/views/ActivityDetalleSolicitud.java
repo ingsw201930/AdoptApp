@@ -108,6 +108,9 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
                 solicitud.getTipo().equals("Donación")){
             datosSolicitud = datosSolicitud+"\nPara: "+solicitud.getNombreAnimal();
         }
+        if(solicitud.getTipo().equals("DonaciónAInstitución") || solicitud.getTipo().equals("Voluntariado") ){
+            datosSolicitud = datosSolicitud+"\nPara: "+solicitud.getNombreInstitucion();
+        }
         if(solicitud.getTipo().equals("Apadrinamiento")){
             datosSolicitud = datosSolicitud+"\nMonto mensual ofrecido: "+solicitud.getMonto();
         }
@@ -149,7 +152,7 @@ public class ActivityDetalleSolicitud extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //confirmarFormalizacionAdopcion();
-
+                btn_proceder_formalizacion.setVisibility(View.GONE);
                 if( solicitud.getTipo().equals("Adopción") ) {
                     Intent intent = new Intent(ActivityDetalleSolicitud.this,
                             ActivityFormalizarAdopcion.class);

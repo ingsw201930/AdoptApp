@@ -46,14 +46,19 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -120,6 +125,8 @@ public class ActivityRegistrarEvento extends AppCompatActivity implements OnMapR
     private Address addressResult;
     private GoogleMap mMap;
     private GeoPoint ubicacionEvento;
+
+    private String nombreUsuario;
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -309,7 +316,7 @@ public class ActivityRegistrarEvento extends AppCompatActivity implements OnMapR
             public void onClick(View view) {
                 if ( revisarFormulario() ){
                     btn_registrarEvento.setEnabled(false);
-                    registrarEvento();
+                    obtenerNombreUsuario();
                 }
             }
         });
@@ -541,7 +548,7 @@ public class ActivityRegistrarEvento extends AppCompatActivity implements OnMapR
 
         evento.setFecha(fechaNacimiento);
         evento.setIdInstitucion( currentUser.getUid() );
-        evento.setNombreInstitucion( currentUser.getDisplayName() );
+        evento.setNombreInstitucion( nombreUsuario );
         evento.setUbicacion( ubicacionEvento );
 
         DocumentReference referencia = db.collection("eventos").document();
@@ -604,5 +611,22 @@ public class ActivityRegistrarEvento extends AppCompatActivity implements OnMapR
         String format = "dd/MM/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         et_fecha.setText(sdf.format(calendar.getTime()));
+    }
+
+    private void obtenerNombreUsuario(){
+        db.collection("instituciones").document(currentUser.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                nombreUsuario = document.getString("Nombre");
+                                registrarEvento();
+                            }
+                        }
+                    }
+                });
     }
 }
