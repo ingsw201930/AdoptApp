@@ -21,16 +21,9 @@
 
 
         <activity android:name=".ActivityTipoRegistro" />
-        <activity android:name=".ActivityRegistrarAnimal" />
         <activity android:name=".ActivityRegistrarFundacion" />
         <activity android:name=".ActivityRegistrarPersona" />
-        <activity android:name=".ActivityPerfilAnimal" />
-        <activity
-            android:name=".ActivityFiltro"
-            android:windowSoftInputMode="stateHidden" />
-
-
-        <activity android:name=".views.ActivityRegistrarEvento"
+        <activity android:name=".views.ActivityPerfilAnimal" />
 
         <activity android:name=".views.ActivityVerEventos"
             android:screenOrientation="portrait" />
@@ -88,9 +81,7 @@
         <activity
             android:name=".views.ActivityBuscarInstituciones"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".views.ActivityPerfilAnimal"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".views.ActivityFiltro"
             android:screenOrientation="portrait"

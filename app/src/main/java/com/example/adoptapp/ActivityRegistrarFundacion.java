@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -164,9 +165,12 @@ public class ActivityRegistrarFundacion extends AppCompatActivity {
         });
 
         button_registrarse.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                fundacion = registrarFundacion();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+                    fundacion = registrarFundacion();
+                }
                 if(fundacion != null){
                     registrar();
                 }
@@ -193,6 +197,7 @@ public class ActivityRegistrarFundacion extends AppCompatActivity {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
+
 
     private Institucion registrarFundacion(){
         boolean retornar = true;
