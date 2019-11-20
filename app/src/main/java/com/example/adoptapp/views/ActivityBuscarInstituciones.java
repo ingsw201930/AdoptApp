@@ -169,11 +169,11 @@ public class ActivityBuscarInstituciones extends AppCompatActivity {
                         "Municipio: "+institucion.getMunicipio()+"\n"+
                         "Email: "+institucion.getEmail()+"\n"+
                         "Teléfono: "+institucion.getTelefono()+"\n"+
-                        "A "+institucion.getDistancia()+" km de tu ubicación\n"+
+                        "A "+institucion.getTelefono()+" km de tu ubicación\n"+
                         "Descripción:\n"+institucion.getDescripcion()+"";
                 intent.putExtra("Descripcion", datosInstitucion);
 
-                intent.putExtra("idInstitucion", institucion.getId());
+                intent.putExtra("idInstitucion", institucion.getNombre());
 
                 startActivity(intent);
             }
@@ -378,7 +378,7 @@ public class ActivityBuscarInstituciones extends AppCompatActivity {
 
         db.collection("instituciones")
                 /*.whereEqualTo("Estado", "Espera")*/
-                .orderBy("Nombre", Query.Direction.ASCENDING)
+                .orderBy("nombre", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -387,14 +387,14 @@ public class ActivityBuscarInstituciones extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Institucion institucion = new Institucion();
                                 institucion.setId(document.getId());
-                                institucion.setNombre( document.getString("Nombre") );
-                                institucion.setEmail( document.getString("Email") );
-                                institucion.setEncargado( document.getString("Encargado") );
-                                institucion.setImagenPrincipal( document.getString("ImagenPrincipal") );
-                                institucion.setMunicipio( document.getString("Municipio") );
-                                institucion.setTelefono( document.getLong("Telefono"));
-                                institucion.setDescripcion( document.getString("Descripcion") );
-                                GeoPoint ubicacion = document.getGeoPoint("Ubicacion");
+                                institucion.setNombre( document.getString("nombre") );
+                                institucion.setEmail( document.getString("email") );
+                                institucion.setEncargado( document.getString("encargado") );
+                                institucion.setImagenPrincipal( document.getString("imagenPrincipal") );
+                                institucion.setMunicipio( document.getString("municipio") );
+                                institucion.setTelefono( document.getLong("telefono"));
+                                institucion.setDescripcion( document.getString("descripcion") );
+                                GeoPoint ubicacion = document.getGeoPoint("ubicacion");
                                 institucion.setUbicacion( ubicacion );
                                 institucion.setDistancia( calcularDistancia(latitudActual, longitudActual,
                                         ubicacion.getLatitude(),ubicacion.getLongitude()) );

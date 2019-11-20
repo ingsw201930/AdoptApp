@@ -100,6 +100,7 @@ public class ActivityRegistrarFundacion extends AppCompatActivity {
     private String idUser;
 
     private GeoPoint ubicacionFundacion;
+    private GeoPoint aux;
     private Bitmap selectedImage;
     private Address address;
 
@@ -270,7 +271,8 @@ public class ActivityRegistrarFundacion extends AppCompatActivity {
             return null;
         }
 
-        return new Institucion(email,nombreEncargado,municipio,nombre,Long.parseLong(telefono),null,descripcion);
+        aux = new GeoPoint(4.775875, -74.12894);
+        return new Institucion(email,nombreEncargado,municipio,nombre,Long.parseLong(telefono),aux,descripcion);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

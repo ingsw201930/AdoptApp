@@ -5,97 +5,94 @@ import com.google.firebase.firestore.GeoPoint;
 public class Institucion {
 
     private String id;
-    private String email;
-    private String encargado;
-    private String imagenPrincipal;
-    private String municipio;
-    private String nombre;
-    private long telefono;
-    private GeoPoint ubicacion;
-    private double distancia;
-    private String descripcion;
+    private String Email;
+    private String Encargado;
+    private String ImagenPrincipal;
+    private String Municipio;
+    private String Nombre;
+    private long Telefono;
+    private GeoPoint Ubicacion;
+    private double Distancia;
+    private String Descripcion;
 
-    public Institucion() {}
+
+    public Institucion() {
+
+    }
 
     public Institucion(String email, String encargado, String municipio, String nombre, long telefono, GeoPoint ubicacion, String descripcion) {
-        this.email = email;
-        this.encargado = encargado;
-        this.municipio = municipio;
-        this.nombre = nombre;
-        this.telefono = telefono;
-        this.ubicacion = ubicacion;
-        this.descripcion = descripcion;
+        this.Email = email;
+        this.Encargado = encargado;
+        this.Municipio = municipio;
+        this.Nombre = nombre;
+        this.Telefono = telefono;
+        this.Ubicacion = ubicacion;
+        this.Descripcion = descripcion;
     }
 
-    public Institucion(String id, String email, String encargado, String imagenPrincipal,
-                       String municipio, String nombre, long telefono, GeoPoint ubicacion,
-                       double distancia, String descripcion) {
-        this.id = id;
-        this.email = email;
-        this.encargado = encargado;
-        this.imagenPrincipal = imagenPrincipal;
-        this.municipio = municipio;
-        this.nombre = nombre;
-        this.telefono = telefono;
-        this.ubicacion = ubicacion;
-        this.distancia = distancia;
-        this.descripcion = descripcion;
-    }
 
     public String getEmail() {
-        return email;
+        return Email;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.Email = email;
     }
 
     public String getEncargado() {
-        return encargado;
+        return Encargado;
     }
 
     public void setEncargado(String encargado) {
-        this.encargado = encargado;
+        this.Encargado = encargado;
     }
 
     public String getImagenPrincipal() {
-        return imagenPrincipal;
+        return ImagenPrincipal;
     }
 
     public void setImagenPrincipal(String imagenPrincipal) {
-        this.imagenPrincipal = imagenPrincipal;
+        this.ImagenPrincipal = imagenPrincipal;
     }
 
     public String getMunicipio() {
-        return municipio;
+        return Municipio;
     }
 
     public void setMunicipio(String municipio) {
-        this.municipio = municipio;
+        this.Municipio = municipio;
     }
 
     public String getNombre() {
-        return nombre;
+        return Nombre;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.Nombre = nombre;
     }
 
     public long getTelefono() {
-        return telefono;
+        return Telefono;
     }
 
     public void setTelefono(long telefono) {
-        this.telefono = telefono;
+        this.Telefono = telefono;
     }
 
     public GeoPoint getUbicacion() {
-        return ubicacion;
+        return Ubicacion;
     }
 
     public void setUbicacion(GeoPoint ubicacion) {
-        this.ubicacion = ubicacion;
+        this.Ubicacion = ubicacion;
+    }
+
+    public String getDescripcion() {
+        return Descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.Descripcion = descripcion;
     }
 
     public String getId() {
@@ -107,18 +104,10 @@ public class Institucion {
     }
 
     public double getDistancia() {
-        return distancia;
+        return Distancia;
     }
 
     public void setDistancia(double distancia) {
-        this.distancia = distancia;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.Distancia = distancia;
     }
 }

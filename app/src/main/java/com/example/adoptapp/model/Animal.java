@@ -27,6 +27,8 @@ public class Animal {
     public Animal() {
     }
 
+
+
     public String getSexo() {
         return sexo;
     }

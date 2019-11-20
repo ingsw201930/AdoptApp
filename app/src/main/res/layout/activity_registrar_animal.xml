@@ -28,235 +28,79 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <HorizontalScrollView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/textCargarFoto1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginStart="48dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/cargarFoto"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.11" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                <ImageButton
+                    android:id="@+id/imageButtonCamera1"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="80dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="8dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/descripcionBotonCamara"
+                    android:focusable="true"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imageButtonGallery1"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/textCargarFoto1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.081"
+                    app:srcCompat="@drawable/camera" />
 
-                        <TextView
-                            android:id="@+id/textCargarFoto1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="48dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="8dp"
-                            android:text="@string/cargarFoto"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.11" />
+                <ImageButton
+                    android:id="@+id/imageButtonGallery1"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginBottom="8dp"
+                    android:contentDescription="@string/descripcionBotonGaleria"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.081"
+                    app:srcCompat="@drawable/gallery" />
 
-                        <ImageButton
-                            android:id="@+id/imageButtonCamera1"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginStart="80dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="30dp"
-                            android:layout_marginBottom="8dp"
-                            android:clickable="true"
-                            android:contentDescription="@string/descripcionBotonCamara"
-                            android:focusable="true"
-                            android:scaleType="centerCrop"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/imageButtonGallery1"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toEndOf="@+id/textCargarFoto1"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.081"
-                            app:srcCompat="@drawable/camera" />
+                <ImageView
+                    android:id="@+id/imageViewPredefinida1"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="88dp"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginEnd="88dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#3C3F41"
+                    android:contentDescription="@string/descripcionImagenPredefinida"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:srcCompat="@tools:sample/avatars[0]" />
 
-                        <ImageButton
-                            android:id="@+id/imageButtonGallery1"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="28dp"
-                            android:layout_marginBottom="8dp"
-                            android:contentDescription="@string/descripcionBotonGaleria"
-                            android:scaleType="centerCrop"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.081"
-                            app:srcCompat="@drawable/gallery" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <ImageView
-                            android:id="@+id/imageViewPredefinida1"
-                            android:layout_width="200dp"
-                            android:layout_height="200dp"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="88dp"
-                            android:layout_marginTop="100dp"
-                            android:layout_marginEnd="88dp"
-                            android:layout_marginBottom="8dp"
-                            android:background="#3C3F41"
-                            android:contentDescription="@string/descripcionImagenPredefinida"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:srcCompat="@tools:sample/avatars[0]" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:id="@+id/textCargarFoto2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="48dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="8dp"
-                            android:text="@string/cargarFoto"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.11" />
-
-                        <ImageButton
-                            android:id="@+id/imageButtonCamera2"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginStart="80dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="30dp"
-                            android:layout_marginBottom="8dp"
-                            android:clickable="true"
-                            android:contentDescription="@string/descripcionBotonCamara"
-                            android:focusable="true"
-                            android:scaleType="centerCrop"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/imageButtonGallery2"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toEndOf="@+id/textCargarFoto2"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.081"
-                            app:srcCompat="@drawable/camera" />
-
-                        <ImageButton
-                            android:id="@+id/imageButtonGallery2"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="28dp"
-                            android:layout_marginBottom="8dp"
-                            android:contentDescription="@string/descripcionBotonGaleria"
-                            android:scaleType="centerCrop"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.081"
-                            app:srcCompat="@drawable/gallery" />
-
-                        <ImageView
-                            android:id="@+id/imageViewPredefinida2"
-                            android:layout_width="200dp"
-                            android:layout_height="200dp"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="88dp"
-                            android:layout_marginTop="100dp"
-                            android:layout_marginEnd="88dp"
-                            android:layout_marginBottom="8dp"
-                            android:background="#3C3F41"
-                            android:contentDescription="@string/descripcionImagenPredefinida"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:srcCompat="@tools:sample/avatars[0]" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:id="@+id/textCargarFoto3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="48dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="8dp"
-                            android:text="@string/cargarFoto"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.11" />
-
-                        <ImageButton
-                            android:id="@+id/imageButtonCamera3"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginStart="80dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="30dp"
-                            android:layout_marginBottom="8dp"
-                            android:clickable="true"
-                            android:contentDescription="@string/descripcionBotonCamara"
-                            android:focusable="true"
-                            android:scaleType="centerCrop"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/imageButtonGallery3"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toEndOf="@+id/textCargarFoto3"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.081"
-                            app:srcCompat="@drawable/camera" />
-
-                        <ImageButton
-                            android:id="@+id/imageButtonGallery3"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="28dp"
-                            android:layout_marginBottom="8dp"
-                            android:contentDescription="@string/descripcionBotonGaleria"
-                            android:scaleType="centerCrop"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.081"
-                            app:srcCompat="@drawable/gallery" />
-
-                        <ImageView
-                            android:id="@+id/imageViewPredefinida3"
-                            android:layout_width="200dp"
-                            android:layout_height="200dp"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="88dp"
-                            android:layout_marginTop="100dp"
-                            android:layout_marginEnd="88dp"
-                            android:layout_marginBottom="8dp"
-                            android:background="#3C3F41"
-                            android:contentDescription="@string/descripcionImagenPredefinida"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:srcCompat="@tools:sample/avatars[0]" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
-            </HorizontalScrollView>
 
             <EditText
                 android:id="@+id/editTextNombre"
