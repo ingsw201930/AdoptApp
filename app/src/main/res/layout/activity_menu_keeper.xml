@@ -103,12 +103,13 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_margin="5dp"
-                    android:background="@color/common_google_signin_btn_text_dark_default"
                     android:contentDescription="@string/botonVerPeticiones"
                     android:scaleType="fitCenter"
+                    android:tint="@color/common_google_signin_btn_text_dark_default"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/icono_hogar_paso"
                     tools:src="@tools:sample/avatars[2]" />
 
                 <TextView
@@ -138,12 +139,13 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_margin="5dp"
-                    android:background="@color/common_google_signin_btn_text_dark_default"
                     android:contentDescription="@string/botonBuscarInstituciones"
                     android:scaleType="fitCenter"
+                    android:tint="@color/common_google_signin_btn_text_dark_default"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/icono_hogar_paso"
                     tools:src="@tools:sample/avatars[2]" />
 
                 <TextView
@@ -173,12 +175,13 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_margin="5dp"
-                    android:background="@color/common_google_signin_btn_text_dark_default"
                     android:contentDescription="@string/botonEventos"
                     android:scaleType="fitCenter"
+                    android:tint="@color/common_google_signin_btn_text_dark_default"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/icono_adoptante"
                     tools:src="@tools:sample/avatars[2]" />
 
                 <TextView
