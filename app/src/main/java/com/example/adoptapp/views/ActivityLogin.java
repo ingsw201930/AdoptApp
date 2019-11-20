@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.adoptapp.R;
+import com.example.adoptapp.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -65,6 +66,12 @@ public class ActivityLogin extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                String username = editTextEmail.getText().toString();
+                Usuario.username = username;
+                Usuario.password = editTextContrasena.getText().toString();
+
+                Toast.makeText(ActivityLogin.this, "usuario: " + Usuario.username, Toast.LENGTH_LONG).show();
+
                 if( validarFormulario() ) {
 
                     String email = editTextEmail.getText().toString();
@@ -102,6 +109,8 @@ public class ActivityLogin extends AppCompatActivity {
 
         boolean valid = true;
         String email = editTextEmail.getText().toString();
+
+        Usuario.username = new String(email);
 
         if (TextUtils.isEmpty(email)) {
             editTextEmail.setError("Requerido");
@@ -169,6 +178,7 @@ public class ActivityLogin extends AppCompatActivity {
         if(currentUser != null){
             editTextEmail.setText("");
             editTextContrasena.setText("");
+            Usuario.id = currentUser.getUid();
             verificarTipoUsuario(currentUser.getUid());
         }else{
             desbloquearElementos();
@@ -189,6 +199,9 @@ public class ActivityLogin extends AppCompatActivity {
                                 tipoUsuario = document.getString("Tipo");
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                             }
+
+
+
                             lanzarProximaActividad();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -202,6 +215,11 @@ public class ActivityLogin extends AppCompatActivity {
     }
 
     private void lanzarProximaActividad(){
+
+        Usuario.username = editTextEmail.getText().toString();
+        Usuario.password = editTextContrasena.getText().toString();
+
+
         if (tipoUsuario.equals("Persona")){
             //Intent intent = new Intent(ActivityLogin.this, ActivityInicioPersona.class);
             Intent intent = new Intent(ActivityLogin.this, ActivityMenuAdoptante.class);

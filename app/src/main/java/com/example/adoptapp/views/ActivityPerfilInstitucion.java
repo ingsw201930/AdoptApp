@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.adoptapp.R;
+import com.example.adoptapp.model.Usuario;
 import com.example.adoptapp.utils.FirebaseUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,6 +23,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.Normalizer;
+
 public class ActivityPerfilInstitucion extends AppCompatActivity {
 
     private TextView textViewNombre;
@@ -29,6 +32,7 @@ public class ActivityPerfilInstitucion extends AppCompatActivity {
     private ImageView imageViewFotoPrincipal;
     private ConstraintLayout constraintLayoutDonar;
     private ConstraintLayout constraintLayoutVoluntariado;
+    private ConstraintLayout constraintLayoutChat;
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -52,10 +56,12 @@ public class ActivityPerfilInstitucion extends AppCompatActivity {
         imageViewFotoPrincipal = findViewById(R.id.iv_perfil_foto_fundacion);
         constraintLayoutDonar = findViewById(R.id.cl_donar_fundacion);
         constraintLayoutVoluntariado = findViewById(R.id.cl_voluntariado);
+        constraintLayoutChat = findViewById(R.id.cl_chat_con_fundacion);
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
+
 
         Intent intent = getIntent();
         nombre = intent.getStringExtra("Nombre");
@@ -92,6 +98,15 @@ public class ActivityPerfilInstitucion extends AppCompatActivity {
                 revisarSolicitudesActivas();
             }
         });
+
+        constraintLayoutChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tipo_solicitud = "Chat";
+                iniciarChat();
+            }
+        });
+
     }
 
     private void revisarSolicitudesActivas(){
@@ -160,6 +175,19 @@ public class ActivityPerfilInstitucion extends AppCompatActivity {
         intent.putExtra("nombre_institucion", nombre);
         intent.putExtra("nombre_animal", nombreAnimal);
         intent.putExtra("foto_url", direccionFoto);
+
+        startActivity(intent);
+    }
+
+    private void iniciarChat()
+    {
+        nombre = nombre.replaceAll("\\s","");
+        nombre = Normalizer.normalize(nombre,Normalizer.Form.NFKD);
+        nombre = nombre.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+
+        Usuario.chatWith = nombre;
+        Log.println(Log.ERROR,"bandera",nombre.replaceAll("\\s",""));
+        Intent intent = new Intent(ActivityPerfilInstitucion.this, Chat.class);
 
         startActivity(intent);
     }
